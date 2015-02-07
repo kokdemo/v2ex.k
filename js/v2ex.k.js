@@ -8,7 +8,7 @@ $(function () {
 
     $('body').prepend(newNavbar);
 
-    $('.bars').css('height',document.body.clientHeight);
+    $('.bars').css('height',window.screen.height);
     $('#Wrapper').css('width',document.body.clientWidth-150);
 
     $('#k_navbar').append(navbar);
@@ -24,7 +24,7 @@ $(function () {
     $('#Main .item,#TopicsNode .cell').click(function(){
         $($('#Rightbar iframe')).remove();
         var iframeUrl = $(this).find('.item_title a').attr('href');
-        var iframe = '<iframe frameborder=0 seamless width="100%" scrolling="no" style="margin-bottom:10px; margin-top:-64px" src="'+iframeUrl+' " height="'+(window.screen.height-10)+'">'+'</iframe>';
+        var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="'+iframeUrl+' " height="'+(window.screen.height-10)+'">'+'</iframe>';
         $('#Main').css('width',document.body.clientWidth-690-170);
         $('#Rightbar').css('width',690).css('position','fixed').css('right',0).prepend(iframe);
     });

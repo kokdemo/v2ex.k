@@ -38,7 +38,7 @@
     height: 100%;
     vertical-align:top;
     text-align: center;
-    background-color: #A8DC3C;
+    background-color: #5CB000;
 }
 
 #k_tabbar a{
@@ -281,3 +281,11 @@ img.circle-img{
     color: #FFF;
     background-color: #B9D998;
 }
+
+iframe[seamless]{
+    background-color: transparent;
+    border: 0px none transparent;
+    padding: 0px;
+    overflow: hidden;
+}
+
