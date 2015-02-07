@@ -1,11 +1,11 @@
 {
   "name": "v2ex.k",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "manifest_version": 2,
-
   "description": "V2EX UI Extension",
   "homepage_url": "https://github.com/kokdemo/v2ex.k",
   "author": "kokdemo",
+  "options_page": "options.html",
 
   "icons": {
     "16": "v2ex.png",
