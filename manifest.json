@@ -1,0 +1,39 @@
+{
+  "name": "v2ex.k",
+  "version": "0.0.1",
+  "manifest_version": 2,
+
+  "description": "V2EX UI Extension",
+  "homepage_url": "https://github.com/kokdemo/v2ex.k",
+  "author": "kokdemo",
+
+  "icons": {
+    "16": "v2ex.png",
+    "48": "v2ex.png",
+    "128": "v2ex.png"
+  },
+
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "*://*.v2ex.com/",
+    "*://v2ex.com/"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.v2ex.com/*",
+        "*://v2ex.com/*"
+      ],
+      "css": [
+        "css/v2ex.k.css"
+      ],
+      "js": [
+        "js/jquery-2.1.1.min.js",
+        "js/v2ex.k.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}
