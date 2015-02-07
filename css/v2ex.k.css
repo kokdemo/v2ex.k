@@ -21,6 +21,9 @@
     color: #fff;
 }
 
+#k_navbar a img{
+    width: 100%;
+}
 #k_tabbar{
     display: inline-block;
     position: fixed;
@@ -149,17 +152,17 @@ body #Wrapper{
 #Main div[id*="r_"].cell table tr td:nth-child(3) {
 	padding-top: 0px;
 }
-#Rightbar div:nth-child(2) .cell:first-child table:nth-child(1) tr td:nth-child(1) {
+#Rightbar div:nth-child(3) .cell:first-child table:nth-child(1) tr td:nth-child(1) {
 	text-align:center;
 }
-#Rightbar div:nth-child(2) .cell:first-child table:nth-child(1) tr td:nth-child(2),
-#Rightbar div:nth-child(2) .cell:first-child table:nth-child(1) tr td:nth-child(3),
+#Rightbar div:nth-child(3) .cell:first-child table:nth-child(1) tr td:nth-child(2),
+#Rightbar div:nth-child(3) .cell:first-child table:nth-child(1) tr td:nth-child(3),
 .sep20, img[src*="flat_compose.png"] {
 	display:none;
 }
 
 
-#Rightbar div:nth-child(2) .cell:first-child table:nth-child(3) {
+#Rightbar div:nth-child(3) .cell:first-child table:nth-child(3) {
 	padding-bottom: 15px;
 	padding-top: 15px;
 }
@@ -266,13 +269,8 @@ img.circle-img{
     width: 100%;
 }
 
-#Main td a.count_livid{
-    background-color: #3C7300;
-}
-
 #Main td a.node{
     color: #FFF;
-    background-color: #B9D998;
 }
 
 iframe[seamless]{
@@ -280,5 +278,9 @@ iframe[seamless]{
     border: 0px none transparent;
     padding: 0px;
     overflow: hidden;
+}
+
+.box {
+margin: 10px 0;
 }
 

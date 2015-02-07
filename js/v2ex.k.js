@@ -1,21 +1,21 @@
 $(function () {
     var navbar = $('#Top .content a');
     var tabbar = $('#Tabs a');
+    var newNavbar = "<div id='k_navbar' class='bars k_color_dark'></div><div id='k_tabbar' class='bars k_color_light'></div>";
+$('.bars').css('height',window.screen.height);
+    $('#Wrapper').css('width',document.body.clientWidth-150).addClass('k_color_background');
+
+    $('body').prepend(newNavbar);
+    $('#k_navbar').append(navbar);
+    $('#k_tabbar').append(tabbar);
+
+
     var avater = $('#Rightbar .box .cell table tbody tr td')[0].innerHTML;
     var search = $('#Search');
     var notificationText = $('.inner a').text().substr(0,5);
     var notification = '<a href="http://www.v2ex.com/notifications">'+notificationText+'</a>';
-    var newNavbar = "<div id='k_navbar' class='bars k_color_dark'></div><div id='k_tabbar' class='bars k_color_light'></div>";
 
-    $('body').prepend(newNavbar);
-
-    $('.bars').css('height',window.screen.height);
-    $('#Wrapper').css('width',document.body.clientWidth-150).addClass('k_color_background');
-
-    $('#k_navbar').append(navbar);
-    $('#k_tabbar').append(tabbar);
     $('#Rightbar').prepend(search);
-
 
     $($('#k_navbar a')[0]).remove();
     $('#k_navbar').prepend(notification).prepend(avater);
