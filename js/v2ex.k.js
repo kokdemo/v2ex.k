@@ -12,7 +12,10 @@ $('.bars').css('height',window.screen.height);
 
     var avater = $('#Rightbar .box .cell table tbody tr td')[0].innerHTML;
     var search = $('#Search');
-    var notificationText = $('.inner a').text().substr(0,5);
+    var notificationText = $('.inner a').text();
+    var notificationStart = notificationText.indexOf('未读提醒');
+    notificationText = notificationText.substr(notificationStart-3,5);
+
     var notification = '<a href="http://www.v2ex.com/notifications">'+notificationText+'</a>';
 
     $('#Rightbar').prepend(search);
@@ -22,7 +25,7 @@ $('.bars').css('height',window.screen.height);
     $($('#k_navbar a')[3]).attr('href','http://www.v2ex.com/new').text('写新主题');
     $('#k_navbar a img').css('border-radius','50%');
     $('#k_navbar a,#k_tabbar a').addClass('k_color_hover');
-    $('a.count_livid').addClass('k_color_dark');
+    $('a.count_livid').addClass('k_color_count');
     $('a.node').addClass('k_color_node');
 
     $('#Main .item,#TopicsNode .cell').addClass('k_color_item').click(function(){

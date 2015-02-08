@@ -58,8 +58,14 @@
     background-color: #5CB000;
 }
 
-.k_color_node{
+span a.node.k_color_node{
     background-color: #B9D998;
+    color: #FFF;
+}
+
+td a.count_livid.k_color_count,span.no{
+    background-color: #3C7300;
+
 }
 
 #Wrapper.k_color_background{
@@ -269,9 +275,9 @@ img.circle-img{
     width: 100%;
 }
 
-#Main td a.node{
-    color: #FFF;
-}
+/*#Main td a.node{*/
+    /*color: #FFF;*/
+/*}*/
 
 iframe[seamless]{
     background-color: transparent;
