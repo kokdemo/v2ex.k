@@ -34,7 +34,7 @@ v2ex.k 是一个v2ex网站界面修改器，它有如下的特性：
         background-color: #B9D998;/*小标签背景颜色*/
         color: #FFF;
     }
-    
+
     td a.count_livid.k_color_count{
         background-color: #3C7300;/*回帖数目背景颜色*/
     }   
