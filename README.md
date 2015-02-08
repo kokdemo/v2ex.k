@@ -33,7 +33,7 @@ v2ex.k 是一个v2ex网站界面修改器，它有如下的特性：
         background-color: #B9D998;/*小标签背景颜色*/
     }
     
-    #Wrapper.k_color_background{
+    \#Wrapper.k_color_background{
         background-color: #E2F1D0;/*背景颜色*/
     }
     
