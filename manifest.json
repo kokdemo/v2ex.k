@@ -1,6 +1,6 @@
 {
   "name": "v2ex.k",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "manifest_version": 2,
   "description": "V2EX UI Extension",
   "homepage_url": "https://github.com/kokdemo/v2ex.k",
@@ -27,7 +27,8 @@
         "*://v2ex.com/*"
       ],
       "css": [
-        "css/v2ex.k.css"
+        "css/v2ex.k.css",
+        "css/font.css"
       ],
       "js": [
         "js/jquery-2.1.1.min.js",
