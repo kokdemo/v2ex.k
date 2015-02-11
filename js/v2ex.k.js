@@ -77,7 +77,8 @@ $(function () {
                 }
             }else if(key == 37){
                 //方向键左
-                if(dom.length==0){
+                var localUrl = window.location.href;
+                if(localUrl.indexOf('v2ex.com/go') != -1||localUrl.indexOf('v2ex.com/t') != -1){
                     window.history.go(-1);
                 }
             }else if(key == 32){
