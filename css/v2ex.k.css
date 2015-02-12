@@ -195,7 +195,7 @@ body #Wrapper{
 	padding-top: 15px;
 }
 #Main .box .inner {
-	padding: 10px 24px 20px 24px;
+	/*padding: 10px 24px 20px 24px;*/
 	border-bottom:0px;
 }
 #Main .box:nth-child(2) .cell:nth-child(2) {
@@ -264,6 +264,10 @@ body #Wrapper{
     /*margin: -10px -10px 0px 650px;*/
 }
 
+.cell.item.k_color_item > div> img{
+    display: none;
+}
+
 .fade {
 	color: #AAA;
 }
@@ -284,9 +288,9 @@ body #Wrapper{
 .snow {
 	color: #CCC;
 }
-.topic_content {
-	margin-bottom: 50px;
-}
+/*.topic_content {*/
+	/*margin-bottom: 50px;*/
+/*}*/
 .topic_buttons {
 	border-top: 1px solid #e6e6e6;
 	background: #f3f3f3;
@@ -335,6 +339,10 @@ img.circle-img{
 
 #reply_content{
     width: 100%;
+}
+
+textarea.mll{
+    padding: 0;
 }
 
 /*#Main td a.node{*/
