@@ -102,9 +102,16 @@ $(function () {
 
         var itemUrl = $(this).find('.item_title a').attr('href');
         var itemID = itemUrl.substr(3, 6);
+        var ifhttps = 'https:' == document.location.protocol ? true: false;
+        var ajaxUrl = '';
+        if(ifhttps){
+            ajaxUrl = 'https://www.v2ex.com/api/topics/show.json?id=' + itemID;
+        }else{
+            ajaxUrl = 'http://www.v2ex.com/api/topics/show.json?id=' + itemID;
+        }
         $.ajax({
             type: "get",
-            url: 'http://www.v2ex.com/api/topics/show.json?id=' + itemID,
+            url: ajaxUrl,
             success: function(data){
                 var title = data[0]['title'];
                 var contentDom = data[0]['content_rendered'];
