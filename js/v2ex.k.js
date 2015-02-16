@@ -42,18 +42,21 @@ $(function () {
     $('a.node').addClass('k_color_node');
 
     var fast = {
+        opened: false,
         changeCSS: function () {
-            $('#Main').css('width', document.body.clientWidth - 690 - 140).css('height', $(window).height() + 10);
-            $('#Rightbar').css('width', 690).css('position', 'fixed').css('right', 0);
+            if (!fast.opened) {
+                $('#Main').css('width', document.body.clientWidth - 690 - 140);
+                $('#Rightbar').css('width', 690).css('position', 'fixed').css('right', 0);
+                fast.scroll();
+                fast.opened = true;
+            }
         },
         scroll: function(){
-            var height = $('div div.cell.item.k_color_choosen')[0].offsetTop;
-            var screen = $(document).height();
-            document.getElementById('Main').scrollTop = height - 0.4 * screen;
+            $(document).scrollTop($('div div.cell.item.k_color_choosen').prev().offset().top);
         },
         keyPress: function (event) {
-            var key;
-            key = event.keyCode;
+            var key = event.keyCode;
+            var accepted = true;
             //Ie使用event.keyCode获取键盘码
             var dom = $('.k_color_choosen');
             if (key == 82) {
@@ -96,6 +99,12 @@ $(function () {
                 } else {
                     document.body.scrollTop = 0;
                 }
+            } else {
+                accepted = false;
+            }
+
+            if (accepted) {
+                event.preventDefault();
             }
         }
     };
@@ -108,6 +117,7 @@ $(function () {
     });
 
     $('#Main .item,#TopicsNode .cell').addClass('k_color_item').click(function () {
+
         if ($('#Rightbar #k_faster').length == 0) {
             $('#Rightbar').prepend('<div id="k_faster" class="box" style="height:' + ($(window).height() - 10) + 'px">' + '</div>')
         }
@@ -137,17 +147,16 @@ $(function () {
                     var faster = '<h2>' + title + '</h2>' + contentDom;
                     $('#k_faster').html(faster).css('padding', 20);
                 }
-                fast.changeCSS();
-                $('#k_faster').click(function () {
-                    window.location.href = url;
-                });
             },
             error: function () {
                 var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
-                fast.changeCSS();
-                $('#k_faster').html(iframe).css('padding', 0).click(function () {
+                $('#k_faster').html(iframe).css('padding', 0);
+            },
+            complete: function () {
+                $('#k_faster').click(function () {
                     window.location.href = url;
                 });
+                fast.changeCSS();
             }
         });
     });
