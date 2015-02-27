@@ -1,0 +1,355 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+@import "compass/reset";
+@import "compass/css3";
+
+$color_dark: #505770;
+$color_light: #707791;
+$color_node: #BCC4E0;
+$color_background: #F1F2F6;
+$color_hover: #9B9EC2;
+$color_item: #FFFFFF;
+$color_item_a: #3C3B47;
+$color_choosen: #EEE;
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+}
+
+#Top, #Bottom, #Tabs {
+  display: none;
+}
+
+#k_navbar {
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 100%;
+  vertical-align: top;
+  text-align: center;
+  a {
+    display: block;
+    vertical-align: middle;
+    padding: 15px 0;
+    color: #fff;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+#k_tabbar {
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  left: 80px;
+  width: 60px;
+  height: 100%;
+  vertical-align: top;
+  text-align: center;
+  a {
+    display: block;
+    vertical-align: middle;
+    padding: 15px 0;
+    color: #fff;
+    margin-right: 0;
+  }
+}
+
+#k_faster {
+  padding: 10px 20px;
+  text-align: left;
+  margin: 0;
+  overflow: scroll;
+  font-size: 16px;
+  line-height: 30px;
+  cursor: pointer;
+  p {
+    margin: 0;
+    text-indent: 32px;
+    font-size: 16px;
+    line-height: 30px;
+  }
+;
+  h2, h3 {
+    margin: 0;
+    font-size: 150%;
+    line-height: 40px;
+  }
+;
+  blockquote {
+    margin: 0;
+    padding: 5px 0 5px 15px;
+    border-left: 5px solid #ddd;
+    font-family: Georgia, "Times New Roman", Times, Kai, "Kaiti SC", KaiTi, BiauKai, FontAwesome, serif;
+  }
+;
+  * {
+    max-width: 690px;
+  }
+}
+
+//colors
+
+.k_color_dark {
+  background-color: $color_dark;
+}
+
+.k_color_light {
+  background-color: $color_light;
+}
+
+span a.node.k_color_node, td a.count_livid.k_color_count, span.no {
+  background-color: $color_node;
+  color: $color_dark;
+}
+
+#Wrapper.k_color_background {
+  background-color: $color_background;
+}
+
+.k_color_hover:hover {
+  background-color: $color_hover;
+}
+
+.k_color_item {
+  background-color: $color_item;
+  a:link, a:visited, a:active {
+    color: $color_item_a;
+    text-shadow: none;
+  }
+}
+
+.k_color_choosen {
+  background-color: $color_choosen;
+}
+
+//colors end
+
+body #Wrapper {
+  display: inline-block;
+  width: auto;
+  height: 100%;
+  margin-left: 140px;
+  background-image: none;
+
+  .content {
+    width: auto;
+    margin: 0 10px 0 auto;
+  }
+  .sep20 {
+    display: none;
+  }
+}
+
+#Search {
+  width: 90%;
+  form div {
+    width: 250px !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+#Main {
+  width: auto;
+  margin: 0px 275px 0px 0px;
+  overflow: scroll;
+  img.avatar {
+    max-width: 48px !important;
+    max-height: 48px !important;
+    @include border-radius(50%);
+  }
+  .cell table tr td:nth-child(3), .cell table tr td:nth-child(4) {
+    min-height: 60px;
+  }
+  .box .inner {
+    border-bottom: 0px;
+  }
+  .box:nth-child(2) .cell:nth-child(2) {
+    padding: 10px 28px !important;
+  }
+  .box:nth-child(2) .cell:nth-child(n+2), .box:first-child .cell {
+    padding: 15px 24px 15px 24px;
+  }
+  .box .topic_buttons {
+    border-top: 1px solid #e6e6e6;
+    background: #f3f3f3;
+    margin-top: 20px;
+  }
+}
+
+//#Main div[id*="r_"].cell table tr td:nth-child(3) {
+//  padding-top: 0px;
+//}
+
+#Rightbar {
+  div:nth-child(3) .cell:first-child table:nth-child(1) tr td:nth-child(1) {
+    text-align: center;
+  }
+
+  div:nth-child(3) .cell:first-child table:nth-child(1) tr td:nth-child(2),
+  div:nth-child(3) .cell:first-child table:nth-child(1) tr td:nth-child(3),
+  .sep20, img[src*="flat_compose.png"] {
+    display: none;
+  }
+
+  div:nth-child(3) .cell:first-child table:nth-child(3) {
+    padding-bottom: 15px;
+    padding-top: 15px;
+  }
+
+  .box div:nth-child(1) {
+    border-bottom: 0px;
+  }
+}
+
+.box {
+  border-radius: 0px;
+  box-shadow: none;
+  border: 1px solid #DDD;
+  margin-bottom: -1px;
+  .inner {
+    border-radius: 0px;
+  }
+}
+
+.box
+.cell {
+  border-bottom: 1px solid #E2E2E2;
+  table tr td:nth-child(1) {
+    vertical-align: middle !important;
+  }
+  table tr td:nth-child(3) a[href="/new"] {
+    padding: 7px 20px;
+    background: #eee;
+    border-radius: 20px;
+    margin: 0 78px 20px 0;
+    float: right;
+  }
+}
+
+.cell > table {
+  table-layout: fixed;
+  tbody tr td{
+    border-left: none !important;
+    border-right: none !important;
+  }
+}
+
+.cell.item.k_color_item > div > img {
+  display: none;
+}
+
+.fade {
+  color: #AAA;
+}
+
+.inner {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.item_title {
+  padding-top: 10px;
+}
+
+.msl {
+  width: 615px;
+}
+
+.no {
+  color: #BBB;
+  padding: 4px 5px;
+}
+
+.snow {
+  color: #CCC;
+}
+
+.topic_buttons {
+  border-top: 1px solid #e6e6e6;
+  background: #f3f3f3;
+  margin-top: 20px;
+}
+
+a:link, a:visited, a:active {
+  color: #666E74;
+}
+
+a.top:link, a.top:visited {
+  color: #BBB;
+  font-size: 14px;
+}
+
+a.top:hover {
+  color: #333;
+}
+
+a.balance_area:link, a.balance_area:visited, .balance_area {
+  background: #FFF;
+}
+
+a.item_node {
+  background: #FFF;
+  border: 1px #FFF solid;
+}
+
+textarea.mll {
+  width: 625px;
+}
+
+div[id*="r_"].cell table tr td:nth-child(1) {
+  vertical-align: baseline !important;
+}
+
+div.header h1 {
+  margin-right: 80px;
+}
+
+div.fr a[href*="member"] img {
+  margin-top: 30px;
+}
+
+td[width="32"] {
+  padding-right: 20px;
+}
+
+#Rightbar .box .cell table:first-child tbody tr td:first-child {
+  display: none;
+}
+
+img.circle-img {
+  border-radius: 50% !important;
+}
+
+a.balance_area{
+  vertical-align: top;
+  background: none;
+}
+
+#reply_content {
+  width: 100%;
+}
+
+textarea.mll {
+  padding: 0;
+}
+
+iframe[seamless] {
+  background-color: transparent;
+  border: 0px none transparent;
+  padding: 0px;
+  overflow: hidden;
+}
+
+/*------------fonticon------------*/
+

@@ -27,7 +27,8 @@
         "*://v2ex.com/*"
       ],
       "css": [
-        "css/v2ex.k.css",
+//        "css/v2ex.k.css",
+          "stylesheets/screen.css",
         "css/font.css"
       ],
       "js": [

@@ -140,7 +140,7 @@ $(function () {
                 var title = data[0]['title'];
                 var contentDom = data[0]['content_rendered'];
                 var url = data[0]['url'];
-                if(contentDom.length <= 140){
+                if(contentDom.length <= 400){
                     var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
                     $('#k_faster').html(iframe).css('padding', 0);
                 }else{
