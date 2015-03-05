@@ -22,7 +22,7 @@ $(function () {
             '<a href="/notes" class="top k_color_hover"><i class="fa fa-book fa-2x" title="笔记"></i></a>' +
             '<a href="/t" class="top k_color_hover"><i class="fa fa-list-alt fa-2x" title="时间轴"></i></a>' +
             '<a href="/events" class="top k_color_hover" title="事件"><i class="fa fa-eye fa-2x"></i></a>' +
-            '<a href="'+$($('#Top .content a')[7]).attr('href')+'" class="top k_color_hover" title="附近"><i class="fa fa-map-marker fa-2x"></i></a>' +
+            '<a href="' + $($('#Top .content a')[7]).attr('href') + '" class="top k_color_hover" title="附近"><i class="fa fa-map-marker fa-2x"></i></a>' +
             '<a href="/settings" class="top k_color_hover" title="设置"><i class="fa fa-cog fa-2x"></i></a>'
         ;
     $('body').prepend(newNavbar);
@@ -51,7 +51,7 @@ $(function () {
                 fast.opened = true;
             }
         },
-        scroll: function(){
+        scroll: function () {
             $(document).scrollTop($('div div.cell.item.k_color_choosen').prev().offset().top);
         },
         keyPress: function (event) {
@@ -109,6 +109,50 @@ $(function () {
         }
     };
 
+    var notifications = {
+        getNotification: function (atomUrl) {
+            var updateTime,ajaxData,timestamp;
+            $.ajax({
+                type: "get",
+                url: "http://www.v2ex.com/n/36d38ce48256df410e6e52123a45cd8554e4766a.xml",
+                beforeSend: function (XMLHttpRequest) {
+                },
+                success: function (data, textStatus) {
+                    ajaxData = data;
+                    updateTime = $(data).children('feed').children('updated').text();
+                    timestamp = new Date(Date.parse(updateTime.replace(/-/g,"/").replace('T'," ").replace("Z","")));
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    var storage = window.localStorage;
+                    var newUpdateTime = timestamp.getTime();
+
+                    if(storage.getItem('notification') !== undefined && newUpdateTime !==undefined){
+                        var oldUpdateTime = storage.getItem('notification');
+                        if(newUpdateTime != oldUpdateTime){
+                            //有更新内容
+                            var title = document.title;
+                            document.title = "[新消息]" +title;
+                            storage.setItem('notification',newUpdateTime);
+                        }
+                    }else{
+                        storage.setItem('notification',newUpdateTime);
+                    }
+                },
+                error: function () {
+                }
+            });
+        },
+        init: function(atomUrl){
+            //三分钟检查一次
+            var check = window.setInterval(function(){
+                notifications.getNotification('abcd');
+            },180000);
+//            var check = window.setInterval(console.info('a'),10000)
+        }
+    };
+    notifications.init("abcd");
+//    var check = window.setInterval("notifications.checkNotification('abcd')",5000);
+//
     document.addEventListener('keydown', fast.keyPress, false);
     $("textarea,input:text").focus(function () {
         document.removeEventListener('keydown', fast.keyPress, false);
@@ -140,10 +184,10 @@ $(function () {
                 var title = data[0]['title'];
                 var contentDom = data[0]['content_rendered'];
                 var url = data[0]['url'];
-                if(contentDom.length <= 400){
+                if (contentDom.length <= 400) {
                     var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
                     $('#k_faster').html(iframe).css('padding', 0);
-                }else{
+                } else {
                     var faster = '<h2>' + title + '</h2>' + contentDom;
                     $('#k_faster').html(faster).css('padding', 20);
                 }
