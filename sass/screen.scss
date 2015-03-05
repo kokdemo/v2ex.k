@@ -141,7 +141,7 @@ body #Wrapper {
 
   .content {
     width: auto;
-    margin: 0 10px 0 auto;
+    margin: 0 0px 0 auto;
   }
   .sep20 {
     display: none;
@@ -149,9 +149,12 @@ body #Wrapper {
 }
 
 #Search {
-  width: 90%;
+  width: 100%;
   form div {
-    width: 250px !important;
+    width: 270px !important;
+    background: #FFF !important;
+    border: 1px solid rgb(221, 221, 221);
+
   }
 }
 
@@ -161,7 +164,7 @@ body #Wrapper {
 
 #Main {
   width: auto;
-  margin: 0px 275px 0px 0px;
+  margin: 0px 270px 0px 0px !important;
   overflow: scroll;
   img.avatar {
     max-width: 48px !important;
@@ -192,6 +195,9 @@ body #Wrapper {
 //}
 
 #Rightbar {
+  div:nth-child(3) .cell:nth-child(2){
+    display: none;
+  }
   div:nth-child(3) .cell:first-child table:nth-child(1) tr td:nth-child(1) {
     text-align: center;
   }
@@ -251,6 +257,10 @@ body #Wrapper {
 
 .fade {
   color: #AAA;
+}
+
+a.fade{
+  display: none;
 }
 
 .inner {

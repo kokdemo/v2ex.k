@@ -191,15 +191,15 @@ $(function () {
                     var faster = '<h2>' + title + '</h2>' + contentDom;
                     $('#k_faster').html(faster).css('padding', 20);
                 }
+                $('#k_faster').click(function () {
+                    window.location.href = url;
+                });
             },
             error: function () {
                 var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
                 $('#k_faster').html(iframe).css('padding', 0);
             },
             complete: function () {
-                $('#k_faster').click(function () {
-                    window.location.href = url;
-                });
                 fast.changeCSS();
             }
         });
