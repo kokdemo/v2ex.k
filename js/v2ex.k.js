@@ -31,6 +31,7 @@ $(function () {
     $('#Wrapper').css('width', document.body.clientWidth - 140).addClass('k_color_background');
 
     $('#k_navbar').append(k_navbar).append($('#Top .content a')[9]);
+    $($('#k_navbar a')[0]).attr('id','avater');
     $($('#k_navbar a')[10]).html('<i class="fa fa-sign-out fa-2x" title="退出"></i>');
     $('#k_tabbar').append($('#Tabs a'));
 
@@ -40,6 +41,16 @@ $(function () {
     $('#k_navbar a,#k_tabbar a').addClass('k_color_hover');
     $('a.count_livid').addClass('k_color_count');
     $('a.node').addClass('k_color_node');
+
+    var info = '<div id="infos">'+$("#Rightbar > div.box > div.cell > table")[1].innerHTML+$('#MyNodes').html()+'</div>';
+
+
+    $('#avater').on('mouseenter',function(){
+        $('#avater').css('width',200);
+        $('#k_navbar').prepend(info);
+    }).on('mouseleave',function(){
+        $('#avater').css('width',80);
+    });
 
     var fast = {
         opened: false,
@@ -57,7 +68,6 @@ $(function () {
         keyPress: function (event) {
             var key = event.keyCode;
             var accepted = true;
-            //Ie使用event.keyCode获取键盘码
             var dom = $('.k_color_choosen');
             if (key == 82) {
                 //R刷新
@@ -102,7 +112,6 @@ $(function () {
             } else {
                 accepted = false;
             }
-
             if (accepted) {
                 event.preventDefault();
             }
@@ -204,5 +213,15 @@ $(function () {
             }
         });
     });
+    $("#k_save").on('click',function(){
+        var storage = window.localStorage;
+        var atomXml = $('#k_atom').val();
+        storage.setItem('atom', atomXml);
+        console.info(atomXml);
+        chrome.extension.sendMessage({'atom': atomXml}, function(response){
+            console.info(response.data);
+        });
+    });
+
 
 });
