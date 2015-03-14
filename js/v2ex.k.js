@@ -1,55 +1,72 @@
 $(function () {
     var navbar = $('#Top .content a');
-    var newNavbar = "<div id='k_navbar' class='bars k_color_dark'></div><div id='k_tabbar' class='bars k_color_light'></div>";
+    var newNavbar = "<div id='k_navbar' class='bars k_color_dark'></div><div id='k_infos' class='hiden'></div><div id='k_tabbar' class='bars k_color_light'></div>";
 
-    if ($('#Rightbar .box .cell table tbody tr td').length != 0) {
-        var avater = $('#Rightbar .box .cell table tbody tr td')[0].innerHTML;
-        var notificationText = $('.inner a').text();
-        var notificationStart = notificationText.indexOf('未读提醒');
-        notificationText = notificationText.substr(notificationStart - 4, 2);
+    var Rightbar = $("#Rightbar");
+    var avater = $('#Rightbar .box .cell table tbody tr td')[0].innerHTML;
+
+    var userDom = Rightbar.children('.box:first').children('.cell:first').children('table').children('tbody').children('tr').children('td');
+
+    var userInfo = {};
+    if (localStorage['v2ex.k']) {
+//        将不太经常变化的信息存储到localStorage里面，当设置页面中点击保存时将整个删除初始化。
+        userInfo = JSON.parse(localStorage['v2ex.k']);
     } else {
-        var avater = '<a href="' + navbar[2] + '" class="top k_color_hover">' + navbar[2].innerHTML + '</a>';
-        var notificationText = '';
+        userInfo = {
+            avater: $(userDom[0]).children('a').children('img').attr('src'),
+            name: $(userDom[2]).children('span:first').children('a').text(),
+            slogen: $(userDom[2]).children('span:last').text(),
+            myNodes: $(userDom[3]).html(),
+            myTopics: $(userDom[4]).html(),
+            myFollowing: $(userDom[5]).html()
+        };
+        localStorage['v2ex.k'] = JSON.stringify(userInfo);
     }
+//  获取一些常用的信息，每次加载时更新
+    if ($('#MyNodes').length > 0) {
+        userInfo['myNodesDom'] = $('#MyNodes').html;
+    }
+    userInfo['notifi'] = Rightbar.children('.box:first').children('.inner').children('a').text().split(' ')[0];
 
-    var notification = '<a href="http://www.v2ex.com/notifications"><i class="fa fa-bell fa-2x" title="提醒"></i>' + notificationText + '</a>';
-
+    var nearby = $($('#Top .content a')[7]).attr('href');
     var k_navbar =
-            avater + notification +
+            '<a id="avater" href="http://www.v2ex.com/' + userInfo['name'] + '" class="top k_color_hover"><img src=' + userInfo['avater'] + ' ></a>' +
+            '<a href="http://www.v2ex.com/notifications" class="top k_color_hover"><i class="fa fa-bell fa-2x" title="提醒"></i>' + userInfo['notifi'] + '</a>' +
             '<a href="/" class="top k_color_hover" title="首页"><i class="fa fa-home fa-2x"></i></a>' +
             '<a href="http://www.v2ex.com/new" class="top k_color_hover" title="新主题"><i class="fa fa-pencil-square-o fa-2x"></i></a>' +
             '<a href="https://workspace.v2ex.com/" target="_blank" class="top k_color_hover" title="工作空间"><i class="fa fa-laptop fa-2x"></i></a>' +
             '<a href="/notes" class="top k_color_hover"><i class="fa fa-book fa-2x" title="笔记"></i></a>' +
             '<a href="/t" class="top k_color_hover"><i class="fa fa-list-alt fa-2x" title="时间轴"></i></a>' +
             '<a href="/events" class="top k_color_hover" title="事件"><i class="fa fa-eye fa-2x"></i></a>' +
-            '<a href="' + $($('#Top .content a')[7]).attr('href') + '" class="top k_color_hover" title="附近"><i class="fa fa-map-marker fa-2x"></i></a>' +
+            '<a href="' + nearby + '" class="top k_color_hover" title="附近"><i class="fa fa-map-marker fa-2x"></i></a>' +
             '<a href="/settings" class="top k_color_hover" title="设置"><i class="fa fa-cog fa-2x"></i></a>'
         ;
+
+    var k_tabbar = $('#Tabs').children('a');
+    var k_infos = userInfo.myNodes + userInfo.myTopics + userInfo.myFollowing + $('#MyNodes').html();
+
     $('body').prepend(newNavbar);
 
     $('.bars').css('height', window.screen.height);
     $('#Wrapper').css('width', document.body.clientWidth - 140).addClass('k_color_background');
 
     $('#k_navbar').append(k_navbar).append($('#Top .content a')[9]);
-    $($('#k_navbar a')[0]).attr('id','avater');
     $($('#k_navbar a')[10]).html('<i class="fa fa-sign-out fa-2x" title="退出"></i>');
+    $('#k_infos').append(k_infos);
     $('#k_tabbar').append($('#Tabs a'));
 
     $('#Rightbar').prepend($('#Search'));
 
-    $('#k_navbar a img').css('border-radius', '50%');
     $('#k_navbar a,#k_tabbar a').addClass('k_color_hover');
     $('a.count_livid').addClass('k_color_count');
     $('a.node').addClass('k_color_node');
 
-    var info = '<div id="infos">'+$("#Rightbar > div.box > div.cell > table")[1].innerHTML+$('#MyNodes').html()+'</div>';
 
-
-    $('#avater').on('mouseenter',function(){
-        $('#avater').css('width',200);
-        $('#k_navbar').prepend(info);
-    }).on('mouseleave',function(){
-        $('#avater').css('width',80);
+    $('#avater').on('mouseenter', function () {
+        $('#k_infos').removeClass('hiden');
+    });
+    $('#k_infos').on('mouseleave', function () {
+        $('#k_infos').addClass('hiden');
     });
 
     var fast = {
@@ -115,12 +132,53 @@ $(function () {
             if (accepted) {
                 event.preventDefault();
             }
+        },
+        createDom: function (dom) {
+
+            if ($('#k_faster').length == 0) {
+                $('#Rightbar').prepend('<div id="k_faster" class="box" style="height:' + ($(window).height() + 5) + 'px">' + '</div>')
+            }
+            $('#Main .item,#TopicsNode .cell').removeClass('k_color_choosen');
+            $(dom).addClass('k_color_choosen');
+
+            var itemUrl = $(dom).find('.item_title a').attr('href');
+            var itemID = itemUrl.substr(3, 6);
+            var ifhttps = 'https:' == document.location.protocol ? true : false;
+            var ajaxUrl = '://www.v2ex.com/api/topics/show.json?id=' + itemID;
+            if (ifhttps) {
+                ajaxUrl = 'https' + ajaxUrl;
+            } else {
+                ajaxUrl = 'http' + ajaxUrl;
+            }
+            $.ajax({
+                type: "get",
+                url: ajaxUrl,
+                success: function (data) {
+                    var title = data[0]['title'];
+                    var contentDom = data[0]['content_rendered'];
+                    var url = data[0]['url'];
+                    if (contentDom.length <= 400) {
+//                        判断是否使用快速阅读模式
+                        var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
+                        $('#k_faster').html(iframe).css('padding', 0);
+                    } else {
+                        var faster = '<h2>' + title + '</h2>' + contentDom;
+                        $('#k_faster').html(faster).css('padding', 20);
+                    }
+                    $('#k_faster').click(function () {
+                        window.location.href = url;
+                    });
+                },
+                complete: function () {
+                    fast.changeCSS();
+                }
+            });
         }
     };
 
     var notifications = {
         getNotification: function (atomUrl) {
-            var updateTime,ajaxData,timestamp;
+            var updateTime, ajaxData, timestamp;
             $.ajax({
                 type: "get",
                 url: "http://www.v2ex.com/n/36d38ce48256df410e6e52123a45cd8554e4766a.xml",
@@ -129,39 +187,37 @@ $(function () {
                 success: function (data, textStatus) {
                     ajaxData = data;
                     updateTime = $(data).children('feed').children('updated').text();
-                    timestamp = new Date(Date.parse(updateTime.replace(/-/g,"/").replace('T'," ").replace("Z","")));
+                    timestamp = new Date(Date.parse(updateTime.replace(/-/g, "/").replace('T', " ").replace("Z", "")));
                 },
                 complete: function (XMLHttpRequest, textStatus) {
                     var storage = window.localStorage;
                     var newUpdateTime = timestamp.getTime();
 
-                    if(storage.getItem('notification') !== undefined && newUpdateTime !==undefined){
+                    if (storage.getItem('notification') !== undefined && newUpdateTime !== undefined) {
                         var oldUpdateTime = storage.getItem('notification');
-                        if(newUpdateTime != oldUpdateTime){
+                        if (newUpdateTime != oldUpdateTime) {
                             //有更新内容
                             var title = document.title;
-                            document.title = "[新消息]" +title;
-                            storage.setItem('notification',newUpdateTime);
+                            document.title = "[新消息]" + title;
+                            storage.setItem('notification', newUpdateTime);
                         }
-                    }else{
-                        storage.setItem('notification',newUpdateTime);
+                    } else {
+                        storage.setItem('notification', newUpdateTime);
                     }
                 },
                 error: function () {
                 }
             });
         },
-        init: function(atomUrl){
+        init: function (atomUrl) {
             //三分钟检查一次
-            var check = window.setInterval(function(){
+            var check = window.setInterval(function () {
                 notifications.getNotification('abcd');
-            },180000);
-//            var check = window.setInterval(console.info('a'),10000)
+            }, 180000);
         }
     };
     notifications.init("abcd");
-//    var check = window.setInterval("notifications.checkNotification('abcd')",5000);
-//
+
     document.addEventListener('keydown', fast.keyPress, false);
     $("textarea,input:text").focus(function () {
         document.removeEventListener('keydown', fast.keyPress, false);
@@ -170,57 +226,7 @@ $(function () {
     });
 
     $('#Main .item,#TopicsNode .cell').addClass('k_color_item').click(function () {
-
-        if ($('#Rightbar #k_faster').length == 0) {
-            $('#Rightbar').prepend('<div id="k_faster" class="box" style="height:' + ($(window).height() - 10) + 'px">' + '</div>')
-        }
-        $('#Main .item,#TopicsNode .cell').removeClass('k_color_choosen');
-        $(this).addClass('k_color_choosen');
-
-        var itemUrl = $(this).find('.item_title a').attr('href');
-        var itemID = itemUrl.substr(3, 6);
-        var ifhttps = 'https:' == document.location.protocol ? true : false;
-        var ajaxUrl = '';
-        if (ifhttps) {
-            ajaxUrl = 'https://www.v2ex.com/api/topics/show.json?id=' + itemID;
-        } else {
-            ajaxUrl = 'http://www.v2ex.com/api/topics/show.json?id=' + itemID;
-        }
-        $.ajax({
-            type: "get",
-            url: ajaxUrl,
-            success: function (data) {
-                var title = data[0]['title'];
-                var contentDom = data[0]['content_rendered'];
-                var url = data[0]['url'];
-                if (contentDom.length <= 400) {
-                    var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
-                    $('#k_faster').html(iframe).css('padding', 0);
-                } else {
-                    var faster = '<h2>' + title + '</h2>' + contentDom;
-                    $('#k_faster').html(faster).css('padding', 20);
-                }
-                $('#k_faster').click(function () {
-                    window.location.href = url;
-                });
-            },
-            error: function () {
-                var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
-                $('#k_faster').html(iframe).css('padding', 0);
-            },
-            complete: function () {
-                fast.changeCSS();
-            }
-        });
-    });
-    $("#k_save").on('click',function(){
-        var storage = window.localStorage;
-        var atomXml = $('#k_atom').val();
-        storage.setItem('atom', atomXml);
-        console.info(atomXml);
-        chrome.extension.sendMessage({'atom': atomXml}, function(response){
-            console.info(response.data);
-        });
+        fast.createDom(this);
     });
 
 

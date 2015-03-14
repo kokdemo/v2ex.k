@@ -38,9 +38,10 @@ body {
     vertical-align: middle;
     padding: 15px 0;
     color: #fff;
-    img {
-      width: 100%;
-    }
+  }
+  #avater img{
+    width: 48px;
+    border-radius: 50%;
   }
 }
 
@@ -59,6 +60,9 @@ body {
     padding: 15px 0;
     color: #fff;
     margin-right: 0;
+  }
+  a:hover{
+    color: $color_dark;
   }
 }
 
@@ -95,6 +99,48 @@ body {
   }
 }
 
+#k_infos {
+  position: fixed;
+  top: 0;
+  left: 80px;
+  height: 48px;
+  display: inline-block;
+  z-index: 1000;
+  padding: 15px 0;
+  background-color: $color_dark;
+  width: 600px;
+  transition-property: all;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-out;
+  overflow: hidden;
+  a.dark{
+    height: 100%;
+    display: inline-block !important;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  div{
+    display: inline-block;
+    padding: 0;
+    img{
+      width: 48px;
+      border-radius: 50%;
+    }
+    div.node_compose{
+      display: none;
+    }
+    a:last-child{
+      display: none;
+    }
+  }
+}
+
+#k_infos.hiden{
+//  display: none !important;
+  width: 0;
+  overflow: hidden;
+}
+
 //colors
 
 .k_color_dark {
@@ -116,6 +162,7 @@ span a.node.k_color_node, td a.count_livid.k_color_count, span.no {
 
 .k_color_hover:hover {
   background-color: $color_hover;
+  color: $color_dark;
 }
 
 .k_color_item {
@@ -150,10 +197,12 @@ body #Wrapper {
 
 #Search {
   width: 100%;
+
   form div {
     width: 270px !important;
     background: #FFF !important;
     border: 1px solid rgb(221, 221, 221);
+    height: 34px !important;
 
   }
 }
@@ -195,7 +244,7 @@ body #Wrapper {
 //}
 
 #Rightbar {
-  div:nth-child(3) .cell:nth-child(2){
+  div:nth-child(3) {
     display: none;
   }
   div:nth-child(3) .cell:first-child table:nth-child(1) tr td:nth-child(1) {
@@ -215,6 +264,9 @@ body #Wrapper {
 
   .box div:nth-child(1) {
     border-bottom: 0px;
+  }
+  #MyNodes,.gray.f12{
+    display: none;
   }
 }
 
@@ -245,7 +297,7 @@ body #Wrapper {
 
 .cell > table {
   table-layout: fixed;
-  tbody tr td{
+  tbody tr td {
     border-left: none !important;
     border-right: none !important;
   }
@@ -256,10 +308,10 @@ body #Wrapper {
 }
 
 .fade {
-  color: #AAA;
+  color: $color_item_a;
 }
 
-a.fade{
+a.fade {
   display: none;
 }
 
@@ -333,15 +385,8 @@ td[width="32"] {
   padding-right: 20px;
 }
 
-#Rightbar .box .cell table:first-child tbody tr td:first-child {
-  display: none;
-}
 
-img.circle-img {
-  border-radius: 50% !important;
-}
-
-a.balance_area{
+a.balance_area {
   vertical-align: top;
   background: none;
 }
@@ -360,6 +405,8 @@ iframe[seamless] {
   padding: 0px;
   overflow: hidden;
 }
+
+
 
 /*------------fonticon------------*/
 
