@@ -1,17 +1,11 @@
 {
     "name": "v2ex.k",
-    "version": "0.1.3",
+    "version": "0.2.0",
     "manifest_version": 2,
-    "description": "V2EX UI Extension",
+    "description": "V2EX Extension",
     "homepage_url": "https://github.com/kokdemo/v2ex.k",
     "author": "kokdemo",
     "options_page": "options.html",
-    "background": {
-        "scripts": [
-            "js/jquery-2.1.1.min.js",
-            "js/background.js"
-        ]
-    },
     "icons": {
         "16": "v2ex.png",
         "48": "v2ex.png",

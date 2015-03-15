@@ -18,13 +18,16 @@ $(function () {
             slogen: $(userDom[2]).children('span:last').text(),
             myNodes: $(userDom[3]).html(),
             myTopics: $(userDom[4]).html(),
-            myFollowing: $(userDom[5]).html()
+            myFollowing: $(userDom[5]).html(),
+            atom: ''
         };
         localStorage['v2ex.k'] = JSON.stringify(userInfo);
     }
 //  获取一些常用的信息，每次加载时更新
     if ($('#MyNodes').length > 0) {
-        userInfo['myNodesDom'] = $('#MyNodes').html;
+        userInfo['myNodesDom'] = $('#MyNodes').html();
+    } else {
+        userInfo['myNodesDom'] = "<div></div>";
     }
     userInfo['notifi'] = Rightbar.children('.box:first').children('.inner').children('a').text().split(' ')[0];
 
@@ -43,7 +46,7 @@ $(function () {
         ;
 
     var k_tabbar = $('#Tabs').children('a');
-    var k_infos = userInfo.myNodes + userInfo.myTopics + userInfo.myFollowing + $('#MyNodes').html();
+    var k_infos = userInfo.myNodes + userInfo.myTopics + userInfo.myFollowing + userInfo.myNodesDom;
 
     $('body').prepend(newNavbar);
 
@@ -181,7 +184,7 @@ $(function () {
             var updateTime, ajaxData, timestamp;
             $.ajax({
                 type: "get",
-                url: "http://www.v2ex.com/n/36d38ce48256df410e6e52123a45cd8554e4766a.xml",
+                url: atomUrl,
                 beforeSend: function (XMLHttpRequest) {
                 },
                 success: function (data, textStatus) {
@@ -210,10 +213,18 @@ $(function () {
             });
         },
         init: function (atomUrl) {
+            var localUrl = window.location.href;
+            if (localUrl.indexOf('v2ex.com/notifications') != -1) {
+                userInfo.atom = $('input.sll').val();
+                localStorage['v2ex.k'] = JSON.stringify(userInfo);
+            }
             //三分钟检查一次
-            var check = window.setInterval(function () {
-                notifications.getNotification('abcd');
-            }, 180000);
+            if (userInfo.atom != '') {
+                var check = window.setInterval(function () {
+                    notifications.getNotification(userInfo.atom);
+                }, 180000);
+            }
+
         }
     };
     notifications.init("abcd");
