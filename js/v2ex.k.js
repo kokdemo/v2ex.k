@@ -33,7 +33,7 @@ $(function () {
 
     var nearby = $($('#Top .content a')[7]).attr('href');
     var k_navbar =
-            '<a id="avater" href="http://www.v2ex.com/' + userInfo['name'] + '" class="top k_color_hover"><img src=' + userInfo['avater'] + ' ></a>' +
+            '<a id="avater" href="http://www.v2ex.com/member/' + userInfo['name'] + '" class="top k_color_hover"><img src=' + userInfo['avater'] + ' ></a>' +
             '<a href="http://www.v2ex.com/notifications" class="top k_color_hover"><i class="fa fa-bell fa-2x" title="提醒"></i>' + userInfo['notifi'] + '</a>' +
             '<a href="/" class="top k_color_hover" title="首页"><i class="fa fa-home fa-2x"></i></a>' +
             '<a href="http://www.v2ex.com/new" class="top k_color_hover" title="新主题"><i class="fa fa-pencil-square-o fa-2x"></i></a>' +
