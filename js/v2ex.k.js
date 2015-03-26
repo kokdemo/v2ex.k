@@ -3,8 +3,7 @@ $(function () {
     var newNavbar = "<div id='k_navbar' class='bars k_color_dark'></div><div id='k_infos' class='hiden'></div><div id='k_tabbar' class='bars k_color_light'></div>";
 
     var Rightbar = $("#Rightbar");
-    var avater = $('#Rightbar .box .cell table tbody tr td')[0].innerHTML;
-
+//    var avater = $('#Rightbar .box .cell table tbody tr td')[0].innerHTML;
     var userDom = Rightbar.children('.box:first').children('.cell:first').children('table').children('tbody').children('tr').children('td');
 
     var userInfo = {};
@@ -29,7 +28,7 @@ $(function () {
     } else {
         userInfo['myNodesDom'] = "<div></div>";
     }
-    userInfo['notifi'] = Rightbar.children('.box:first').children('.inner').children('a').text().split(' ')[0];
+    userInfo['notifi'] = Rightbar.children('.box:first').children('.inner').find('[href="/notifications"]').text().split(' ')[0];
 
     var nearby = $($('#Top .content a')[7]).attr('href');
     var k_navbar =
@@ -89,26 +88,31 @@ $(function () {
             var key = event.keyCode;
             var accepted = true;
             var dom = $('.k_color_choosen');
+            console.info(dom.length + event.keyCode);
             if (key == 82) {
                 //R刷新
                 if (dom.length != 0) {
                     window.location.reload();
                 }
-            } else if (key == 40) {
+            } else if (key == 40 || key == 75) {
                 //方向键下
                 if (dom.length == 0) {
                     $('#Main .item,#TopicsNode .cell')[0].click()
                 } else {
-                    dom.next().click();
                     fast.scroll();
+//                        dom.next().click();
+                    var t = setTimeout(function(){
+                        console.log('bbb');
+                    },1500);
+
                 }
-            } else if (key == 38) {
+            } else if (key == 38 || key == 74) {
                 //方向键上
                 if (dom.length == 0) {
                     $('#Main .item,#TopicsNode .cell')[0].click()
                 } else {
-                    dom.prev().click();
                     fast.scroll();
+//                    dom.prev().click();
                 }
             } else if (key == 39) {
                 //方向键右
@@ -137,45 +141,45 @@ $(function () {
             }
         },
         createDom: function (dom) {
-
-            if ($('#k_faster').length == 0) {
-                $('#Rightbar').prepend('<div id="k_faster" class="box" style="height:' + ($(window).height() + 5) + 'px">' + '</div>')
-            }
-            $('#Main .item,#TopicsNode .cell').removeClass('k_color_choosen');
-            $(dom).addClass('k_color_choosen');
-
-            var itemUrl = $(dom).find('.item_title a').attr('href');
-            var itemID = itemUrl.substr(3, 6);
-            var ifhttps = 'https:' == document.location.protocol ? true : false;
-            var ajaxUrl = '://www.v2ex.com/api/topics/show.json?id=' + itemID;
-            if (ifhttps) {
-                ajaxUrl = 'https' + ajaxUrl;
-            } else {
-                ajaxUrl = 'http' + ajaxUrl;
-            }
-            $.ajax({
-                type: "get",
-                url: ajaxUrl,
-                success: function (data) {
-                    var title = data[0]['title'];
-                    var contentDom = data[0]['content_rendered'];
-                    var url = data[0]['url'];
-                    if (contentDom.length <= 400) {
-//                        判断是否使用快速阅读模式
-                        var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
-                        $('#k_faster').html(iframe).css('padding', 0);
-                    } else {
-                        var faster = '<h2>' + title + '</h2>' + contentDom;
-                        $('#k_faster').html(faster).css('padding', 20);
-                    }
-                    $('#k_faster').click(function () {
-                        window.location.href = url;
-                    });
-                },
-                complete: function () {
-                    fast.changeCSS();
+            var create = setTimeout(function () {
+                if ($('#k_faster').length == 0) {
+                    $('#Rightbar').prepend('<div id="k_faster" class="box" style="height:' + ($(window).height() + 5) + 'px">' + '</div>')
                 }
-            });
+                $('#Main .item,#TopicsNode .cell').removeClass('k_color_choosen');
+                $(dom).addClass('k_color_choosen');
+                var itemUrl = $(dom).find('.item_title a').attr('href');
+                var itemID = itemUrl.substr(3, 6);
+                var ifhttps = 'https:' == document.location.protocol ? true : false;
+                var ajaxUrl = '://www.v2ex.com/api/topics/show.json?id=' + itemID;
+                if (ifhttps) {
+                    ajaxUrl = 'https' + ajaxUrl;
+                } else {
+                    ajaxUrl = 'http' + ajaxUrl;
+                }
+                $.ajax({
+                    type: "get",
+                    url: ajaxUrl,
+                    success: function (data) {
+                        var title = data[0]['title'];
+                        var contentDom = data[0]['content_rendered'];
+                        var url = data[0]['url'];
+                        if (contentDom.length <= 400) {
+//                        判断是否使用快速阅读模式
+                            var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
+                            $('#k_faster').html(iframe).css('padding', 0);
+                        } else {
+                            var faster = '<h2>' + title + '</h2>' + contentDom;
+                            $('#k_faster').html(faster).css('padding', 20);
+                        }
+                        $('#k_faster').click(function () {
+                            window.location.href = url;
+                        });
+                    },
+                    complete: function () {
+                        fast.changeCSS();
+                    }
+                });
+            }, 1500);
         }
     };
 
