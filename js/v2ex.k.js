@@ -100,19 +100,15 @@ $(function () {
                     $('#Main .item,#TopicsNode .cell')[0].click()
                 } else {
                     fast.scroll();
-//                        dom.next().click();
-                    var t = setTimeout(function(){
-                        console.log('bbb');
-                    },1500);
-
+                    dom.next().click();
                 }
             } else if (key == 38 || key == 74) {
                 //方向键上
                 if (dom.length == 0) {
                     $('#Main .item,#TopicsNode .cell')[0].click()
                 } else {
+                    dom.prev().click();
                     fast.scroll();
-//                    dom.prev().click();
                 }
             } else if (key == 39) {
                 //方向键右
@@ -140,46 +136,47 @@ $(function () {
                 event.preventDefault();
             }
         },
+        changeChoose: function (dom) {
+            if ($('#k_faster').length == 0) {
+                $('#Rightbar').prepend('<div id="k_faster" class="box" style="height:' + ($(window).height() + 5) + 'px">' + '</div>')
+            }
+            $('#Main .item,#TopicsNode .cell').removeClass('k_color_choosen');
+            $(dom).addClass('k_color_choosen');
+        },
         createDom: function (dom) {
-            var create = setTimeout(function () {
-                if ($('#k_faster').length == 0) {
-                    $('#Rightbar').prepend('<div id="k_faster" class="box" style="height:' + ($(window).height() + 5) + 'px">' + '</div>')
-                }
-                $('#Main .item,#TopicsNode .cell').removeClass('k_color_choosen');
-                $(dom).addClass('k_color_choosen');
-                var itemUrl = $(dom).find('.item_title a').attr('href');
-                var itemID = itemUrl.substr(3, 6);
-                var ifhttps = 'https:' == document.location.protocol ? true : false;
-                var ajaxUrl = '://www.v2ex.com/api/topics/show.json?id=' + itemID;
-                if (ifhttps) {
-                    ajaxUrl = 'https' + ajaxUrl;
-                } else {
-                    ajaxUrl = 'http' + ajaxUrl;
-                }
-                $.ajax({
-                    type: "get",
-                    url: ajaxUrl,
-                    success: function (data) {
-                        var title = data[0]['title'];
-                        var contentDom = data[0]['content_rendered'];
-                        var url = data[0]['url'];
-                        if (contentDom.length <= 400) {
+            var itemUrl = $(dom).find('.item_title a').attr('href');
+            var itemID = itemUrl.substr(3, 6);
+            var ifhttps = 'https:' == document.location.protocol ? true : false;
+            var ajaxUrl = '://www.v2ex.com/api/topics/show.json?id=' + itemID;
+            if (ifhttps) {
+                ajaxUrl = 'https' + ajaxUrl;
+            } else {
+                ajaxUrl = 'http' + ajaxUrl;
+            }
+            $.ajax({
+                type: "get",
+                url: ajaxUrl,
+                success: function (data) {
+                    console.info(ajaxUrl);
+                    var title = data[0]['title'];
+                    var contentDom = data[0]['content_rendered'];
+                    var url = data[0]['url'];
+                    if (contentDom.length <= 400) {
 //                        判断是否使用快速阅读模式
-                            var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
-                            $('#k_faster').html(iframe).css('padding', 0);
-                        } else {
-                            var faster = '<h2>' + title + '</h2>' + contentDom;
-                            $('#k_faster').html(faster).css('padding', 20);
-                        }
-                        $('#k_faster').click(function () {
-                            window.location.href = url;
-                        });
-                    },
-                    complete: function () {
-                        fast.changeCSS();
+                        var iframe = '<iframe frameborder=0 seamless allowtransparency="true" width="100%" scrolling="auto" style="margin-bottom:10px; margin-top:-64px" src="' + itemUrl + ' " height="' + (window.screen.height - 10) + '">' + '</iframe>';
+                        $('#k_faster').html(iframe).css('padding', 0);
+                    } else {
+                        var faster = '<h2>' + title + '</h2>' + contentDom;
+                        $('#k_faster').html(faster).css('padding', 20);
                     }
-                });
-            }, 1500);
+                    $('#k_faster').click(function () {
+                        window.location.href = url;
+                    });
+                },
+                complete: function () {
+                    fast.changeCSS();
+                }
+            });
         }
     };
 
@@ -197,41 +194,44 @@ $(function () {
                     timestamp = new Date(Date.parse(updateTime.replace(/-/g, "/").replace('T', " ").replace("Z", "")));
                 },
                 complete: function (XMLHttpRequest, textStatus) {
-                    var storage = window.localStorage;
-                    var newUpdateTime = timestamp.getTime();
 
-                    if (storage.getItem('notification') !== undefined && newUpdateTime !== undefined) {
-                        var oldUpdateTime = storage.getItem('notification');
-                        if (newUpdateTime != oldUpdateTime) {
-                            //有更新内容
-                            var title = document.title;
-                            document.title = "[新消息]" + title;
-                            storage.setItem('notification', newUpdateTime);
-                        }
-                    } else {
-                        storage.setItem('notification', newUpdateTime);
-                    }
-                },
-                error: function () {
+                    return timestamp.getTime();
                 }
             });
+        },
+        checkNotification: function (update) {
+            var storage = window.localStorage;
+            var newUpdateTime = notifications.getNotification(userInfo.atom);
+            console.info(update);
+            if (storage.getItem('notification') !== undefined && newUpdateTime !== undefined && update == false) {
+                var oldUpdateTime = storage.getItem('notification');
+                if (newUpdateTime != oldUpdateTime) {
+                    //有更新内容
+                    var title = document.title;
+                    document.title = "[新消息]" + title;
+                    storage.setItem('notification', newUpdateTime);
+                }
+            } else {
+                storage.setItem('notification', newUpdateTime);
+            }
         },
         init: function (atomUrl) {
             var localUrl = window.location.href;
             if (localUrl.indexOf('v2ex.com/notifications') != -1) {
                 userInfo.atom = $('input.sll').val();
                 localStorage['v2ex.k'] = JSON.stringify(userInfo);
+                notifications.checkNotification(true);
             }
             //三分钟检查一次
             if (userInfo.atom != '') {
                 var check = window.setInterval(function () {
-                    notifications.getNotification(userInfo.atom);
+                    notifications.checkNotification(false);
                 }, 180000);
             }
 
         }
     };
-    notifications.init("abcd");
+    notifications.init();
 
     document.addEventListener('keydown', fast.keyPress, false);
     $("textarea,input:text").focus(function () {
@@ -240,9 +240,16 @@ $(function () {
         document.addEventListener('keydown', fast.keyPress, false);
     });
 
+    var time;
     $('#Main .item,#TopicsNode .cell').addClass('k_color_item').click(function () {
-        fast.createDom(this);
+        clearTimeout(time);
+        var dom = this;
+        fast.changeChoose(dom);
+        $(this).find('a').click(function () {
+            event.stopPropagation();
+        });
+        time = setTimeout(function () {
+            fast.createDom(dom);
+        }, 1500)
     });
-
-
 });

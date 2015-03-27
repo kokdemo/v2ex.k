@@ -219,6 +219,8 @@ body #Wrapper {
   img.avatar {
     max-width: 48px !important;
     max-height: 48px !important;
+    width: 48px !important;
+    height: 48px !important;
     @include border-radius(50%);
   }
   .cell table tr td:nth-child(3), .cell table tr td:nth-child(4) {
@@ -230,7 +232,7 @@ body #Wrapper {
   .box:nth-child(2) .cell:nth-child(2) {
     padding: 10px 28px !important;
   }
-  .box:nth-child(2) .cell:nth-child(n+2), .box:first-child .cell {
+  .box:nth-child(2) .cell:nth-child(n+1), .box:first-child .cell {
     padding: 15px 24px 15px 24px;
   }
   .box .topic_buttons {
@@ -258,10 +260,10 @@ body #Wrapper {
     display: none;
   }
 
-  div:nth-child(3) .cell:first-child table:nth-child(3) {
-    padding-bottom: 15px;
-    padding-top: 15px;
-  }
+//  div:nth-child(3) .cell:first-child table:nth-child(3) {
+//    padding-bottom: 15px;
+//    padding-top: 15px;
+//  }
 
   .box div:nth-child(1) {
     border-bottom: 0px;
