@@ -49,7 +49,8 @@ $(function () {
 
     $('body').prepend(newNavbar);
 
-    $('.bars').css('height', window.screen.height);
+    var window_height = $(window).height();
+    $('.bars').css('height', window_height);
     $('#Wrapper').css('width', document.body.clientWidth - 140).addClass('k_color_background');
 
     $('#k_navbar').append(k_navbar).append($('#Top .content a')[9]);
@@ -57,7 +58,7 @@ $(function () {
     $('#k_infos').append(k_infos);
     $('#k_tabbar').append($('#Tabs a'));
 
-    $('#Rightbar').prepend($('#Search'));
+    $('#Rightbar').prepend($('#TopicsHot')).prepend($('#Search'));
 
     $('#k_navbar a,#k_tabbar a').addClass('k_color_hover');
     $('a.count_livid').addClass('k_color_count');
@@ -75,7 +76,7 @@ $(function () {
         opened: false,
         changeCSS: function () {
             if (!fast.opened) {
-                $('#Main').css('width', document.body.clientWidth - 690 - 140);
+                $('#Main').css('width', document.body.clientWidth - 690 - 140).addClass('k_itemlist');
                 $('#Rightbar').css('width', 690).css('position', 'fixed').css('right', 0);
                 fast.scroll();
                 fast.opened = true;
