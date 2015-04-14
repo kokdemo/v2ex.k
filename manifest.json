@@ -31,8 +31,9 @@
             ],
             "js": [
                 "js/jquery-2.1.1.min.js",
-                "js/v2ex.k.js",
-                "js/options.js"
+//                "js/v2ex.k.js",
+                "js/react.js",
+                "js/v2ex.k.react.js"
             ],
             "run_at": "document_start"
         }
