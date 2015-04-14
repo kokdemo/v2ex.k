@@ -91,27 +91,58 @@ $(function () {
         return itemList
     };
     var ListItem = React.createClass({
-        render: function(){
+        render: function () {
             return(
                 <li>
                     <h4>{this.props.title}</h4>
                 </li>
-            )
+                )
         }
     });
     var List = React.createClass({
-        render : function(){
+        render: function () {
             var Dom = [];
-            this.props.list.forEach(function(item) {
+            this.props.list.forEach(function (item) {
                 Dom.push(<ListItem title={item.title}/>);
             });
             return (
                 <ul>
                     {Dom}
                 </ul>
-            )
+                )
         }
     });
-    var ListData = getList();
-    React.render(<List list={ListData} />, document.getElementsByClassName('box'));
+
+    var SubNav = React.createClass({
+        render: function () {
+            var Dom = [];
+            for(var i=0;i< this.props.node.length;i++){
+                var temp = this.props.node[i];
+                var tempUrl = $(temp).attr('href');
+                var tempText = $(temp).text();
+                Dom.push(<a href={tempUrl}>{tempText}</a>)
+            };
+            return <div id='k_subNav'>{Dom}</div>
+        }
+    });
+
+    var NodeList = React.createClass({
+        render: function () {
+            var Dom = []
+        }
+    });
+
+    var MainPage = React.createClass({
+        render: function () {
+            return(
+                <div id='k_itemList'>
+                    <SubNav node={this.props.NodeData} />
+                    <List list={this.props.ListData} />
+                </div>
+                )
+        }
+    });
+    var listData = getList();
+    var nodes = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
+    React.render(<MainPage ListData={listData} NodeData={nodes} />, document.getElementById('Main'));
 });

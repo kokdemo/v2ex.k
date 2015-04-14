@@ -91,27 +91,58 @@ $(function () {
         return itemList
     };
     var ListItem = React.createClass({displayName: "ListItem",
-        render: function(){
+        render: function () {
             return(
                 React.createElement("li", null, 
                     React.createElement("h4", null, this.props.title)
                 )
-            )
+                )
         }
     });
     var List = React.createClass({displayName: "List",
-        render : function(){
+        render: function () {
             var Dom = [];
-            this.props.list.forEach(function(item) {
+            this.props.list.forEach(function (item) {
                 Dom.push(React.createElement(ListItem, {title: item.title}));
             });
             return (
                 React.createElement("ul", null, 
                     Dom
                 )
-            )
+                )
         }
     });
-    var ListData = getList();
-    React.render(React.createElement(List, {list: ListData}), document.getElementsByClassName('box'));
+
+    var SubNav = React.createClass({displayName: "SubNav",
+        render: function () {
+            var Dom = [];
+            for(var i=0;i< this.props.node.length;i++){
+                var temp = this.props.node[i];
+                var tempUrl = $(temp).attr('href');
+                var tempText = $(temp).text();
+                Dom.push(React.createElement("a", {href: tempUrl}, tempText))
+            };
+            return React.createElement("div", {id: "k_subNav"}, Dom)
+        }
+    });
+
+    var NodeList = React.createClass({displayName: "NodeList",
+        render: function () {
+            var Dom = []
+        }
+    });
+
+    var MainPage = React.createClass({displayName: "MainPage",
+        render: function () {
+            return(
+                React.createElement("div", {id: "k_itemList"}, 
+                    React.createElement(SubNav, {node: this.props.NodeData}), 
+                    React.createElement(List, {list: this.props.ListData})
+                )
+                )
+        }
+    });
+    var listData = getList();
+    var nodes = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
+    React.render(React.createElement(MainPage, {ListData: listData, NodeData: nodes}), document.getElementById('Main'));
 });
