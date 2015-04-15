@@ -94,7 +94,7 @@ body #Wrapper {
   width: auto;
   margin: 0px 270px 0px 0px !important;
   overflow: scroll;
-  #Tabs{
+  #Tabs {
     display: none;
   }
   img.avatar {
@@ -123,6 +123,44 @@ body #Wrapper {
     margin-top: 20px;
   }
   transition: width 2s ease-out;
+  #k_itemList {
+    width: auto;
+    margin: 0.5rem 0 1rem 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    #k_itemList_ul {
+      li {
+        height: 64px;
+        position: relative;
+        background-color: #fff;
+        line-height: 1.5rem;
+        padding: 10px 20px 0 20px;
+        margin: 0;
+        border-bottom: 1px solid #e0e0e0;
+        list-style-type: none;
+        text-align: left;
+        overflow: hidden;
+        border-radius: 2px;
+        -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        a {
+          display: inline-block;
+          img {
+            width: 42px;
+            height: 42px;
+            overflow: hidden;
+          }
+          h4 {
+            font-size: 16px;
+            line-height: 42px;
+          }
+        }
+      }
+    }
+  }
 }
 
 #Main.k_itemlist {
@@ -135,9 +173,9 @@ body #Wrapper {
   > div {
     display: none;
   }
-//  > div:nth-child(1), > div:nth-child(2) {
-//    display: block;
-//  }
+  //  > div:nth-child(1), > div:nth-child(2) {
+  //    display: block;
+  //  }
   transition: width 0.5s ease-out;
   #Search {
     width: 100%;
@@ -226,7 +264,7 @@ body #Wrapper {
   overflow: hidden;
 }
 
-#Bottom{
+#Bottom {
   display: none;
 }
 
@@ -272,8 +310,6 @@ td a.count_livid.k_color_count {
 }
 
 //colors end
-
-
 
 .box {
   border-radius: 0px;

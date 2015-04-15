@@ -82,6 +82,7 @@ $(function () {
             tempItem['userUrl'] = $(info[0]).children('a').attr('href');
             tempItem['avater'] = $(info[0]).children('a').children('img').attr('src');
             tempItem['title'] = $(info[2]).children('.item_title').text();
+            tempItem['postUrl'] = $(info[2]).children('.item_title').children('a').attr('href');
             tempItem['vote'] = $(info[2]).children('.small.fade').children('.votes').text();
             tempItem['nodeUrl'] = $(info[2]).children('.small.fade').children('.node').attr('href');
             tempItem['nodeText'] = $(info[2]).children('.small.fade').children('.node').text();
@@ -94,7 +95,8 @@ $(function () {
         render: function () {
             return(
                 React.createElement("li", null, 
-                    React.createElement("h4", null, this.props.title)
+                    React.createElement("a", {href: this.props.userUrl}, React.createElement("img", {src: this.props.avater})), 
+                    React.createElement("a", {href: this.props.postUrl}, React.createElement("h4", null, this.props.title))
                 )
                 )
         }
@@ -103,10 +105,10 @@ $(function () {
         render: function () {
             var Dom = [];
             this.props.list.forEach(function (item) {
-                Dom.push(React.createElement(ListItem, {title: item.title}));
+                Dom.push(React.createElement(ListItem, {title: item.title, postUrl: item.postUrl, userUrl: item.userUrl, avater: item.avater}));
             });
             return (
-                React.createElement("ul", null, 
+                React.createElement("ul", {id: "k_itemList_ul"}, 
                     Dom
                 )
                 )
@@ -143,6 +145,6 @@ $(function () {
         }
     });
     var listData = getList();
-    var nodes = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
-    React.render(React.createElement(MainPage, {ListData: listData, NodeData: nodes}), document.getElementById('Main'));
+    var nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
+    React.render(React.createElement(MainPage, {ListData: listData, NodeData: nodeData}), document.getElementById('Main'));
 });
