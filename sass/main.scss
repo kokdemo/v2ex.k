@@ -125,10 +125,10 @@ body #Wrapper {
       margin: 0;
       li {
         position: relative;
-        background-color: #fff;
-        padding: 10px 10px 10px 10px;
-        margin: 0;
-        border-bottom: 1px solid #e0e0e0;
+        background-color: $color_background;
+//        padding: 10px 10px 10px 10px;
+        margin-top: 10px;
+        border-bottom: 1px solid $color_background;
         list-style-type: none;
         text-align: left;
         overflow: hidden;
@@ -148,11 +148,13 @@ body #Wrapper {
           overflow: hidden;
         }
         .k_itemList_title {
-          margin-left: 16px;
+          background-color: $color_light;
+          color: #FFFFFF;
+          padding-left: 16px;
           font-size: 16px;
           line-height: 24px;
           width: 800px;
-          height: 42px;
+          height: 48px;
         }
         .k_itemList_node_vote{
           display: inline-block;
