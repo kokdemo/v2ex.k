@@ -41,6 +41,10 @@ var getList = function (pageUrl) {
         tempItem['nodeUrl'] = $(info[2]).children('.small.fade').children('.node').attr('href');
         tempItem['nodeText'] = $(info[2]).children('.small.fade').children('.node').text();
         tempItem['lastReply'] = $($(info[2]).children('.small.fade').children('strong')[1]).children('a').attr('href');
+        tempItem['replyNum']= $(info[3]).children('a').text();
+        if (tempItem['replyNum'] == '') {
+            tempItem['replyNum'] = 0
+        }
         itemList.push(tempItem);
     }
     return itemList
@@ -134,25 +138,32 @@ var ListItem = React.createClass({
         }
         return className
     },
-    nodeDom: function () {
+    nodeDom: function (pageUrl) {
         var pageUrl = window.location.href;
         var search = pageUrl.indexOf('?');
         if (search != -1) {
             pageUrl = pageUrl.slice(0, search)
         }
+        console.info(pageUrl);
         if (pageUrl.indexOf('/go/') == -1) {
             return <span className='k_itemList_node'>{this.props.item.nodeText}</span>;
+        }else{
+            return ""
         }
     },
     render: function () {
         return(
             <li>
+                <div className='k_itemList_node_vote'>
+                    <span className={'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}><i className="fa fa-chevron-up"></i>{this.props.item.vote}</span>
+                    <span className='k_itemList_reply'><i className="fa fa-reply"></i>{this.props.item.replyNum}</span>
+                    {this.nodeDom(this.props.pageUrl)}
+                </div>
                 <a className='k_itemList_avatar' href= {this.props.item.userUrl}>
                     <img src={this.props.item.avatar}/>
                 </a>
                 <a className='k_itemList_title' href={this.props.item.postUrl}>
-                    <span className={'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}>{this.props.item.vote}</span>
-                    {this.nodeDom}
+
                     <span>{this.props.item.title}</span>
                 </a>
             </li>
@@ -162,8 +173,9 @@ var ListItem = React.createClass({
 var List = React.createClass({
     render: function () {
         var Dom = [];
+        var url = this.props.pageUrl;
         this.props.list.forEach(function (item) {
-            Dom.push(<ListItem item = {item}/>);
+            Dom.push(<ListItem item = {item} pageUrl={url}/>);
         });
         return (
             <ul id= 'k_itemList_ul'>
@@ -195,7 +207,7 @@ var MainPage = React.createClass({
         return(
             <div id='k_itemList'>
                 <SubNav node={this.props.NodeData} />
-                <List list={this.props.ListData} />
+                <List list={this.props.ListData} pageUrl={this.props.pageUrl}/>
             </div>
             )
     }
@@ -211,7 +223,7 @@ $(function () {
     if (pageUrl == 'http://www.v2ex.com/' || pageUrl == 'https://www.v2ex.com/' || pageUrl.indexOf('/go/') != -1) {
         var listData = getList(pageUrl);
         var nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
-        React.render(<MainPage ListData={listData} NodeData={nodeData} />, document.getElementById('Main'));
+        React.render(<MainPage ListData={listData} NodeData={nodeData} pageUrl={pageUrl}/>, document.getElementById('Main'));
     }
 
 });

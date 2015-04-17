@@ -23,7 +23,7 @@ body {
 
 body #Wrapper {
   display: inline-block;
-  width: 100%;
+  width: auto;
   height: 100%;
   margin-left: 140px;
   background-image: none;
@@ -101,7 +101,8 @@ body #Wrapper {
   transition: width 2s ease-out;
   #k_itemList {
     width: auto;
-    margin: 0.5rem 0 1rem 0;
+    margin: 0 0 1rem 0;
+    padding: 0 1rem;
     border: 1px solid #e0e0e0;
     border-radius: 2px;
     overflow: hidden;
@@ -121,11 +122,11 @@ body #Wrapper {
       }
     }
     #k_itemList_ul {
-      margin-top: 0;
+      margin: 0;
       li {
         position: relative;
         background-color: #fff;
-        padding: 10px 16px 10px 16px;
+        padding: 10px 10px 10px 10px;
         margin: 0;
         border-bottom: 1px solid #e0e0e0;
         list-style-type: none;
@@ -152,13 +153,38 @@ body #Wrapper {
           line-height: 24px;
           width: 800px;
           height: 42px;
+        }
+        .k_itemList_node_vote{
+          display: inline-block;
+          vertical-align: text-top;
+          height: 48px;
+          width: 80px;
+          margin: 0;
+          padding: 0;
+          text-align: center;
           .k_itemList_vote {
-            margin-right: 5px;
-            padding: 0 5px;
+            display: inline-block;
+            width: 50%;
+            line-height: 24px;
+            height: 24px;
             color: #ffffff;
           }
+          .k_itemList_reply{
+            display: inline-block;
+            width: 50%;
+            line-height: 24px;
+            height: 24px;
+            color: #ffffff;
+            background-color: $color_light;
+            i{
+              font-size: 7px;
+            }
+          }
           .k_itemList_node {
-            margin-right: 5px;
+            font-size: 8px;
+            line-height: 24px;
+            height: 24px;
+            display: block;
             padding: 0 5px;
             color: #ffffff;
             background: $color_dark;
