@@ -10,6 +10,7 @@ var checkUrl = function(){
     }
     return pageUrl
 };
+
 var getList = function (pageUrl) {
     var itemList = [];
     var $itemDom;
@@ -54,24 +55,34 @@ var getUserInfo = function(){
     var userInfo = {};
     var $Dom = $($('#Rightbar').children('.box')[0]);
     var userDom = $Dom.children('.cell:first').children('table:first').children('tbody').children('tr').children();
-    var collectDom = $Dom.children('.cell:first').children('table:last tbody tr');
+    var collectDom = $Dom.children('.cell:first').children('table:last').children('tbody').children('tr').children('');
+    var $topDom = $('#Top').find('.top');
     userInfo['notiNum'] = $Dom.children('.inner').children('a').text().slice(0,-6);
     userInfo['userName'] = $(userDom[2]).children('.bigger').children('a').text();
     userInfo['userMotto'] = $(userDom[2]).children('.fade').text();
-
-
+    userInfo['userAvatar'] = $(userDom[0]).children('a').children('img').attr('src');
+    userInfo['collectNode'] = $(collectDom[0]).children('a').children('.bigger').text();
+    userInfo['collectTopic'] = $(collectDom[1]).children('a').children('.bigger').text();
+    userInfo['following'] = $(collectDom[2]).children('a').children('.bigger').text();
+    userInfo['ip'] = $($topDom[6]).attr('href');
+    userInfo['logout'] = $($topDom[8]).attr('onclick');
+    return userInfo
 };
+
 var Slide = React.createClass({
     render: function () {
+        var DomStyle = {
+            height: $(window).height()
+        };
         var aClassName = 'top k_color_hover';
         return(
             <div >
-                <div id="k_navbar" classNameName="bars k_color_dark">
-                    <a id="avatar" href="http://www.v2ex.com/member/kokdemo" className={aClassName}>
-                        <img src="//cdn.v2ex.com/avatar/73ea/e46e/12387_large.png?m=1348128895"/>
+                <div id="k_navbar" style={DomStyle} classNameName="bars k_color_dark">
+                    <a id="avatar" href={'/member/'+this.props.info.userName} className={aClassName}>
+                        <img src={this.props.info.userAvatar}/>
                     </a>
                     <a href="http://www.v2ex.com/notifications" className={aClassName}>
-                        <i className="fa fa-bell fa-2x" title="提醒"></i>
+                        <i className="fa fa-bell fa-2x" title="提醒"></i>{this.props.info.notiNum}
                     </a>
                     <a href="/" className={aClassName} title="首页">
                         <i className="fa fa-home fa-2x"></i>
@@ -91,13 +102,13 @@ var Slide = React.createClass({
                     <a href="/events" className={aClassName} title="事件">
                         <i className="fa fa-eye fa-2x"></i>
                     </a>
-                    <a href="/place/106.185.35.124" className={aClassName} title="附近">
+                    <a href={'/place/'+this.props.info.ip} className={aClassName} title="附近">
                         <i className="fa fa-map-marker fa-2x"></i>
                     </a>
                     <a href="/settings" className={aClassName} title="设置">
                         <i className="fa fa-cog fa-2x"></i>
                     </a>
-                    <a href="#;" onclick="if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout?once=29670'; }" className={aClassName}>
+                    <a href="#;" onclick="if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }" className={aClassName}>
                         <i className="fa fa-sign-out fa-2x" title="退出"></i>
                     </a>
                 </div>
@@ -144,12 +155,17 @@ var ListItem = React.createClass({
         if (search != -1) {
             pageUrl = pageUrl.slice(0, search)
         }
-        console.info(pageUrl);
         if (pageUrl.indexOf('/go/') == -1) {
             return <span className='k_itemList_node'>{this.props.item.nodeText}</span>;
         }else{
             return ""
         }
+    },
+    getWidth: function () {
+        var width = $(window).width() - 140 -270-20-80-48-20-10;
+        return {
+            width: width
+        };
     },
     render: function () {
         return(
@@ -162,10 +178,11 @@ var ListItem = React.createClass({
                 <a className='k_itemList_avatar' href= {this.props.item.userUrl}>
                     <img src={this.props.item.avatar}/>
                 </a>
-                <a className='k_itemList_title' href={this.props.item.postUrl}>
+                <a className='k_itemList_title' style = {this.getWidth()} href={this.props.item.postUrl}>
 
                     <span>{this.props.item.title}</span>
                 </a>
+                <a className='k_itemList_QR'></a>
             </li>
             )
     }
@@ -184,6 +201,7 @@ var List = React.createClass({
             )
     }
 });
+
 var SubNav = React.createClass({
     render: function () {
         var Dom = [];
@@ -193,16 +211,20 @@ var SubNav = React.createClass({
             var tempText = $(temp).text();
             Dom.push(<a href={tempUrl}>{tempText}</a>)
         }
-        ;
         return <div id='k_subNav'>{Dom}</div>
     }
 });
+
 var NodeList = React.createClass({
     render: function () {
         var Dom = []
     }
 });
+
 var MainPage = React.createClass({
+    checkIframe :function(){
+        if(self!=top){}
+    },
     render: function () {
         return(
             <div id='k_itemList'>
@@ -212,10 +234,56 @@ var MainPage = React.createClass({
             )
     }
 });
-$(function () {
 
+var TopList = React.createClass({
+    render:function(){
+        var Dom = [];
+        for (var i = 0; i < this.props.topList.length; i++) {
+            var temp = this.props.topList[i];
+            var tempUrl = $(temp).attr('href');
+            var tempText = $(temp).text();
+            Dom.push(<a href={tempUrl}>{tempText}</a>)
+        }
+        return(
+            <div id='k_topList'>
+                {Dom}
+            </div>
+            )
+    }
+});
+
+var FastReader = React.createClass({
+    render:function(){
+        var domStyle = {
+            'height':this.props.height+15,
+            'width':this.props.width
+        };
+        return(
+            <iframe frameBorder='0' seamless allowTransparency="true" width="100%" scrolling="auto" style={domStyle} src={this.props.src}></iframe>)
+    }
+});
+
+var ReplyArea = React.createClass({
+    render:function(){
+        return(
+            <form method="post" action={this.props.url}>
+                <textarea name="content" maxlength="10000" class="mll" id="reply_content" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 112px;"></textarea>
+                <input type="submit" value="回复" class="super normal button" />
+            </form>
+                )
+    }
+});
+
+$(function () {
+    if(self != top){
+        $('#Top,#Rightbar').css('display','none');
+        $('#Wrapper').css('margin-left','0');
+        $('#Main').css('width','680px')
+    }
+
+    var userInfo = getUserInfo();
     React.render(
-        <Slide />,
+        <Slide info={userInfo}/>,
         document.getElementById('Top')
     );
 
@@ -225,5 +293,19 @@ $(function () {
         var nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
         React.render(<MainPage ListData={listData} NodeData={nodeData} pageUrl={pageUrl}/>, document.getElementById('Main'));
     }
+    var time;
+    $('.k_itemList_title').mouseenter(function(){
+        console.info();
+        var url = $(this).attr('href');
+        clearTimeout(time);
+        time = setTimeout(function () {
+            React.render(<FastReader width={'680px'} height={$(window).height()} src={url}/>,document.getElementById('Rightbar'));
+            $('#Rightbar').width('680px');
+            $('.k_itemList_title').css('width',$(window).width() - 140 -680-20-80-48-20-10);
+        }, 1500);
+    }).mouseleave(function(){
+        clearTimeout(time);
+    });
+
 
 });

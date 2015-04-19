@@ -1,6 +1,6 @@
 {
     "name": "v2ex.k",
-    "version": "0.2.3",
+    "version": "0.2.8",
     "manifest_version": 2,
     "description": "V2EX Extension",
     "homepage_url": "https://github.com/kokdemo/v2ex.k",
@@ -11,7 +11,6 @@
         "48": "v2ex.png",
         "128": "v2ex.png"
     },
-
     "permissions": [
         "webRequest",
         "webRequestBlocking",
@@ -21,6 +20,7 @@
 
     "content_scripts": [
         {
+            "all_frames" :true,
             "matches": [
                 "*://*.v2ex.com/*",
                 "*://v2ex.com/*"

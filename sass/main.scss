@@ -19,6 +19,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
   height: 100%;
+  background-color: $color_dark;
 }
 
 body #Wrapper {
@@ -27,7 +28,7 @@ body #Wrapper {
   height: 100%;
   margin-left: 140px;
   background-image: none;
-  background-color: $color_background;
+  background-color: $color_dark;
   .content {
     width: auto;
     margin: 0 0px 0 auto;
@@ -95,6 +96,7 @@ body #Wrapper {
   width: auto;
   margin: 0px 270px 0px 0px !important;
   overflow: scroll;
+  background-color: $color_dark;
   #Tabs {
     display: none;
   }
@@ -103,13 +105,12 @@ body #Wrapper {
     width: auto;
     margin: 0 0 1rem 0;
     padding: 0 1rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
     overflow: hidden;
     position: relative;
     #k_subNav {
       display: block;
       a {
+        color: $color_background;
         text-align: center;
         line-height: 32px;
         height: 32px;
@@ -126,9 +127,7 @@ body #Wrapper {
       li {
         position: relative;
         background-color: $color_background;
-//        padding: 10px 10px 10px 10px;
         margin-top: 10px;
-        border-bottom: 1px solid $color_background;
         list-style-type: none;
         text-align: left;
         overflow: hidden;
@@ -148,13 +147,15 @@ body #Wrapper {
           overflow: hidden;
         }
         .k_itemList_title {
+          display: inline-block;
           background-color: $color_light;
           color: #FFFFFF;
-          padding-left: 16px;
+          padding-left: 10px;
           font-size: 16px;
           line-height: 24px;
-          width: 800px;
+//          width: 800px;
           height: 48px;
+
         }
         .k_itemList_node_vote{
           display: inline-block;
@@ -205,13 +206,32 @@ body #Wrapper {
 }
 
 #Rightbar {
-  > div {
+  position: fixed;
+  right: 0;
+  top: 0;
+  > div:not(#TopicsHot) {
     display: none;
   }
-  //  > div:nth-child(1), > div:nth-child(2) {
-  //    display: block;
-  //  }
   transition: width 0.5s ease-out;
+  #TopicsHot{
+    border: none;
+    margin-top: 40px;
+    background-color: $color_light;
+    color: $color_background;
+    div{
+      padding: 5px;
+      border-radius: 0;
+      border-bottom: 1px solid $color_dark;
+    }
+    div:first-child{
+      font-size: 16px;
+    }
+    a{
+      color: $color_background;
+      text-shadow: none;
+    }
+
+  }
   #Search {
     width: 100%;
     form div {
