@@ -2,19 +2,41 @@
  * Created by JiaHao on 2015/4/14 0014.
  */
 
-var checkUrl = function(){
-    var pageUrl = window.location.href;
-    var search = pageUrl.indexOf('?');
+var checkUrl = function () {
+    var pageUrl = {
+        originUrl :window.location.href,
+        pureUrl : "",
+        searchText : "",
+        nodeName : "",
+        nodePageUrl : "",
+        nodePageNum : 1,
+        isList: false
+    };
+    var search = pageUrl['originUrl'].indexOf('?');
     if (search != -1) {
-        pageUrl = pageUrl.slice(0, search)
+        pageUrl['pureUrl'] = pageUrl['originUrl'].slice(0, search);
+        var tempPosition = pageUrl['originUrl'].indexOf('=');
+        pageUrl['searchText'] = pageUrl['originUrl'].slice(tempPosition+1);
+        pageUrl['nodePageUrl'] = pageUrl['originUrl'].slice(0,tempPosition);
+    }else{
+        pageUrl['pureUrl'] = pageUrl['originUrl'];
     }
+    var nodePosition = pageUrl['pureUrl'].indexOf('/go/');
+    var isRecent = pageUrl['pureUrl'].indexOf('/recent');
+    if(pageUrl['pureUrl'] == 'http://www.v2ex.com/' || pageUrl['pureUrl'] == 'https://www.v2ex.com/' || nodePosition != -1 || isRecent != -1){
+        pageUrl['isList'] = true;
+        if(nodePosition != -1){
+            pageUrl['nodeName'] = pageUrl['pureUrl'].slice(nodePosition + 4);
+        }
+    }
+    console.info(pageUrl);
     return pageUrl
 };
 
 var getList = function (pageUrl) {
     var itemList = [];
     var $itemDom;
-    if (pageUrl.indexOf('/go/') != -1) {
+    if (pageUrl['nodeName'] != "") {
         $itemDom = $('#TopicsNode').children('.cell')
     } else {
         $itemDom = $('.cell.item');
@@ -22,12 +44,7 @@ var getList = function (pageUrl) {
     for (var i = 0, len = $itemDom.length; i < len; i++) {
         var tempItem = {};
         var top = $($itemDom[i]).children('div').children('img');
-        if (!top.length) {
-            //被置顶
-            tempItem['top'] = true;
-        } else {
-            tempItem['top'] = false;
-        }
+        tempItem['top'] = !top.length;
         var info = $($itemDom[i]).children('table').children('tbody').children('tr').children();
         tempItem['userUrl'] = $(info[0]).children('a').attr('href');
         tempItem['avatar'] = $(info[0]).children('a').children('img').attr('src');
@@ -42,7 +59,7 @@ var getList = function (pageUrl) {
         tempItem['nodeUrl'] = $(info[2]).children('.small.fade').children('.node').attr('href');
         tempItem['nodeText'] = $(info[2]).children('.small.fade').children('.node').text();
         tempItem['lastReply'] = $($(info[2]).children('.small.fade').children('strong')[1]).children('a').attr('href');
-        tempItem['replyNum']= $(info[3]).children('a').text();
+        tempItem['replyNum'] = $(info[3]).children('a').text();
         if (tempItem['replyNum'] == '') {
             tempItem['replyNum'] = 0
         }
@@ -51,13 +68,13 @@ var getList = function (pageUrl) {
     return itemList
 };
 
-var getUserInfo = function(){
+var getUserInfo = function () {
     var userInfo = {};
     var $Dom = $($('#Rightbar').children('.box')[0]);
     var userDom = $Dom.children('.cell:first').children('table:first').children('tbody').children('tr').children();
     var collectDom = $Dom.children('.cell:first').children('table:last').children('tbody').children('tr').children('');
     var $topDom = $('#Top').find('.top');
-    userInfo['notiNum'] = $Dom.children('.inner').children('a').text().slice(0,-6);
+    userInfo['notiNum'] = $Dom.children('.inner').children('a').text().slice(0, -6);
     userInfo['userName'] = $(userDom[2]).children('.bigger').children('a').text();
     userInfo['userMotto'] = $(userDom[2]).children('.fade').text();
     userInfo['userAvatar'] = $(userDom[0]).children('a').children('img').attr('src');
@@ -78,19 +95,22 @@ var Slide = React.createClass({
         return(
             <div >
                 <div id="k_navbar" style={DomStyle} classNameName="bars k_color_dark">
-                    <a id="avatar" href={'/member/'+this.props.info.userName} className={aClassName}>
+                    <a id="avatar" href={'/member/' + this.props.info.userName} className={aClassName}>
                         <img src={this.props.info.userAvatar}/>
                     </a>
-                    <a href="http://www.v2ex.com/notifications" className={aClassName}>
+                    <a href="/notifications" className={aClassName}>
                         <i className="fa fa-bell fa-2x" title="提醒"></i>{this.props.info.notiNum}
                     </a>
                     <a href="/" className={aClassName} title="首页">
                         <i className="fa fa-home fa-2x"></i>
                     </a>
-                    <a href="http://www.v2ex.com/new" className={aClassName} title="新主题">
+                    <a href="/new" className={aClassName} title="新主题">
                         <i className="fa fa-pencil-square-o fa-2x"></i>
                     </a>
-                    <a href="https://workspace.v2ex.com/" target="_blank" className={aClassName} title="工作空间">
+                    <a href="/planes" className={aClassName} title="节点">
+                        <i className="fa fa-th fa-2x"></i>
+                    </a>
+                    <a href="//workspace.v2ex.com/" target="_blank" className={aClassName} title="工作空间">
                         <i className="fa fa-laptop fa-2x"></i>
                     </a>
                     <a href="/notes" className={aClassName}>
@@ -102,7 +122,7 @@ var Slide = React.createClass({
                     <a href="/events" className={aClassName} title="事件">
                         <i className="fa fa-eye fa-2x"></i>
                     </a>
-                    <a href={'/place/'+this.props.info.ip} className={aClassName} title="附近">
+                    <a href={'/place/' + this.props.info.ip} className={aClassName} title="附近">
                         <i className="fa fa-map-marker fa-2x"></i>
                     </a>
                     <a href="/settings" className={aClassName} title="设置">
@@ -150,53 +170,82 @@ var ListItem = React.createClass({
         return className
     },
     nodeDom: function (pageUrl) {
-        var pageUrl = window.location.href;
-        var search = pageUrl.indexOf('?');
-        if (search != -1) {
-            pageUrl = pageUrl.slice(0, search)
-        }
-        if (pageUrl.indexOf('/go/') == -1) {
+        if (pageUrl['nodeName'] == "") {
             return <span className='k_itemList_node'>{this.props.item.nodeText}</span>;
-        }else{
-            return ""
+        } else {
+            return <span className='k_itemList_node'>{this.props.nodeName}</span>;
         }
     },
     getWidth: function () {
-        var width = $(window).width() - 140 -270-20-80-48-20-10;
+        var width = $(window).width() - 140 - 270 - 20 - 80 - 48 - 20 - 10 - 10;
         return {
             width: width
         };
     },
+
     render: function () {
         return(
             <li>
-                <div className='k_itemList_node_vote'>
-                    <span className={'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}><i className="fa fa-chevron-up"></i>{this.props.item.vote}</span>
-                    <span className='k_itemList_reply'><i className="fa fa-reply"></i>{this.props.item.replyNum}</span>
-                    {this.nodeDom(this.props.pageUrl)}
-                </div>
                 <a className='k_itemList_avatar' href= {this.props.item.userUrl}>
                     <img src={this.props.item.avatar}/>
                 </a>
-                <a className='k_itemList_title' style = {this.getWidth()} href={this.props.item.postUrl}>
+                <div className='k_itemList_node_vote'>
+                    <a href={this.props.item.nodeUrl} className={'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}>
+                        <span >
+                            <i className="fa fa-chevron-up"></i>{this.props.item.vote}
+                        </span>
+                    </a>
+                    <a href={this.props.item.nodeUrl} className='k_itemList_reply'>
+                        <span >
+                            <i className="fa fa-reply"></i>{this.props.item.replyNum}
+                        </span>
+                    </a>
+                    {this.nodeDom(this.props.pageUrl)}
+                </div>
+                <div className='k_itemList_title' style = {this.getWidth()} href={this.props.item.postUrl}>
 
-                    <span>{this.props.item.title}</span>
-                </a>
+                    {this.props.item.title}
+                </div>
                 <a className='k_itemList_QR'></a>
             </li>
             )
     }
 });
 var List = React.createClass({
+    morePost: function () {
+        if(this.props.pageUrl['nodeName'] != "" ||this.props.pageUrl['pureUrl'].indexOf('/recent') != -1){
+            if(this.props.pageUrl['searchText'] == "" ||this.props.pageUrl['searchText'] == "1"){
+                return(
+                <li>
+                    <a className ='k_itemList_more' href={this.props.pageUrl['pureUrl'] +'?p=2'}>下一页</a>
+                </li>
+                )
+            }else{
+                return(
+                <li>
+                    <a className ='k_itemList_more' href={this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) - 1)}>上一页</a>
+                    <a className ='k_itemList_more' href={this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) + 1)}>下一页</a>
+                </li>
+                )
+            }
+        }else{
+            return <li>
+            <a className ='k_itemList_more' href="/recent">更多新主题</a>
+        </li>
+        }
+
+    },
     render: function () {
         var Dom = [];
         var url = this.props.pageUrl;
+        var nodeName = this.props.nodeName;
         this.props.list.forEach(function (item) {
-            Dom.push(<ListItem item = {item} pageUrl={url}/>);
+            Dom.push(<ListItem item = {item} pageUrl={url} nodeName = {nodeName}/>);
         });
         return (
             <ul id= 'k_itemList_ul'>
                     {Dom}
+                {this.morePost()}
             </ul>
             )
     }
@@ -222,21 +271,22 @@ var NodeList = React.createClass({
 });
 
 var MainPage = React.createClass({
-    checkIframe :function(){
-        if(self!=top){}
+    checkIframe: function () {
+        if (self != top) {
+        }
     },
     render: function () {
         return(
             <div id='k_itemList'>
                 <SubNav node={this.props.NodeData} />
-                <List list={this.props.ListData} pageUrl={this.props.pageUrl}/>
+                <List list={this.props.ListData} pageUrl={this.props.pageUrl} nodeName = {this.props.NodeName}/>
             </div>
             )
     }
 });
 
 var TopList = React.createClass({
-    render:function(){
+    render: function () {
         var Dom = [];
         for (var i = 0; i < this.props.topList.length; i++) {
             var temp = this.props.topList[i];
@@ -253,10 +303,10 @@ var TopList = React.createClass({
 });
 
 var FastReader = React.createClass({
-    render:function(){
+    render: function () {
         var domStyle = {
-            'height':this.props.height+15,
-            'width':this.props.width
+            'height': this.props.height + 15,
+            'width': this.props.width
         };
         return(
             <iframe frameBorder='0' seamless allowTransparency="true" width="100%" scrolling="auto" style={domStyle} src={this.props.src}></iframe>)
@@ -264,21 +314,21 @@ var FastReader = React.createClass({
 });
 
 var ReplyArea = React.createClass({
-    render:function(){
+    render: function () {
         return(
             <form method="post" action={this.props.url}>
                 <textarea name="content" maxlength="10000" class="mll" id="reply_content" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 112px;"></textarea>
                 <input type="submit" value="回复" class="super normal button" />
             </form>
-                )
+            )
     }
 });
 
 $(function () {
-    if(self != top){
-        $('#Top,#Rightbar').css('display','none');
-        $('#Wrapper').css('margin-left','0');
-        $('#Main').css('width','680px')
+    if (self != top) {
+        $('#Top,#Rightbar').css('display', 'none');
+        $('#Wrapper').css('margin-left', '0');
+        $('#Main').css('width', '680px')
     }
 
     var userInfo = getUserInfo();
@@ -288,24 +338,19 @@ $(function () {
     );
 
     var pageUrl = checkUrl();
-    if (pageUrl == 'http://www.v2ex.com/' || pageUrl == 'https://www.v2ex.com/' || pageUrl.indexOf('/go/') != -1) {
+    if (pageUrl['isList'] === true) {
         var listData = getList(pageUrl);
         var nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
-        React.render(<MainPage ListData={listData} NodeData={nodeData} pageUrl={pageUrl}/>, document.getElementById('Main'));
+        React.render(
+            <MainPage ListData={listData} NodeData={nodeData} pageUrl={pageUrl} NodeName = {pageUrl['nodeName']}/>,
+            document.getElementById('Main')
+        );
     }
-    var time;
-    $('.k_itemList_title').mouseenter(function(){
-        console.info();
+    $('.k_itemList_title').click(function () {
+        console.info(this);
         var url = $(this).attr('href');
-        clearTimeout(time);
-        time = setTimeout(function () {
-            React.render(<FastReader width={'680px'} height={$(window).height()} src={url}/>,document.getElementById('Rightbar'));
-            $('#Rightbar').width('680px');
-            $('.k_itemList_title').css('width',$(window).width() - 140 -680-20-80-48-20-10);
-        }, 1500);
-    }).mouseleave(function(){
-        clearTimeout(time);
+        React.render(<FastReader width={'680px'} height={$(window).height()} src={url}/>, document.getElementById('Rightbar'));
+        $('#Rightbar').width('680px');
+        $('.k_itemList_title').css('width', $(window).width() - 140 - 680 - 20 - 80 - 48 - 20 - 10);
     });
-
-
 });

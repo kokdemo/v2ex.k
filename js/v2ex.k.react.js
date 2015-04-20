@@ -2,19 +2,41 @@
  * Created by JiaHao on 2015/4/14 0014.
  */
 
-var checkUrl = function(){
-    var pageUrl = window.location.href;
-    var search = pageUrl.indexOf('?');
+var checkUrl = function () {
+    var pageUrl = {
+        originUrl :window.location.href,
+        pureUrl : "",
+        searchText : "",
+        nodeName : "",
+        nodePageUrl : "",
+        nodePageNum : 1,
+        isList: false
+    };
+    var search = pageUrl['originUrl'].indexOf('?');
     if (search != -1) {
-        pageUrl = pageUrl.slice(0, search)
+        pageUrl['pureUrl'] = pageUrl['originUrl'].slice(0, search);
+        var tempPosition = pageUrl['originUrl'].indexOf('=');
+        pageUrl['searchText'] = pageUrl['originUrl'].slice(tempPosition+1);
+        pageUrl['nodePageUrl'] = pageUrl['originUrl'].slice(0,tempPosition);
+    }else{
+        pageUrl['pureUrl'] = pageUrl['originUrl'];
     }
+    var nodePosition = pageUrl['pureUrl'].indexOf('/go/');
+    var isRecent = pageUrl['pureUrl'].indexOf('/recent');
+    if(pageUrl['pureUrl'] == 'http://www.v2ex.com/' || pageUrl['pureUrl'] == 'https://www.v2ex.com/' || nodePosition != -1 || isRecent != -1){
+        pageUrl['isList'] = true;
+        if(nodePosition != -1){
+            pageUrl['nodeName'] = pageUrl['pureUrl'].slice(nodePosition + 4);
+        }
+    }
+    console.info(pageUrl);
     return pageUrl
 };
 
 var getList = function (pageUrl) {
     var itemList = [];
     var $itemDom;
-    if (pageUrl.indexOf('/go/') != -1) {
+    if (pageUrl['nodeName'] != "") {
         $itemDom = $('#TopicsNode').children('.cell')
     } else {
         $itemDom = $('.cell.item');
@@ -22,12 +44,7 @@ var getList = function (pageUrl) {
     for (var i = 0, len = $itemDom.length; i < len; i++) {
         var tempItem = {};
         var top = $($itemDom[i]).children('div').children('img');
-        if (!top.length) {
-            //被置顶
-            tempItem['top'] = true;
-        } else {
-            tempItem['top'] = false;
-        }
+        tempItem['top'] = !top.length;
         var info = $($itemDom[i]).children('table').children('tbody').children('tr').children();
         tempItem['userUrl'] = $(info[0]).children('a').attr('href');
         tempItem['avatar'] = $(info[0]).children('a').children('img').attr('src');
@@ -42,7 +59,7 @@ var getList = function (pageUrl) {
         tempItem['nodeUrl'] = $(info[2]).children('.small.fade').children('.node').attr('href');
         tempItem['nodeText'] = $(info[2]).children('.small.fade').children('.node').text();
         tempItem['lastReply'] = $($(info[2]).children('.small.fade').children('strong')[1]).children('a').attr('href');
-        tempItem['replyNum']= $(info[3]).children('a').text();
+        tempItem['replyNum'] = $(info[3]).children('a').text();
         if (tempItem['replyNum'] == '') {
             tempItem['replyNum'] = 0
         }
@@ -51,13 +68,13 @@ var getList = function (pageUrl) {
     return itemList
 };
 
-var getUserInfo = function(){
+var getUserInfo = function () {
     var userInfo = {};
     var $Dom = $($('#Rightbar').children('.box')[0]);
     var userDom = $Dom.children('.cell:first').children('table:first').children('tbody').children('tr').children();
     var collectDom = $Dom.children('.cell:first').children('table:last').children('tbody').children('tr').children('');
     var $topDom = $('#Top').find('.top');
-    userInfo['notiNum'] = $Dom.children('.inner').children('a').text().slice(0,-6);
+    userInfo['notiNum'] = $Dom.children('.inner').children('a').text().slice(0, -6);
     userInfo['userName'] = $(userDom[2]).children('.bigger').children('a').text();
     userInfo['userMotto'] = $(userDom[2]).children('.fade').text();
     userInfo['userAvatar'] = $(userDom[0]).children('a').children('img').attr('src');
@@ -78,19 +95,22 @@ var Slide = React.createClass({displayName: "Slide",
         return(
             React.createElement("div", null, 
                 React.createElement("div", {id: "k_navbar", style: DomStyle, classNameName: "bars k_color_dark"}, 
-                    React.createElement("a", {id: "avatar", href: '/member/'+this.props.info.userName, className: aClassName}, 
+                    React.createElement("a", {id: "avatar", href: '/member/' + this.props.info.userName, className: aClassName}, 
                         React.createElement("img", {src: this.props.info.userAvatar})
                     ), 
-                    React.createElement("a", {href: "http://www.v2ex.com/notifications", className: aClassName}, 
+                    React.createElement("a", {href: "/notifications", className: aClassName}, 
                         React.createElement("i", {className: "fa fa-bell fa-2x", title: "提醒"}), this.props.info.notiNum
                     ), 
                     React.createElement("a", {href: "/", className: aClassName, title: "首页"}, 
                         React.createElement("i", {className: "fa fa-home fa-2x"})
                     ), 
-                    React.createElement("a", {href: "http://www.v2ex.com/new", className: aClassName, title: "新主题"}, 
+                    React.createElement("a", {href: "/new", className: aClassName, title: "新主题"}, 
                         React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"})
                     ), 
-                    React.createElement("a", {href: "https://workspace.v2ex.com/", target: "_blank", className: aClassName, title: "工作空间"}, 
+                    React.createElement("a", {href: "/planes", className: aClassName, title: "节点"}, 
+                        React.createElement("i", {className: "fa fa-th fa-2x"})
+                    ), 
+                    React.createElement("a", {href: "//workspace.v2ex.com/", target: "_blank", className: aClassName, title: "工作空间"}, 
                         React.createElement("i", {className: "fa fa-laptop fa-2x"})
                     ), 
                     React.createElement("a", {href: "/notes", className: aClassName}, 
@@ -102,7 +122,7 @@ var Slide = React.createClass({displayName: "Slide",
                     React.createElement("a", {href: "/events", className: aClassName, title: "事件"}, 
                         React.createElement("i", {className: "fa fa-eye fa-2x"})
                     ), 
-                    React.createElement("a", {href: '/place/'+this.props.info.ip, className: aClassName, title: "附近"}, 
+                    React.createElement("a", {href: '/place/' + this.props.info.ip, className: aClassName, title: "附近"}, 
                         React.createElement("i", {className: "fa fa-map-marker fa-2x"})
                     ), 
                     React.createElement("a", {href: "/settings", className: aClassName, title: "设置"}, 
@@ -150,37 +170,41 @@ var ListItem = React.createClass({displayName: "ListItem",
         return className
     },
     nodeDom: function (pageUrl) {
-        var pageUrl = window.location.href;
-        var search = pageUrl.indexOf('?');
-        if (search != -1) {
-            pageUrl = pageUrl.slice(0, search)
-        }
-        if (pageUrl.indexOf('/go/') == -1) {
+        if (pageUrl['nodeName'] == "") {
             return React.createElement("span", {className: "k_itemList_node"}, this.props.item.nodeText);
-        }else{
-            return ""
+        } else {
+            return React.createElement("span", {className: "k_itemList_node"}, this.props.nodeName);
         }
     },
     getWidth: function () {
-        var width = $(window).width() - 140 -270-20-80-48-20-10;
+        var width = $(window).width() - 140 - 270 - 20 - 80 - 48 - 20 - 10 - 10;
         return {
             width: width
         };
     },
+
     render: function () {
         return(
             React.createElement("li", null, 
-                React.createElement("div", {className: "k_itemList_node_vote"}, 
-                    React.createElement("span", {className: 'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}, React.createElement("i", {className: "fa fa-chevron-up"}), this.props.item.vote), 
-                    React.createElement("span", {className: "k_itemList_reply"}, React.createElement("i", {className: "fa fa-reply"}), this.props.item.replyNum), 
-                    this.nodeDom(this.props.pageUrl)
-                ), 
                 React.createElement("a", {className: "k_itemList_avatar", href: this.props.item.userUrl}, 
                     React.createElement("img", {src: this.props.item.avatar})
                 ), 
-                React.createElement("a", {className: "k_itemList_title", style: this.getWidth(), href: this.props.item.postUrl}, 
+                React.createElement("div", {className: "k_itemList_node_vote"}, 
+                    React.createElement("a", {href: this.props.item.nodeUrl, className: 'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}, 
+                        React.createElement("span", null, 
+                            React.createElement("i", {className: "fa fa-chevron-up"}), this.props.item.vote
+                        )
+                    ), 
+                    React.createElement("a", {href: this.props.item.nodeUrl, className: "k_itemList_reply"}, 
+                        React.createElement("span", null, 
+                            React.createElement("i", {className: "fa fa-reply"}), this.props.item.replyNum
+                        )
+                    ), 
+                    this.nodeDom(this.props.pageUrl)
+                ), 
+                React.createElement("div", {className: "k_itemList_title", style: this.getWidth(), href: this.props.item.postUrl}, 
 
-                    React.createElement("span", null, this.props.item.title)
+                    this.props.item.title
                 ), 
                 React.createElement("a", {className: "k_itemList_QR"})
             )
@@ -188,15 +212,40 @@ var ListItem = React.createClass({displayName: "ListItem",
     }
 });
 var List = React.createClass({displayName: "List",
+    morePost: function () {
+        if(this.props.pageUrl['nodeName'] != "" ||this.props.pageUrl['pureUrl'].indexOf('/recent') != -1){
+            if(this.props.pageUrl['searchText'] == "" ||this.props.pageUrl['searchText'] == "1"){
+                return(
+                React.createElement("li", null, 
+                    React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['pureUrl'] +'?p=2'}, "下一页")
+                )
+                )
+            }else{
+                return(
+                React.createElement("li", null, 
+                    React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) - 1)}, "上一页"), 
+                    React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) + 1)}, "下一页")
+                )
+                )
+            }
+        }else{
+            return React.createElement("li", null, 
+            React.createElement("a", {className: "k_itemList_more", href: "/recent"}, "更多新主题")
+        )
+        }
+
+    },
     render: function () {
         var Dom = [];
         var url = this.props.pageUrl;
+        var nodeName = this.props.nodeName;
         this.props.list.forEach(function (item) {
-            Dom.push(React.createElement(ListItem, {item: item, pageUrl: url}));
+            Dom.push(React.createElement(ListItem, {item: item, pageUrl: url, nodeName: nodeName}));
         });
         return (
             React.createElement("ul", {id: "k_itemList_ul"}, 
-                    Dom
+                    Dom, 
+                this.morePost()
             )
             )
     }
@@ -222,21 +271,22 @@ var NodeList = React.createClass({displayName: "NodeList",
 });
 
 var MainPage = React.createClass({displayName: "MainPage",
-    checkIframe :function(){
-        if(self!=top){}
+    checkIframe: function () {
+        if (self != top) {
+        }
     },
     render: function () {
         return(
             React.createElement("div", {id: "k_itemList"}, 
                 React.createElement(SubNav, {node: this.props.NodeData}), 
-                React.createElement(List, {list: this.props.ListData, pageUrl: this.props.pageUrl})
+                React.createElement(List, {list: this.props.ListData, pageUrl: this.props.pageUrl, nodeName: this.props.NodeName})
             )
             )
     }
 });
 
 var TopList = React.createClass({displayName: "TopList",
-    render:function(){
+    render: function () {
         var Dom = [];
         for (var i = 0; i < this.props.topList.length; i++) {
             var temp = this.props.topList[i];
@@ -253,10 +303,10 @@ var TopList = React.createClass({displayName: "TopList",
 });
 
 var FastReader = React.createClass({displayName: "FastReader",
-    render:function(){
+    render: function () {
         var domStyle = {
-            'height':this.props.height+15,
-            'width':this.props.width
+            'height': this.props.height + 15,
+            'width': this.props.width
         };
         return(
             React.createElement("iframe", {frameBorder: "0", seamless: true, allowTransparency: "true", width: "100%", scrolling: "auto", style: domStyle, src: this.props.src}))
@@ -264,21 +314,21 @@ var FastReader = React.createClass({displayName: "FastReader",
 });
 
 var ReplyArea = React.createClass({displayName: "ReplyArea",
-    render:function(){
+    render: function () {
         return(
             React.createElement("form", {method: "post", action: this.props.url}, 
                 React.createElement("textarea", {name: "content", maxlength: "10000", class: "mll", id: "reply_content", style: "overflow: hidden; word-wrap: break-word; resize: horizontal; height: 112px;"}), 
                 React.createElement("input", {type: "submit", value: "回复", class: "super normal button"})
             )
-                )
+            )
     }
 });
 
 $(function () {
-    if(self != top){
-        $('#Top,#Rightbar').css('display','none');
-        $('#Wrapper').css('margin-left','0');
-        $('#Main').css('width','680px')
+    if (self != top) {
+        $('#Top,#Rightbar').css('display', 'none');
+        $('#Wrapper').css('margin-left', '0');
+        $('#Main').css('width', '680px')
     }
 
     var userInfo = getUserInfo();
@@ -288,24 +338,19 @@ $(function () {
     );
 
     var pageUrl = checkUrl();
-    if (pageUrl == 'http://www.v2ex.com/' || pageUrl == 'https://www.v2ex.com/' || pageUrl.indexOf('/go/') != -1) {
+    if (pageUrl['isList'] === true) {
         var listData = getList(pageUrl);
         var nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
-        React.render(React.createElement(MainPage, {ListData: listData, NodeData: nodeData, pageUrl: pageUrl}), document.getElementById('Main'));
+        React.render(
+            React.createElement(MainPage, {ListData: listData, NodeData: nodeData, pageUrl: pageUrl, NodeName: pageUrl['nodeName']}),
+            document.getElementById('Main')
+        );
     }
-    var time;
-    $('.k_itemList_title').mouseenter(function(){
-        console.info();
+    $('.k_itemList_title').click(function () {
+        console.info(this);
         var url = $(this).attr('href');
-        clearTimeout(time);
-        time = setTimeout(function () {
-            React.render(React.createElement(FastReader, {width: '680px', height: $(window).height(), src: url}),document.getElementById('Rightbar'));
-            $('#Rightbar').width('680px');
-            $('.k_itemList_title').css('width',$(window).width() - 140 -680-20-80-48-20-10);
-        }, 1500);
-    }).mouseleave(function(){
-        clearTimeout(time);
+        React.render(React.createElement(FastReader, {width: '680px', height: $(window).height(), src: url}), document.getElementById('Rightbar'));
+        $('#Rightbar').width('680px');
+        $('.k_itemList_title').css('width', $(window).width() - 140 - 680 - 20 - 80 - 48 - 20 - 10);
     });
-
-
 });

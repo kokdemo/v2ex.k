@@ -126,13 +126,13 @@ body #Wrapper {
       margin: 0;
       li {
         position: relative;
-        background-color: $color_background;
-        margin-top: 10px;
+        background-color: $color_light;
         list-style-type: none;
         text-align: left;
         overflow: hidden;
-        border-radius: 2px;
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        border-radius: 0;
+        border-bottom: 1px solid $color_dark;
+       padding: 5px;
         a {
           vertical-align: text-top;
           display: inline-block;
@@ -147,6 +147,7 @@ body #Wrapper {
           overflow: hidden;
         }
         .k_itemList_title {
+          vertical-align: text-top;
           display: inline-block;
           background-color: $color_light;
           color: #FFFFFF;
@@ -178,7 +179,7 @@ body #Wrapper {
             line-height: 24px;
             height: 24px;
             color: #ffffff;
-            background-color: $color_light;
+            background-color: $color_hover;
             i{
               font-size: 7px;
             }
@@ -192,6 +193,12 @@ body #Wrapper {
             color: #ffffff;
             background: $color_dark;
           }
+        }
+        .k_itemList_more{
+          color: $color_background;
+          height: 48px;
+          font-size: 20px;
+          line-height: 48px;
         }
       }
     }
@@ -215,7 +222,7 @@ body #Wrapper {
   transition: width 0.5s ease-out;
   #TopicsHot{
     border: none;
-    margin-top: 40px;
+    margin-top: 32px;
     background-color: $color_light;
     color: $color_background;
     div{
