@@ -10,10 +10,12 @@ var checkUrl = function () {
         nodeName : "",
         nodePageUrl : "",
         nodePageNum : 1,
+        isRecent : "",
         isList: false
     };
     var search = pageUrl['originUrl'].indexOf('?');
     if (search != -1) {
+        //如果链接中有问号，获取等号之后的内容，获取问号之前的内容。
         pageUrl['pureUrl'] = pageUrl['originUrl'].slice(0, search);
         var tempPosition = pageUrl['originUrl'].indexOf('=');
         pageUrl['searchText'] = pageUrl['originUrl'].slice(tempPosition+1);
@@ -22,8 +24,9 @@ var checkUrl = function () {
         pageUrl['pureUrl'] = pageUrl['originUrl'];
     }
     var nodePosition = pageUrl['pureUrl'].indexOf('/go/');
-    var isRecent = pageUrl['pureUrl'].indexOf('/recent');
-    if(pageUrl['pureUrl'] == 'http://www.v2ex.com/' || pageUrl['pureUrl'] == 'https://www.v2ex.com/' || nodePosition != -1 || isRecent != -1){
+    pageUrl['isRecent'] = pageUrl['pureUrl'].indexOf('/recent');
+    if(pageUrl['pureUrl'] == 'http://www.v2ex.com/' || pageUrl['pureUrl'] == 'https://www.v2ex.com/' || nodePosition != -1 || pageUrl['isRecent'] != -1){
+        //判断这些页面中包含列表
         pageUrl['isList'] = true;
         if(nodePosition != -1){
             pageUrl['nodeName'] = pageUrl['pureUrl'].slice(nodePosition + 4);
@@ -113,11 +116,11 @@ var Slide = React.createClass({
                     <a href="//workspace.v2ex.com/" target="_blank" className={aClassName} title="工作空间">
                         <i className="fa fa-laptop fa-2x"></i>
                     </a>
-                    <a href="/notes" className={aClassName}>
-                        <i className="fa fa-book fa-2x" title="笔记"></i>
+                    <a href="/notes" className={aClassName} title="笔记">
+                        <i className="fa fa-book fa-2x" ></i>
                     </a>
-                    <a href="/t" className={aClassName}>
-                        <i className="fa fa-list-alt fa-2x" title="时间轴"></i>
+                    <a href="/t" className={aClassName} title="时间轴">
+                        <i className="fa fa-list-alt fa-2x" ></i>
                     </a>
                     <a href="/events" className={aClassName} title="事件">
                         <i className="fa fa-eye fa-2x"></i>
@@ -128,12 +131,13 @@ var Slide = React.createClass({
                     <a href="/settings" className={aClassName} title="设置">
                         <i className="fa fa-cog fa-2x"></i>
                     </a>
-                    <a href="#;" onclick="if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }" className={aClassName}>
-                        <i className="fa fa-sign-out fa-2x" title="退出"></i>
+                    <a href="#;" onclick="if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }" className={aClassName} title="退出">
+                        <i className="fa fa-sign-out fa-2x" ></i>
                     </a>
                 </div>
 
                 <div id="k_tabbar" className="bars k_color_light">
+                    <a href="/?tab=all" className="tab k_color_hover">全部</a>
                     <a href="/?tab=tech" className="tab k_color_hover">技术</a>
                     <a href="/?tab=creative" className="tab k_color_hover">创意</a>
                     <a href="/?tab=play" className="tab k_color_hover">好玩</a>
@@ -143,7 +147,6 @@ var Slide = React.createClass({
                     <a href="/?tab=city" className="tab k_color_hover">城市</a>
                     <a href="/?tab=qna" className="tab k_color_hover">问与答</a>
                     <a href="/?tab=hot" className="tab k_color_hover">最热</a>
-                    <a href="/?tab=all" className="tab_current k_color_hover">全部</a>
                     <a href="/?tab=r2" className="tab k_color_hover">R2</a>
                     <a href="/?tab=nodes" className="tab k_color_hover">节点</a>
                     <a href="/?tab=members" className="tab k_color_hover">关注</a>
@@ -158,11 +161,11 @@ var ListItem = React.createClass({
         var className;
         if (voteNum < 0) {
             className = 'black'
-        } else if (voteNum < 5) {
+        } else if (voteNum < 2) {
             className = 'blue'
-        } else if (voteNum < 10) {
+        } else if (voteNum < 4) {
             className = 'green'
-        } else if (voteNum < 20) {
+        } else if (voteNum < 8) {
             className = 'yellow'
         } else {
             className = 'red'
@@ -177,7 +180,7 @@ var ListItem = React.createClass({
         }
     },
     getWidth: function () {
-        var width = $(window).width() - 140 - 270 - 20 - 80 - 48 - 20 - 10 - 10;
+        var width = $(window).width() - 140 - 270 - 20 - 80 - 48 - 20 - 10 - 10 -25;
         return {
             width: width
         };
@@ -203,18 +206,20 @@ var ListItem = React.createClass({
                     {this.nodeDom(this.props.pageUrl)}
                 </div>
                 <div className='k_itemList_title' style = {this.getWidth()} href={this.props.item.postUrl}>
-
                     {this.props.item.title}
                 </div>
-                <a className='k_itemList_QR'></a>
+                <a className='k_itemList_QR'>
+                    <i className="fa fa-qrcode fa-2x"></i>
+                </a>
             </li>
             )
     }
 });
 var List = React.createClass({
     morePost: function () {
-        if(this.props.pageUrl['nodeName'] != "" ||this.props.pageUrl['pureUrl'].indexOf('/recent') != -1){
+        if(this.props.pageUrl['nodeName'] != "" ||this.props.pageUrl['isRecent'] != -1){
             if(this.props.pageUrl['searchText'] == "" ||this.props.pageUrl['searchText'] == "1"){
+                //第一页
                 return(
                 <li>
                     <a className ='k_itemList_more' href={this.props.pageUrl['pureUrl'] +'?p=2'}>下一页</a>
@@ -222,6 +227,7 @@ var List = React.createClass({
                 )
             }else{
                 return(
+                 //第n页
                 <li>
                     <a className ='k_itemList_more' href={this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) - 1)}>上一页</a>
                     <a className ='k_itemList_more' href={this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) + 1)}>下一页</a>
@@ -278,6 +284,7 @@ var MainPage = React.createClass({
     render: function () {
         return(
             <div id='k_itemList'>
+                <div id='k_hover'></div>
                 <SubNav node={this.props.NodeData} />
                 <List list={this.props.ListData} pageUrl={this.props.pageUrl} nodeName = {this.props.NodeName}/>
             </div>
@@ -324,11 +331,16 @@ var ReplyArea = React.createClass({
     }
 });
 
+var MakeQR = function(dom,url){
+    $(dom).qrcode({width: 128,height: 128,text: 'http://v2ex.com'+url});
+};
+
+
 $(function () {
     if (self != top) {
         $('#Top,#Rightbar').css('display', 'none');
         $('#Wrapper').css('margin-left', '0');
-        $('#Main').css('width', '680px')
+        $("#Wrapper,#Main").css('width', '680px');
     }
 
     var userInfo = getUserInfo();
@@ -347,10 +359,26 @@ $(function () {
         );
     }
     $('.k_itemList_title').click(function () {
-        console.info(this);
         var url = $(this).attr('href');
-        React.render(<FastReader width={'680px'} height={$(window).height()} src={url}/>, document.getElementById('Rightbar'));
+        console.info();
+        $(this).parent().addClass('k_itemList_choosen');
+        React.render(
+            <FastReader width={'680px'} height={$(window).height()} src={url}/>,
+            document.getElementById('Rightbar')
+        );
         $('#Rightbar').width('680px');
-        $('.k_itemList_title').css('width', $(window).width() - 140 - 680 - 20 - 80 - 48 - 20 - 10);
+        var item_title = $(window).width() - 140 - 680 - 20 - 80 - 48 - 20 - 10 - 25;
+        $('.k_itemList_title').css('width', item_title);
+    });
+    $('.k_itemList_QR').click(function(){
+        var url = $(this).parent().children('.k_itemList_title').attr('href');
+        MakeQR($('#k_hover'),url);
+        $('#k_hover').css('z-index',1000);
+        $('#k_hover').css('height',$(window).height());
+        $('#k_hover').css('width',$(window).width());
+        $('#k_hover').click(function(){
+            $('canvas').remove();
+            $('#k_hover').css('z-index',-1);
+        });
     });
 });
