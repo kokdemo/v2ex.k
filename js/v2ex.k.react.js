@@ -42,7 +42,6 @@ var checkUrl = function () {
     if( pageUrl['pureUrl'].indexOf('/notifications') != -1){
         pageUrl['isNotifi'] = true;
     }
-    console.info(pageUrl);
     return pageUrl
 };
 
