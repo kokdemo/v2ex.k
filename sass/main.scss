@@ -103,18 +103,18 @@ body #Wrapper {
   transition: width 2s ease-out;
   #k_itemList {
     width: auto;
-    margin: 0 0 1rem 0;
-    padding: 0 1rem;
+    margin: 0 0 0 0;
+    padding: 0 10px;
     overflow: hidden;
     position: relative;
-    #k_hover{
+    #k_hover {
       background-color: #000;
       opacity: 0.8;
       position: fixed;
       top: 0;
       left: 0;
       z-index: 1001;
-      canvas{
+      canvas {
         margin: 20% auto;
       }
     }
@@ -235,7 +235,51 @@ body #Wrapper {
       }
     }
   }
-
+  #k_notifiList {
+    width: auto;
+    margin: 0 0 0 0;
+    padding: 0 10px;
+    overflow: hidden;
+    position: relative;
+    li {
+      position: relative;
+      background-color: $color_light;
+      list-style-type: none;
+      text-align: left;
+      overflow: hidden;
+      border-radius: 0;
+      border-bottom: 1px solid $color_dark;
+      padding: 5px;
+      .k_notifiList_avatar {
+        vertical-align: text-top;
+        img {
+          width: 24px;
+          height: 24px;
+        }
+        width: 24px;
+        height: 24px;
+        overflow: hidden;
+      }
+      .k_notifiList_title {
+        vertical-align: top;
+        display: inline-block;
+        background-color: $color_light;
+        color: $color_hover;
+        padding-left: 10px;
+        font-size: 14px;
+        line-height: 24px;
+        height: 24px;
+      }
+      .k_notifiList_reply{
+        border-left: 4px solid $color_node;
+        line-height: 18px;
+        padding: 10px;
+        margin-top: 5px;
+         background-color: $color_light;
+        color: #FFFFFF;
+      }
+    }
+  }
 }
 
 #Main.k_itemlist {

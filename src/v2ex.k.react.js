@@ -28,6 +28,7 @@ var checkUrl = function () {
     pageUrl['isRecent'] = pageUrl['pureUrl'].indexOf('/recent');
     if(pageUrl['pureUrl'] == 'http://www.v2ex.com/'
         || pageUrl['pureUrl'] == 'https://www.v2ex.com/'
+        || pageUrl['pureUrl'] == 'http://v2ex.com/'
         || nodePosition != -1
         || pageUrl['isRecent'] != -1){
         //判断这些页面中包含列表
@@ -36,9 +37,10 @@ var checkUrl = function () {
             pageUrl['nodeName'] = pageUrl['pureUrl'].slice(nodePosition + 4);
         }
     }
-    if( pageUrl['pureUrl'].indexOf('/notifications')){
+    if( pageUrl['pureUrl'].indexOf('/notifications') != -1){
         pageUrl['isNotifi'] = true;
     }
+    console.info(pageUrl);
     return pageUrl
 };
 
@@ -303,10 +305,6 @@ var NodeList = React.createClass({
 });
 
 var MainPage = React.createClass({
-    checkIframe: function () {
-        if (self != top) {
-        }
-    },
     render: function () {
         return(
             <div id='k_itemList'>
@@ -357,6 +355,37 @@ var ReplyArea = React.createClass({
     }
 });
 
+var NotificationItem = React.createClass({
+    render: function (){
+        return(
+            <li>
+                <a className='k_notifiList_avatar' href= {this.props.item.userUrl}>
+                    <img src={this.props.item.avatar}/>
+                </a>
+                <div className='k_notifiList_title' href={this.props.item.postUrl}>
+                    {this.props.item.postName}
+                </div>
+                <div className='k_notifiList_reply'>
+                    {this.props.item.reply}
+                </div>
+            </li>)
+    }
+});
+
+var Notification = React.createClass({
+    render: function () {
+        var Dom = [];
+        for (var i = 0; i < this.props.NotificationList.length; i++) {
+            Dom.push(<NotificationItem item ={this.props.NotificationList[i]} />)
+        }
+        return(
+            <ul id='k_notifiList'>
+                {Dom}
+            </ul>
+            )
+    }
+});
+
 var MakeQR = function(dom,url){
     $(dom).qrcode({width: 128,height: 128,text: 'http://v2ex.com'+url});
 };
@@ -384,17 +413,36 @@ $(function () {
             document.getElementById('Main')
         );
     }
+    if(pageUrl['isNotifi'] === true){
+        var listData = getNotifications(pageUrl);
+        React.render(
+            <Notification NotificationList={listData}/>,
+            document.getElementById('Main')
+        );
+    }
     $('.k_itemList_title').click(function () {
         var url = $(this).attr('href');
         console.info();
         $(this).parent().addClass('k_itemList_choosen');
         React.render(
-            <FastReader width={'680px'} height={$(window).height()} src={url}/>,
+            <FastReader width={'680px'} height={$(window).height()} src={'http://www.v2ex.com'+url}/>,
             document.getElementById('Rightbar')
         );
         $('#Rightbar').width('680px');
         var item_title = $(window).width() - 140 - 680 - 20 - 80 - 48 - 20 - 10 - 25;
         $('.k_itemList_title').css('width', item_title);
+    });
+     $('#k_notifiList li').click(function () {
+        var url = $(this).children('.k_notifiList_title').attr('href');
+        $(this).addClass('k_itemList_choosen');
+        React.render(
+            <FastReader width={'680px'} height={$(window).height()} src={url}/>,
+            document.getElementById('Rightbar')
+        );
+        $('#Rightbar').width('680px');
+        var item_title = $(window).width() - 140 - 680 - 20;
+         $('#k_notifiList').css('width', item_title);
+        console.info('11')
     });
     $('.k_itemList_QR').click(function(){
         var url = $(this).parent().children('.k_itemList_title').attr('href');

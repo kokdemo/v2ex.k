@@ -11,7 +11,8 @@ var checkUrl = function () {
         nodePageUrl : "",
         nodePageNum : 1,
         isRecent : "",
-        isList: false
+        isList: false,
+        isNotifi : false
     };
     var search = pageUrl['originUrl'].indexOf('?');
     if (search != -1) {
@@ -25,12 +26,19 @@ var checkUrl = function () {
     }
     var nodePosition = pageUrl['pureUrl'].indexOf('/go/');
     pageUrl['isRecent'] = pageUrl['pureUrl'].indexOf('/recent');
-    if(pageUrl['pureUrl'] == 'http://www.v2ex.com/' || pageUrl['pureUrl'] == 'https://www.v2ex.com/' || nodePosition != -1 || pageUrl['isRecent'] != -1){
+    if(pageUrl['pureUrl'] == 'http://www.v2ex.com/'
+        || pageUrl['pureUrl'] == 'https://www.v2ex.com/'
+        || pageUrl['pureUrl'] == 'http://v2ex.com/'
+        || nodePosition != -1
+        || pageUrl['isRecent'] != -1){
         //判断这些页面中包含列表
         pageUrl['isList'] = true;
         if(nodePosition != -1){
             pageUrl['nodeName'] = pageUrl['pureUrl'].slice(nodePosition + 4);
         }
+    }
+    if( pageUrl['pureUrl'].indexOf('/notifications') != -1){
+        pageUrl['isNotifi'] = true;
     }
     console.info(pageUrl);
     return pageUrl
@@ -87,6 +95,26 @@ var getUserInfo = function () {
     userInfo['ip'] = $($topDom[6]).attr('href');
     userInfo['logout'] = $($topDom[8]).attr('onclick');
     return userInfo
+};
+
+var getNotifications = function (pageUrl){
+    var $dom = $('.cell[id]');
+    var array = [];
+    var $tempitem;
+    for (var i= 0;i<$dom.length;i++){
+        $tempitem = $dom[i];
+        var arrayItem = {};
+        arrayItem['id'] = $($tempitem).attr('id');
+        $tempitem = $($tempitem).children('table').children('tbody').children('tr').children('td');
+        arrayItem['avatar'] = $($tempitem[0]).children('a').children('img').attr('src');
+        arrayItem['userUrl'] = $($tempitem[0]).children('a').attr('href');
+        arrayItem['userName'] = $($tempitem[1]).children('span').children('a:first').children('strong').text();
+        arrayItem['postUrl'] = $($tempitem[1]).children('span').children('a:nth-child(2)').attr('href');
+        arrayItem['postName'] = $($tempitem[1]).children('span').children('a:nth-child(2)').text();
+        arrayItem['reply'] = $($tempitem[1]).children('.payload').text();
+        array.push(arrayItem);
+    }
+    return array
 };
 
 var Slide = React.createClass({displayName: "Slide",
@@ -277,10 +305,6 @@ var NodeList = React.createClass({displayName: "NodeList",
 });
 
 var MainPage = React.createClass({displayName: "MainPage",
-    checkIframe: function () {
-        if (self != top) {
-        }
-    },
     render: function () {
         return(
             React.createElement("div", {id: "k_itemList"}, 
@@ -331,6 +355,37 @@ var ReplyArea = React.createClass({displayName: "ReplyArea",
     }
 });
 
+var NotificationItem = React.createClass({displayName: "NotificationItem",
+    render: function (){
+        return(
+            React.createElement("li", null, 
+                React.createElement("a", {className: "k_notifiList_avatar", href: this.props.item.userUrl}, 
+                    React.createElement("img", {src: this.props.item.avatar})
+                ), 
+                React.createElement("div", {className: "k_notifiList_title", href: this.props.item.postUrl}, 
+                    this.props.item.postName
+                ), 
+                React.createElement("div", {className: "k_notifiList_reply"}, 
+                    this.props.item.reply
+                )
+            ))
+    }
+});
+
+var Notification = React.createClass({displayName: "Notification",
+    render: function () {
+        var Dom = [];
+        for (var i = 0; i < this.props.NotificationList.length; i++) {
+            Dom.push(React.createElement(NotificationItem, {item: this.props.NotificationList[i]}))
+        }
+        return(
+            React.createElement("ul", {id: "k_notifiList"}, 
+                Dom
+            )
+            )
+    }
+});
+
 var MakeQR = function(dom,url){
     $(dom).qrcode({width: 128,height: 128,text: 'http://v2ex.com'+url});
 };
@@ -358,25 +413,47 @@ $(function () {
             document.getElementById('Main')
         );
     }
+    if(pageUrl['isNotifi'] === true){
+        var listData = getNotifications(pageUrl);
+        React.render(
+            React.createElement(Notification, {NotificationList: listData}),
+            document.getElementById('Main')
+        );
+    }
     $('.k_itemList_title').click(function () {
         var url = $(this).attr('href');
         console.info();
         $(this).parent().addClass('k_itemList_choosen');
         React.render(
-            React.createElement(FastReader, {width: '680px', height: $(window).height(), src: url}),
+            React.createElement(FastReader, {width: '680px', height: $(window).height(), src: 'http://www.v2ex.com'+url}),
             document.getElementById('Rightbar')
         );
         $('#Rightbar').width('680px');
         var item_title = $(window).width() - 140 - 680 - 20 - 80 - 48 - 20 - 10 - 25;
         $('.k_itemList_title').css('width', item_title);
     });
+     $('#k_notifiList li').click(function () {
+        var url = $(this).children('.k_notifiList_title').attr('href');
+        $(this).addClass('k_itemList_choosen');
+        React.render(
+            React.createElement(FastReader, {width: '680px', height: $(window).height(), src: url}),
+            document.getElementById('Rightbar')
+        );
+        $('#Rightbar').width('680px');
+        var item_title = $(window).width() - 140 - 680 - 20;
+         $('#k_notifiList').css('width', item_title);
+        console.info('11')
+    });
     $('.k_itemList_QR').click(function(){
         var url = $(this).parent().children('.k_itemList_title').attr('href');
-        MakeQR($('#k_hover'),url);
-        $('#k_hover').css('z-index',1000);
-        $('#k_hover').css('height',$(window).height());
-        $('#k_hover').css('width',$(window).width());
-        $('#k_hover').click(function(){
+        var $hover = $('#k_hover');
+        MakeQR($hover,url);
+        var hoverCss = {
+            "z-index":1000,
+            "height":$(window).height(),
+            "width":$(window).width()
+        };
+        $hover.css(hoverCss).click(function(){
             $('canvas').remove();
             $('#k_hover').css('z-index',-1);
         });
