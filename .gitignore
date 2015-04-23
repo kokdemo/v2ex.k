@@ -2,3 +2,9 @@
 .gitignore
 
 *.scssc
+
+### Sass template
+.sass-cache
+*.css.map
+
+

@@ -35,6 +35,8 @@ var checkUrl = function () {
         pageUrl['isList'] = true;
         if(nodePosition != -1){
             pageUrl['nodeName'] = pageUrl['pureUrl'].slice(nodePosition + 4);
+            pageUrl['nodeFavorite'] = $($('.f12')[0]).children('a').attr('href');
+            pageUrl['nodeDescribe'] = $($('.f12')[1]).text();
         }
     }
     if( pageUrl['pureUrl'].indexOf('/notifications') != -1){
@@ -118,66 +120,82 @@ var getNotifications = function (pageUrl){
 };
 
 var Slide = React.createClass({displayName: "Slide",
+    favorite:function(){
+        if(this.props.pageUrl['nodeName'] != ""){
+            return React.createElement("a", {href: this.props.pageUrl['nodeFavorite'], className: "tab k_color_hover"}, React.createElement("i", {className: "fa fa-heart"}))
+        }
+    },
+    newPost : function(){
+        if(this.props.pageUrl['nodeName'] != ""){
+            return( React.createElement("a", {href: "/new/"+this.props.pageUrl['nodeName'], title: "新主题"}, 
+                        React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"})
+                    )
+                )
+        }else{
+            return(React.createElement("a", {href: "/new", title: "新主题"}, 
+                        React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"})
+                    ))
+        }
+    },
     render: function () {
         var DomStyle = {
             height: $(window).height()
         };
-        var aClassName = 'top k_color_hover';
+        var aClassName = 'k_color_hover';
         return(
             React.createElement("div", null, 
-                React.createElement("div", {id: "k_navbar", style: DomStyle, classNameName: "bars k_color_dark"}, 
-                    React.createElement("a", {id: "avatar", href: '/member/' + this.props.info.userName, className: aClassName}, 
+                React.createElement("div", {id: "k_navbar", style: DomStyle, className: "k_color_dark"}, 
+                    React.createElement("a", {id: "avatar", href: '/member/' + this.props.info.userName}, 
                         React.createElement("img", {src: this.props.info.userAvatar})
                     ), 
-                    React.createElement("a", {href: "/notifications", className: aClassName}, 
+                    React.createElement("a", {href: "/notifications"}, 
                         React.createElement("i", {className: "fa fa-bell fa-2x", title: "提醒"}), this.props.info.notiNum
                     ), 
-                    React.createElement("a", {href: "/", className: aClassName, title: "首页"}, 
+                    React.createElement("a", {href: "/", title: "首页"}, 
                         React.createElement("i", {className: "fa fa-home fa-2x"})
                     ), 
-                    React.createElement("a", {href: "/new", className: aClassName, title: "新主题"}, 
-                        React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"})
-                    ), 
-                    React.createElement("a", {href: "/planes", className: aClassName, title: "节点"}, 
+                this.newPost(), 
+                    React.createElement("a", {href: "/planes", title: "节点"}, 
                         React.createElement("i", {className: "fa fa-th fa-2x"})
                     ), 
-                    React.createElement("a", {href: "//workspace.v2ex.com/", target: "_blank", className: aClassName, title: "工作空间"}, 
+                    React.createElement("a", {href: "//workspace.v2ex.com/", target: "_blank", title: "工作空间"}, 
                         React.createElement("i", {className: "fa fa-laptop fa-2x"})
                     ), 
-                    React.createElement("a", {href: "/notes", className: aClassName, title: "笔记"}, 
+                    React.createElement("a", {href: "/notes", title: "笔记"}, 
                         React.createElement("i", {className: "fa fa-book fa-2x"})
                     ), 
-                    React.createElement("a", {href: "/t", className: aClassName, title: "时间轴"}, 
+                    React.createElement("a", {href: "/t", title: "时间轴"}, 
                         React.createElement("i", {className: "fa fa-list-alt fa-2x"})
                     ), 
-                    React.createElement("a", {href: "/events", className: aClassName, title: "事件"}, 
+                    React.createElement("a", {href: "/events", title: "事件"}, 
                         React.createElement("i", {className: "fa fa-eye fa-2x"})
                     ), 
-                    React.createElement("a", {href: '/place/' + this.props.info.ip, className: aClassName, title: "附近"}, 
+                    React.createElement("a", {href: '/place/' + this.props.info.ip, title: "附近"}, 
                         React.createElement("i", {className: "fa fa-map-marker fa-2x"})
                     ), 
-                    React.createElement("a", {href: "/settings", className: aClassName, title: "设置"}, 
+                    React.createElement("a", {href: "/settings", title: "设置"}, 
                         React.createElement("i", {className: "fa fa-cog fa-2x"})
                     ), 
-                    React.createElement("a", {href: "#;", onclick: "if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }", className: aClassName, title: "退出"}, 
+                    React.createElement("a", {href: "#;", onclick: "if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }", title: "退出"}, 
                         React.createElement("i", {className: "fa fa-sign-out fa-2x"})
                     )
                 ), 
 
-                React.createElement("div", {id: "k_tabbar", className: "bars k_color_light"}, 
-                    React.createElement("a", {href: "/?tab=all", className: "tab k_color_hover"}, "全部"), 
-                    React.createElement("a", {href: "/?tab=tech", className: "tab k_color_hover"}, "技术"), 
-                    React.createElement("a", {href: "/?tab=creative", className: "tab k_color_hover"}, "创意"), 
-                    React.createElement("a", {href: "/?tab=play", className: "tab k_color_hover"}, "好玩"), 
-                    React.createElement("a", {href: "/?tab=apple", className: "tab k_color_hover"}, "Apple"), 
-                    React.createElement("a", {href: "/?tab=jobs", className: "tab k_color_hover"}, "酷工作"), 
-                    React.createElement("a", {href: "/?tab=deals", className: "tab k_color_hover"}, "交易"), 
-                    React.createElement("a", {href: "/?tab=city", className: "tab k_color_hover"}, "城市"), 
-                    React.createElement("a", {href: "/?tab=qna", className: "tab k_color_hover"}, "问与答"), 
-                    React.createElement("a", {href: "/?tab=hot", className: "tab k_color_hover"}, "最热"), 
-                    React.createElement("a", {href: "/?tab=r2", className: "tab k_color_hover"}, "R2"), 
-                    React.createElement("a", {href: "/?tab=nodes", className: "tab k_color_hover"}, "节点"), 
-                    React.createElement("a", {href: "/?tab=members", className: "tab k_color_hover"}, "关注")
+                React.createElement("div", {id: "k_tabbar", className: "k_color_light"}, 
+                    this.favorite(), 
+                    React.createElement("a", {href: "/?tab=all"}, "全部"), 
+                    React.createElement("a", {href: "/?tab=tech"}, "技术"), 
+                    React.createElement("a", {href: "/?tab=creative"}, "创意"), 
+                    React.createElement("a", {href: "/?tab=play"}, "好玩"), 
+                    React.createElement("a", {href: "/?tab=apple"}, "Apple"), 
+                    React.createElement("a", {href: "/?tab=jobs"}, "酷工作"), 
+                    React.createElement("a", {href: "/?tab=deals"}, "交易"), 
+                    React.createElement("a", {href: "/?tab=city"}, "城市"), 
+                    React.createElement("a", {href: "/?tab=qna"}, "问与答"), 
+                    React.createElement("a", {href: "/?tab=hot"}, "最热"), 
+                    React.createElement("a", {href: "/?tab=r2"}, "R2"), 
+                    React.createElement("a", {href: "/?tab=nodes"}, "节点"), 
+                    React.createElement("a", {href: "/?tab=members"}, "关注")
                 )
             )
             );
@@ -202,13 +220,13 @@ var ListItem = React.createClass({displayName: "ListItem",
     },
     nodeDom: function (pageUrl) {
         if (pageUrl['nodeName'] == "") {
-            return React.createElement("span", {className: "k_itemList_node"}, this.props.item.nodeText);
+            return React.createElement("span", null, this.props.item.nodeText);
         } else {
-            return React.createElement("span", {className: "k_itemList_node"}, this.props.nodeName);
+            return React.createElement("span", null, this.props.nodeName);
         }
     },
     getWidth: function () {
-        var width = $(window).width() - 140 - 270 - 20 - 80 - 48 - 20 - 10 - 10 -25;
+        var width = $(window).width() - 140 - 290 - 20 - 80 - 48 - 20 - 10 - 10 -25;
         return {
             width: width
         };
@@ -221,17 +239,18 @@ var ListItem = React.createClass({displayName: "ListItem",
                     React.createElement("img", {src: this.props.item.avatar})
                 ), 
                 React.createElement("div", {className: "k_itemList_node_vote"}, 
-                    React.createElement("a", {href: this.props.item.nodeUrl, className: 'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}, 
+                    React.createElement("a", {className: 'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}, 
                         React.createElement("span", null, 
                             React.createElement("i", {className: "fa fa-chevron-up"}), this.props.item.vote
                         )
                     ), 
-                    React.createElement("a", {href: this.props.item.nodeUrl, className: "k_itemList_reply"}, 
+                    React.createElement("a", {className: "k_itemList_reply"}, 
                         React.createElement("span", null, 
                             React.createElement("i", {className: "fa fa-reply"}), this.props.item.replyNum
                         )
                     ), 
-                    this.nodeDom(this.props.pageUrl)
+                    React.createElement("a", {className: "k_itemList_node", href: this.props.item.nodeUrl}, this.nodeDom(this.props.pageUrl))
+
                 ), 
                 React.createElement("div", {className: "k_itemList_title", style: this.getWidth(), href: this.props.item.postUrl}, 
                     this.props.item.title
@@ -295,12 +314,6 @@ var SubNav = React.createClass({displayName: "SubNav",
             Dom.push(React.createElement("a", {href: tempUrl}, tempText))
         }
         return React.createElement("div", {id: "k_subNav"}, Dom)
-    }
-});
-
-var NodeList = React.createClass({displayName: "NodeList",
-    render: function () {
-        var Dom = []
     }
 });
 
@@ -399,35 +412,41 @@ $(function () {
     }
 
     var userInfo = getUserInfo();
+    var pageUrl = checkUrl();
+
     React.render(
-        React.createElement(Slide, {info: userInfo}),
+        React.createElement(Slide, {info: userInfo, pageUrl: pageUrl}),
         document.getElementById('Top')
     );
 
-    var pageUrl = checkUrl();
+    var listData,nodeData;
     if (pageUrl['isList'] === true) {
-        var listData = getList(pageUrl);
-        var nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
+        listData = getList(pageUrl);
+        nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
         React.render(
             React.createElement(MainPage, {ListData: listData, NodeData: nodeData, pageUrl: pageUrl, NodeName: pageUrl['nodeName']}),
             document.getElementById('Main')
         );
-    }
-    if(pageUrl['isNotifi'] === true){
-        var listData = getNotifications(pageUrl);
+    }else if(pageUrl['isNotifi'] === true){
+        listData = getNotifications(pageUrl);
         React.render(
             React.createElement(Notification, {NotificationList: listData}),
             document.getElementById('Main')
         );
+    }else{
+        $('#Main').width('680px').css('margin-bottom','155px');
     }
+
+
     $('.k_itemList_title').click(function () {
         var url = $(this).attr('href');
-        console.info();
         $(this).parent().addClass('k_itemList_choosen');
+
         React.render(
             React.createElement(FastReader, {width: '680px', height: $(window).height(), src: 'http://www.v2ex.com'+url}),
             document.getElementById('Rightbar')
         );
+
         $('#Rightbar').width('680px');
         var item_title = $(window).width() - 140 - 680 - 20 - 80 - 48 - 20 - 10 - 25;
         $('.k_itemList_title').css('width', item_title);
@@ -435,14 +454,15 @@ $(function () {
      $('#k_notifiList li').click(function () {
         var url = $(this).children('.k_notifiList_title').attr('href');
         $(this).addClass('k_itemList_choosen');
+
         React.render(
             React.createElement(FastReader, {width: '680px', height: $(window).height(), src: url}),
             document.getElementById('Rightbar')
         );
+
         $('#Rightbar').width('680px');
         var item_title = $(window).width() - 140 - 680 - 20;
          $('#k_notifiList').css('width', item_title);
-        console.info('11')
     });
     $('.k_itemList_QR').click(function(){
         var url = $(this).parent().children('.k_itemList_title').attr('href');

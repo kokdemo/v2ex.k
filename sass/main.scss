@@ -65,6 +65,10 @@ body #Wrapper {
       padding: 15px 0;
       color: #fff;
     }
+    a:hover {
+      background-color: $color_hover;
+      color: $color_dark;
+    }
     #avatar img {
       width: 40px;
       border-radius: 50%;
@@ -87,6 +91,7 @@ body #Wrapper {
       margin-right: 0;
     }
     a:hover {
+      background-color: $color_hover;
       color: $color_dark;
     }
   }
@@ -94,13 +99,13 @@ body #Wrapper {
 
 #Main {
   width: auto;
-  margin: 0px 270px 0px 0px !important;
+  margin: 0px 270px auto 0px;
   overflow: scroll;
   background-color: $color_dark;
+  transition: width 2s ease-out;
   #Tabs {
     display: none;
   }
-  transition: width 2s ease-out;
   #k_itemList {
     width: auto;
     margin: 0 0 0 0;
@@ -165,8 +170,8 @@ body #Wrapper {
           padding-left: 10px;
           font-size: 16px;
           line-height: 24px;
-          //          width: 800px;
           height: 48px;
+          transition: width 0.5s ease-out;
 
         }
         .k_itemList_node_vote {
@@ -212,6 +217,7 @@ body #Wrapper {
           line-height: 48px;
         }
         .k_itemList_QR {
+          float: right;
           i {
             color: #FFF;
           }
@@ -270,27 +276,33 @@ body #Wrapper {
         line-height: 24px;
         height: 24px;
       }
-      .k_notifiList_reply{
+      .k_notifiList_reply {
         border-left: 4px solid $color_node;
         line-height: 18px;
         padding: 10px;
         margin-top: 5px;
-         background-color: $color_light;
+        background-color: $color_light;
         color: #FFFFFF;
       }
     }
   }
-}
 
-#Main.k_itemlist {
-  span.small.fade {
-    display: none;
+  .cell form {
+    height: 170px;
+    position: fixed;
+    bottom: 0;
+    width: 677px;
+    background-color: $color_background;
+    box-sizing: border-box;
+    margin-left: -11px;
+    padding: 10px;
   }
 }
-
-#Rightbar {
+@media screen and (min-width: 900px){
+  #Rightbar {
+  width: 300px;
   position: fixed;
-  right: 0;
+  right: 0px;
   top: 0;
   > div:not(#TopicsHot) {
     display: none;
@@ -322,41 +334,10 @@ body #Wrapper {
       background: #FFF !important;
       border: 1px solid rgb(221, 221, 221);
       height: 34px !important;
-
     }
   }
 }
 
-#k_faster {
-  padding: 10px 20px;
-  text-align: left;
-  margin: 0;
-  overflow: scroll;
-  font-size: 16px;
-  line-height: 30px;
-  cursor: pointer;
-  p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 30px;
-  }
-;
-  h2, h3 {
-    margin: 0;
-    font-size: 150%;
-    line-height: 40px;
-  }
-;
-  blockquote {
-    margin: 0;
-    padding: 5px 0 5px 15px;
-    border-left: 5px solid #ddd;
-    font-family: Georgia, "Times New Roman", Times, Kai, "Kaiti SC", KaiTi, BiauKai, FontAwesome, serif;
-  }
-;
-  * {
-    max-width: 690px;
-  }
 }
 
 #k_infos {
@@ -430,10 +411,10 @@ td a.count_livid.k_color_count {
   background-color: $color_background;
 }
 
-.k_color_hover:hover {
-  background-color: $color_hover;
-  color: $color_dark;
-}
+//.k_color_hover:hover {
+//  background-color: $color_hover;
+//  color: $color_dark;
+//}
 
 .k_color_item {
   background-color: $color_item;
@@ -524,15 +505,6 @@ a.fade {
 
 a:link, a:visited, a:active {
   color: #666E74;
-}
-
-a.top:link, a.top:visited {
-  color: #BBB;
-  font-size: 14px;
-}
-
-a.top:hover {
-  color: #333;
 }
 
 a.balance_area:link, a.balance_area:visited, .balance_area {
