@@ -2,53 +2,69 @@
  * Created by JiaHao on 2015/4/14 0014.
  */
 
+//    获取当前链接中所对应的信息
 var checkUrl = function () {
     var pageUrl = {
         originUrl :window.location.href,
-        pureUrl : "",
+        isHttps: false,
+        isIndex : false,
+        isSetting: false,
+        isNotification : false,
+        isRecent : false,
+        isTopic : false,
+        isList:false,
+        hostUrl : window.location.href,
         searchText : "",
-        nodeName : "",
-        nodePageUrl : "",
-        nodePageNum : 1,
-        isRecent : "",
-        isList: false,
-        isNotifi : false
+        routeText :""
     };
+//    判断https
+    pageUrl['isHttps'] = ('https:' == document.location.protocol);
+
     var search = pageUrl['originUrl'].indexOf('?');
     if (search != -1) {
         //如果链接中有问号，获取等号之后的内容，获取问号之前的内容。
-        pageUrl['pureUrl'] = pageUrl['originUrl'].slice(0, search);
         var tempPosition = pageUrl['originUrl'].indexOf('=');
         pageUrl['searchText'] = pageUrl['originUrl'].slice(tempPosition+1);
-        pageUrl['nodePageUrl'] = pageUrl['originUrl'].slice(0,tempPosition);
-    }else{
-        pageUrl['pureUrl'] = pageUrl['originUrl'];
+        pageUrl['hostUrl'] = pageUrl['originUrl'].slice(0,search);
     }
-    var nodePosition = pageUrl['pureUrl'].indexOf('/go/');
-    pageUrl['isRecent'] = pageUrl['pureUrl'].indexOf('/recent');
-    if(pageUrl['pureUrl'] == 'http://www.v2ex.com/'
-        || pageUrl['pureUrl'] == 'https://www.v2ex.com/'
-        || pageUrl['pureUrl'] == 'http://v2ex.com/'
-        || nodePosition != -1
-        || pageUrl['isRecent'] != -1){
-        //判断这些页面中包含列表
-        pageUrl['isList'] = true;
-        if(nodePosition != -1){
-            pageUrl['nodeName'] = pageUrl['pureUrl'].slice(nodePosition + 4);
-            pageUrl['nodeFavorite'] = $($('.f12')[0]).children('a').attr('href');
-            pageUrl['nodeDescribe'] = $($('.f12')[1]).text();
-        }
+
+    var hostUrl_last = pageUrl['hostUrl'].slice(-9);
+//    判断是否在首页
+    if(hostUrl_last === 'v2ex.com/'){
+        pageUrl['isIndex'] = true;
     }
-    if( pageUrl['pureUrl'].indexOf('/notifications') != -1){
-        pageUrl['isNotifi'] = true;
+
+//    判断是否在设置页
+    if(pageUrl['hostUrl'].indexOf('/settings') != -1){
+        pageUrl['isSetting'] = true;
     }
+
+//    判断是否在设置页
+    if(pageUrl['hostUrl'].indexOf('/notifications') != -1){
+        pageUrl['isSetting'] = true;
+    }
+
+//    判断是否在最新页
+    if(pageUrl['hostUrl'].indexOf('/recent') != -1){
+        pageUrl['isRecent'] = true;
+    }
+
+//  判断是否在话题页
+    if(pageUrl['hostUrl'].indexOf('/go/') != -1){
+        pageUrl['isTopic'] = true;
+        pageUrl['routeText'] = pageUrl['hostUrl'].split('/').pop();
+    }
+
+    pageUrl['isList'] = pageUrl['isIndex']||pageUrl['isRecent']||pageUrl['isTopic'];
+
+    console.info(pageUrl);
     return pageUrl
 };
 
 var getList = function (pageUrl) {
     var itemList = [];
     var $itemDom;
-    if (pageUrl['nodeName'] != "") {
+    if (pageUrl['isTopic']) {
         $itemDom = $('#TopicsNode').children('.cell')
     } else {
         $itemDom = $('.cell.item');
@@ -118,23 +134,18 @@ var getNotifications = function (pageUrl){
     return array
 };
 
-var Slide = React.createClass({displayName: "Slide",
+var SideBar = React.createClass({displayName: "SideBar",
     favorite:function(){
-        if(this.props.pageUrl['nodeName'] != ""){
-            return React.createElement("a", {href: this.props.pageUrl['nodeFavorite'], className: "tab k_color_hover"}, React.createElement("i", {className: "fa fa-heart"}))
+        if(this.props.pageUrl['isTopic']){
+            return React.createElement("a", {href: ""}, React.createElement("i", {className: "fa fa-heart"}))
         }
     },
     newPost : function(){
-        if(this.props.pageUrl['nodeName'] != ""){
-            return( React.createElement("a", {href: "/new/"+this.props.pageUrl['nodeName'], title: "新主题"}, 
-                        React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"})
-                    )
-                )
-        }else{
-            return(React.createElement("a", {href: "/new", title: "新主题"}, 
-                        React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"})
-                    ))
+        var href = "/new/";
+        if(this.props.pageUrl['isTopic']){
+            href = "/new/"+this.props.pageUrl['routeText'];
         }
+        return(React.createElement("a", {href: href, title: "新主题"}, React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"})))
     },
     render: function () {
         var DomStyle = {
@@ -142,18 +153,18 @@ var Slide = React.createClass({displayName: "Slide",
         };
         var aClassName = 'k_color_hover';
         return(
-            React.createElement("div", null, 
+            React.createElement("div", {id: "k_sidebar"}, 
                 React.createElement("div", {id: "k_navbar", style: DomStyle, className: "k_color_dark"}, 
                     React.createElement("a", {id: "avatar", href: '/member/' + this.props.info.userName}, 
                         React.createElement("img", {src: this.props.info.userAvatar})
                     ), 
-                    React.createElement("a", {href: "/notifications"}, 
-                        React.createElement("i", {className: "fa fa-bell fa-2x", title: "提醒"}), this.props.info.notiNum
+                    React.createElement("a", {href: "/notifications", title: "提醒"}, 
+                        React.createElement("i", {className: "fa fa-bell fa-2x"}), this.props.info.notiNum
                     ), 
                     React.createElement("a", {href: "/", title: "首页"}, 
                         React.createElement("i", {className: "fa fa-home fa-2x"})
                     ), 
-                this.newPost(), 
+                    this.newPost(), 
                     React.createElement("a", {href: "/planes", title: "节点"}, 
                         React.createElement("i", {className: "fa fa-th fa-2x"})
                     ), 
@@ -253,9 +264,6 @@ var ListItem = React.createClass({displayName: "ListItem",
                 ), 
                 React.createElement("div", {className: "k_itemList_title", style: this.getWidth(), href: this.props.item.postUrl}, 
                     this.props.item.title
-                ), 
-                React.createElement("a", {className: "k_itemList_QR"}, 
-                    React.createElement("i", {className: "fa fa-qrcode fa-2x"})
                 )
             )
             )
@@ -263,7 +271,7 @@ var ListItem = React.createClass({displayName: "ListItem",
 });
 var List = React.createClass({displayName: "List",
     morePost: function () {
-        if(this.props.pageUrl['nodeName'] != "" ||this.props.pageUrl['isRecent'] != -1){
+        if(this.props.pageUrl['isTopic']||this.props.pageUrl['isRecent']){
             if(this.props.pageUrl['searchText'] == "" ||this.props.pageUrl['searchText'] == "1"){
                 //第一页
                 return(
@@ -414,7 +422,7 @@ $(function () {
     var pageUrl = checkUrl();
 
     React.render(
-        React.createElement(Slide, {info: userInfo, pageUrl: pageUrl}),
+        React.createElement(SideBar, {info: userInfo, pageUrl: pageUrl}),
         document.getElementById('Top')
     );
 
@@ -424,13 +432,13 @@ $(function () {
         nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
         React.render(
             React.createElement(MainPage, {ListData: listData, NodeData: nodeData, pageUrl: pageUrl, NodeName: pageUrl['nodeName']}),
-            document.getElementById('Main')
+            document.getElementById('Wrapper')
         );
     }else if(pageUrl['isNotifi'] === true){
         listData = getNotifications(pageUrl);
         React.render(
             React.createElement(Notification, {NotificationList: listData}),
-            document.getElementById('Main')
+            document.getElementById('Wrapper')
         );
     }else{
         $('#Main').width('680px').css('margin-bottom','155px');
