@@ -145,53 +145,50 @@ var SideBar = React.createClass({
         if(this.props.pageUrl['isTopic']){
             href = "/new/"+this.props.pageUrl['routeText'];
         }
-        return(<a href={href} title="新主题"><i className="fa fa-pencil-square-o fa-2x"></i></a>)
+        return(<a href={href} title="新主题"><i className="fa fa-pencil-square-o fa-2x"></i><span>新主题</span></a>)
     },
     render: function () {
-        var DomStyle = {
-            height: $(window).height()
-        };
         var aClassName = 'k_color_hover';
         return(
             <div id="k_sidebar">
-                <div id="k_navbar" style={DomStyle} className="k_color_dark">
-                    <a id="avatar" href={'/member/' + this.props.info.userName} >
-                        <img src={this.props.info.userAvatar}/>
+                <div id="k_navbar">
+                    <a id="k_avatar" href={'/member/' + this.props.userInfo.userName} >
+                        <img src={this.props.userInfo.userAvatar}/><span>{this.props.userInfo.userName}</span>
                     </a>
                     <a href="/notifications" title="提醒">
-                        <i className="fa fa-bell fa-2x" ></i>{this.props.info.notiNum}
+                        <i className="fa fa-bell fa-2x" ></i><span>提醒</span>
                     </a>
                     <a href="/"  title="首页">
-                        <i className="fa fa-home fa-2x"></i>
+                        <i className="fa fa-home fa-2x"></i><span>首页</span>
                     </a>
                     {this.newPost()}
                     <a href="/planes"  title="节点">
-                        <i className="fa fa-th fa-2x"></i>
+                        <i className="fa fa-th fa-2x"></i><span>节点</span>
                     </a>
                     <a href="//workspace.v2ex.com/" target="_blank"  title="工作空间">
-                        <i className="fa fa-laptop fa-2x"></i>
+                        <i className="fa fa-laptop fa-2x"></i><span>工作空间</span>
                     </a>
                     <a href="/notes"  title="笔记">
-                        <i className="fa fa-book fa-2x" ></i>
+                        <i className="fa fa-book fa-2x" ></i><span>笔记</span>
                     </a>
                     <a href="/t"  title="时间轴">
-                        <i className="fa fa-list-alt fa-2x" ></i>
+                        <i className="fa fa-list-alt fa-2x" ></i><span>时间轴</span>
                     </a>
                     <a href="/events"  title="事件">
-                        <i className="fa fa-eye fa-2x"></i>
+                        <i className="fa fa-eye fa-2x"></i><span>事件</span>
                     </a>
-                    <a href={'/place/' + this.props.info.ip}  title="附近">
-                        <i className="fa fa-map-marker fa-2x"></i>
+                    <a href={'/place/' + this.props.userInfo.ip}  title="附近">
+                        <i className="fa fa-map-marker fa-2x"></i><span>附近</span>
                     </a>
                     <a href="/settings"  title="设置">
-                        <i className="fa fa-cog fa-2x"></i>
+                        <i className="fa fa-cog fa-2x"></i><span>设置</span>
                     </a>
                     <a href="#;" onclick="if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }"  title="退出">
-                        <i className="fa fa-sign-out fa-2x" ></i>
+                        <i className="fa fa-sign-out fa-2x" ></i><span>退出</span>
                     </a>
                 </div>
 
-                <div id="k_tabbar" className="k_color_light">
+                <div id="k_tabbar">
                     {this.favorite()}
                     <a href="/?tab=all" >全部</a>
                     <a href="/?tab=tech" >技术</a>
@@ -229,14 +226,14 @@ var ListItem = React.createClass({
         return className
     },
     nodeDom: function (pageUrl) {
-        if (pageUrl['nodeName'] == "") {
+        if (!pageUrl['isTopic']) {
             return <span >{this.props.item.nodeText}</span>;
         } else {
             return <span >{this.props.nodeName}</span>;
         }
     },
     getWidth: function () {
-        var width = $(window).width() - 140 - 290 - 20 - 80 - 48 - 20 - 10 - 10 -25;
+        var width = $(window).width() - 140 - 680 - 20 - 48 - 20 - 10 - 10 -25 -23;
         return {
             width: width
         };
@@ -262,7 +259,7 @@ var ListItem = React.createClass({
                     <a className='k_itemList_node' href={this.props.item.nodeUrl}>{this.nodeDom(this.props.pageUrl)}</a>
 
                 </div>
-                <div className='k_itemList_title' style = {this.getWidth()} href={this.props.item.postUrl}>
+                <div className='k_itemList_title' style={this.getWidth()} href={this.props.item.postUrl}>
                     {this.props.item.title}
                 </div>
             </li>
@@ -325,9 +322,15 @@ var SubNav = React.createClass({
 });
 
 var MainPage = React.createClass({
+    getWidth: function () {
+        var width = $(window).width() - 140 - 680;
+        return {
+            width: width
+        };
+    },
     render: function () {
         return(
-            <div id='k_itemList'>
+            <div id='k_itemList' style={this.getWidth()}>
                 <div id='k_hover'></div>
                 <SubNav node={this.props.NodeData} />
                 <List list={this.props.ListData} pageUrl={this.props.pageUrl} nodeName = {this.props.NodeName}/>
@@ -336,20 +339,25 @@ var MainPage = React.createClass({
     }
 });
 
-var TopList = React.createClass({
+
+
+var Container = React.createClass({
     render: function () {
-        var Dom = [];
-        for (var i = 0; i < this.props.topList.length; i++) {
-            var temp = this.props.topList[i];
-            var tempUrl = $(temp).attr('href');
-            var tempText = $(temp).text();
-            Dom.push(<a href={tempUrl}>{tempText}</a>)
-        }
-        return(
-            <div id='k_topList'>
-                {Dom}
+        if (self == top) {
+            return(
+                <div id='k_container'>
+                    <SideBar userInfo={this.props.userInfo} pageUrl={this.props.pageUrl}/>
+                    <div id="k_main"></div>
+                    <div id="k_faster" ></div>
+                </div>
+                )
+        }else{
+            return(
+            <div id='k_container'>
+                 <div id="k_faster"></div>
             </div>
             )
+        }
     }
 });
 
@@ -412,36 +420,31 @@ var MakeQR = function(dom,url){
 
 
 $(function () {
-    if (self != top) {
-        $('#Top,#Rightbar').css('display', 'none');
-        $('#Wrapper').css('margin-left', '0');
-        $("#Wrapper,#Main").css('width', '680px');
-    }
-
     var userInfo = getUserInfo();
     var pageUrl = checkUrl();
-
-    React.render(
-        <SideBar info={userInfo} pageUrl={pageUrl}/>,
-        document.getElementById('Top')
-    );
-
     var listData,nodeData;
-    if (pageUrl['isList'] === true) {
+    if (pageUrl['isList']) {
         listData = getList(pageUrl);
         nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
+    }
+    var mainDom = $('#Main').html();
+
+    React.render(
+        <Container userInfo={userInfo} pageUrl={pageUrl}/>,
+        document.body
+    );
+
+    console.info(mainDom);
+
+
+    if (pageUrl['isList']) {
         React.render(
             <MainPage ListData={listData} NodeData={nodeData} pageUrl={pageUrl} NodeName = {pageUrl['nodeName']}/>,
-            document.getElementById('Wrapper')
-        );
-    }else if(pageUrl['isNotifi'] === true){
-        listData = getNotifications(pageUrl);
-        React.render(
-            <Notification NotificationList={listData}/>,
-            document.getElementById('Wrapper')
+            document.getElementById('k_main')
         );
     }else{
-        $('#Main').width('680px').css('margin-bottom','155px');
+        console.info('ss');
+        $('#k_main').html(mainDom);
     }
 
 
@@ -451,26 +454,22 @@ $(function () {
 
         React.render(
             <FastReader width={'680px'} height={$(window).height()} src={'http://www.v2ex.com'+url}/>,
-            document.getElementById('Rightbar')
+            document.getElementById('k_faster')
         );
-
-        $('#Rightbar').width('680px');
-        var item_title = $(window).width() - 140 - 680 - 20 - 80 - 48 - 20 - 10 - 25;
-        $('.k_itemList_title').css('width', item_title);
     });
-     $('#k_notifiList li').click(function () {
-        var url = $(this).children('.k_notifiList_title').attr('href');
-        $(this).addClass('k_itemList_choosen');
-
-        React.render(
-            <FastReader width={'680px'} height={$(window).height()} src={url}/>,
-            document.getElementById('Rightbar')
-        );
-
-        $('#Rightbar').width('680px');
-        var item_title = $(window).width() - 140 - 680 - 20;
-         $('#k_notifiList').css('width', item_title);
-    });
+//     $('#k_notifiList li').click(function () {
+//        var url = $(this).children('.k_notifiList_title').attr('href');
+//        $(this).addClass('k_itemList_choosen');
+//
+//        React.render(
+//            <FastReader width={'680px'} height={$(window).height()} src={url}/>,
+//            document.getElementById('k_faster')
+//        );
+//
+//        $('#Rightbar').width('680px');
+//        var item_title = $(window).width() - 140 - 680 - 20;
+//         $('#k_notifiList').css('width', item_title);
+//    });
     $('.k_itemList_QR').click(function(){
         var url = $(this).parent().children('.k_itemList_title').attr('href');
         var $hover = $('#k_hover');
