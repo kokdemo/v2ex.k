@@ -444,7 +444,7 @@ $(function () {
         );
     }else{
         console.info('ss');
-        $('#k_main').html(mainDom);
+        $('#k_faster').html(mainDom);
     }
 
 
