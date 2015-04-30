@@ -5,17 +5,18 @@
 //    获取当前链接中所对应的信息
 var checkUrl = function () {
     var pageUrl = {
-        originUrl :window.location.href,
+        originUrl: window.location.href,
         isHttps: false,
-        isIndex : false,
+        isIndex: false,
         isSetting: false,
-        isNotification : false,
-        isRecent : false,
-        isTopic : false,
-        isList:false,
-        hostUrl : window.location.href,
-        searchText : "",
-        routeText :""
+        isNotification: false,
+        isRecent: false,
+        isTopic: false,
+        isList: false,
+        ifLogin: true,
+        hostUrl: window.location.href,
+        searchText: "",
+        routeText: ""
     };
 //    判断https
     pageUrl['isHttps'] = ('https:' == document.location.protocol);
@@ -24,38 +25,41 @@ var checkUrl = function () {
     if (search != -1) {
         //如果链接中有问号，获取等号之后的内容，获取问号之前的内容。
         var tempPosition = pageUrl['originUrl'].indexOf('=');
-        pageUrl['searchText'] = pageUrl['originUrl'].slice(tempPosition+1);
-        pageUrl['hostUrl'] = pageUrl['originUrl'].slice(0,search);
+        pageUrl['searchText'] = pageUrl['originUrl'].slice(tempPosition + 1);
+        pageUrl['hostUrl'] = pageUrl['originUrl'].slice(0, search);
     }
 
     var hostUrl_last = pageUrl['hostUrl'].slice(-9);
 //    判断是否在首页
-    if(hostUrl_last === 'v2ex.com/'){
+    if (hostUrl_last === 'v2ex.com/') {
         pageUrl['isIndex'] = true;
     }
 
 //    判断是否在设置页
-    if(pageUrl['hostUrl'].indexOf('/settings') != -1){
+    if (pageUrl['hostUrl'].indexOf('/settings') != -1) {
         pageUrl['isSetting'] = true;
     }
 
 //    判断是否在设置页
-    if(pageUrl['hostUrl'].indexOf('/notifications') != -1){
+    if (pageUrl['hostUrl'].indexOf('/notifications') != -1) {
         pageUrl['isSetting'] = true;
     }
 
 //    判断是否在最新页
-    if(pageUrl['hostUrl'].indexOf('/recent') != -1){
+    if (pageUrl['hostUrl'].indexOf('/recent') != -1) {
         pageUrl['isRecent'] = true;
     }
 
 //  判断是否在话题页
-    if(pageUrl['hostUrl'].indexOf('/go/') != -1){
+    if (pageUrl['hostUrl'].indexOf('/go/') != -1) {
         pageUrl['isTopic'] = true;
         pageUrl['routeText'] = pageUrl['hostUrl'].split('/').pop();
     }
 
-    pageUrl['isList'] = pageUrl['isIndex']||pageUrl['isRecent']||pageUrl['isTopic'];
+    //  判断是否登陆
+    pageUrl['ifLogin'] = ($('#Top').find('.top').length != 3);
+
+    pageUrl['isList'] = pageUrl['isIndex'] || pageUrl['isRecent'] || pageUrl['isTopic'];
 
     console.info(pageUrl);
     return pageUrl
@@ -114,11 +118,11 @@ var getUserInfo = function () {
     return userInfo
 };
 
-var getNotifications = function (pageUrl){
+var getNotifications = function (pageUrl) {
     var $dom = $('.cell[id]');
     var array = [];
     var $tempitem;
-    for (var i= 0;i<$dom.length;i++){
+    for (var i = 0; i < $dom.length; i++) {
         $tempitem = $dom[i];
         var arrayItem = {};
         arrayItem['id'] = $($tempitem).attr('id');
@@ -135,58 +139,99 @@ var getNotifications = function (pageUrl){
 };
 
 var SideBar = React.createClass({displayName: "SideBar",
-    favorite:function(){
-        if(this.props.pageUrl['isTopic']){
-            return React.createElement("a", {href: ""}, React.createElement("i", {className: "fa fa-heart"}))
+    favorite: function () {
+        if (this.props.pageUrl['isTopic']) {
+            return React.createElement("a", {href: ""}, 
+                React.createElement("i", {className: "fa fa-heart"})
+            )
         }
     },
-    newPost : function(){
+    newPost: function () {
         var href = "/new/";
-        if(this.props.pageUrl['isTopic']){
-            href = "/new/"+this.props.pageUrl['routeText'];
+        if (this.props.pageUrl['isTopic']) {
+            href = "/new/" + this.props.pageUrl['routeText'];
         }
-        return(React.createElement("a", {href: href, title: "新主题"}, React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"}), React.createElement("span", null, "新主题")))
+        return(React.createElement("a", {href: href, title: "新主题"}, 
+            React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"}), 
+            React.createElement("span", null, "新主题")
+        ))
+    },
+    login: function () {
+        if (this.props.pageUrl['ifLogin']) {
+            return(
+                React.createElement("div", {id: "k_navbar"}, 
+                    React.createElement("a", {id: "k_avatar", href: '/member/' + this.props.userInfo.userName}, 
+                        React.createElement("img", {src: this.props.userInfo.userAvatar}), 
+                        React.createElement("span", null, this.props.userInfo.userName)
+                    ), 
+                    React.createElement("a", {href: "/notifications", title: "提醒"}, 
+                        React.createElement("i", {className: "fa fa-bell fa-2x"}), 
+                        React.createElement("span", null, "提醒")
+                    ), 
+                    React.createElement("a", {href: "/", title: "首页"}, 
+                        React.createElement("i", {className: "fa fa-home fa-2x"}), 
+                        React.createElement("span", null, "首页")
+                    ), 
+                    this.newPost(), 
+                    React.createElement("a", {href: "/planes", title: "节点"}, 
+                        React.createElement("i", {className: "fa fa-th fa-2x"}), 
+                        React.createElement("span", null, "节点")
+                    ), 
+                    React.createElement("a", {href: "//workspace.v2ex.com/", target: "_blank", title: "工作空间"}, 
+                        React.createElement("i", {className: "fa fa-laptop fa-2x"}), 
+                        React.createElement("span", null, "工作空间")
+                    ), 
+                    React.createElement("a", {href: "/notes", title: "笔记"}, 
+                        React.createElement("i", {className: "fa fa-book fa-2x"}), 
+                        React.createElement("span", null, "笔记")
+                    ), 
+                    React.createElement("a", {href: "/t", title: "时间轴"}, 
+                        React.createElement("i", {className: "fa fa-list-alt fa-2x"}), 
+                        React.createElement("span", null, "时间轴")
+                    ), 
+                    React.createElement("a", {href: "/events", title: "事件"}, 
+                        React.createElement("i", {className: "fa fa-eye fa-2x"}), 
+                        React.createElement("span", null, "事件")
+                    ), 
+                    React.createElement("a", {href: '/place/' + this.props.userInfo.ip, title: "附近"}, 
+                        React.createElement("i", {className: "fa fa-map-marker fa-2x"}), 
+                        React.createElement("span", null, "附近")
+                    ), 
+                    React.createElement("a", {href: "/settings", title: "设置"}, 
+                        React.createElement("i", {className: "fa fa-cog fa-2x"}), 
+                        React.createElement("span", null, "设置")
+                    ), 
+                    React.createElement("a", {href: "#;", onclick: "if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }", title: "退出"}, 
+                        React.createElement("i", {className: "fa fa-sign-out fa-2x"}), 
+                        React.createElement("span", null, "退出")
+                    )
+                )
+                )
+
+        } else {
+            return(
+                React.createElement("div", {id: "k_navbar"}, 
+                    React.createElement("a", {href: "/", title: "首页"}, 
+                        React.createElement("i", {className: "fa fa-home fa-2x"}), 
+                        React.createElement("span", null, "首页")
+                    ), 
+                    React.createElement("a", {href: "/signup", title: "注册"}, 
+                        React.createElement("i", {className: "fa fa-user fa-2x"}), 
+                        React.createElement("span", null, "注册")
+                    ), 
+                    React.createElement("a", {href: "/signin", title: "登陆"}, 
+                        React.createElement("i", {className: "fa fa-sign-in fa-2x"}), 
+                        React.createElement("span", null, "登陆")
+                    )
+                )
+                )
+        }
     },
     render: function () {
         var aClassName = 'k_color_hover';
         return(
             React.createElement("div", {id: "k_sidebar"}, 
-                React.createElement("div", {id: "k_navbar"}, 
-                    React.createElement("a", {id: "k_avatar", href: '/member/' + this.props.userInfo.userName}, 
-                        React.createElement("img", {src: this.props.userInfo.userAvatar}), React.createElement("span", null, this.props.userInfo.userName)
-                    ), 
-                    React.createElement("a", {href: "/notifications", title: "提醒"}, 
-                        React.createElement("i", {className: "fa fa-bell fa-2x"}), React.createElement("span", null, "提醒")
-                    ), 
-                    React.createElement("a", {href: "/", title: "首页"}, 
-                        React.createElement("i", {className: "fa fa-home fa-2x"}), React.createElement("span", null, "首页")
-                    ), 
-                    this.newPost(), 
-                    React.createElement("a", {href: "/planes", title: "节点"}, 
-                        React.createElement("i", {className: "fa fa-th fa-2x"}), React.createElement("span", null, "节点")
-                    ), 
-                    React.createElement("a", {href: "//workspace.v2ex.com/", target: "_blank", title: "工作空间"}, 
-                        React.createElement("i", {className: "fa fa-laptop fa-2x"}), React.createElement("span", null, "工作空间")
-                    ), 
-                    React.createElement("a", {href: "/notes", title: "笔记"}, 
-                        React.createElement("i", {className: "fa fa-book fa-2x"}), React.createElement("span", null, "笔记")
-                    ), 
-                    React.createElement("a", {href: "/t", title: "时间轴"}, 
-                        React.createElement("i", {className: "fa fa-list-alt fa-2x"}), React.createElement("span", null, "时间轴")
-                    ), 
-                    React.createElement("a", {href: "/events", title: "事件"}, 
-                        React.createElement("i", {className: "fa fa-eye fa-2x"}), React.createElement("span", null, "事件")
-                    ), 
-                    React.createElement("a", {href: '/place/' + this.props.userInfo.ip, title: "附近"}, 
-                        React.createElement("i", {className: "fa fa-map-marker fa-2x"}), React.createElement("span", null, "附近")
-                    ), 
-                    React.createElement("a", {href: "/settings", title: "设置"}, 
-                        React.createElement("i", {className: "fa fa-cog fa-2x"}), React.createElement("span", null, "设置")
-                    ), 
-                    React.createElement("a", {href: "#;", onclick: "if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }", title: "退出"}, 
-                        React.createElement("i", {className: "fa fa-sign-out fa-2x"}), React.createElement("span", null, "退出")
-                    )
-                ), 
+                this.login(), 
 
                 React.createElement("div", {id: "k_tabbar"}, 
                     this.favorite(), 
@@ -233,7 +278,7 @@ var ListItem = React.createClass({displayName: "ListItem",
         }
     },
     getWidth: function () {
-        var width = $(window).width() - 140 - 680 - 20 - 48 - 20 - 10 - 10 -25 -23;
+        var width = $(window).width() - 140 - 680 - 20 - 48 - 20 - 10 - 10 - 25 - 23;
         return {
             width: width
         };
@@ -268,27 +313,27 @@ var ListItem = React.createClass({displayName: "ListItem",
 });
 var List = React.createClass({displayName: "List",
     morePost: function () {
-        if(this.props.pageUrl['isTopic']||this.props.pageUrl['isRecent']){
-            if(this.props.pageUrl['searchText'] == "" ||this.props.pageUrl['searchText'] == "1"){
+        if (this.props.pageUrl['isTopic'] || this.props.pageUrl['isRecent']) {
+            if (this.props.pageUrl['searchText'] == "" || this.props.pageUrl['searchText'] == "1") {
                 //第一页
                 return(
-                React.createElement("li", null, 
-                    React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['pureUrl'] +'?p=2'}, "下一页")
-                )
-                )
-            }else{
+                    React.createElement("li", null, 
+                        React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['pureUrl'] + '?p=2'}, "下一页")
+                    )
+                    )
+            } else {
                 return(
-                 //第n页
-                React.createElement("li", null, 
-                    React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) - 1)}, "上一页"), 
-                    React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) + 1)}, "下一页")
-                )
-                )
+                    //第n页
+                    React.createElement("li", null, 
+                        React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] + '=' + (parseInt(this.props.pageUrl['searchText']) - 1)}, "上一页"), 
+                        React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] + '=' + (parseInt(this.props.pageUrl['searchText']) + 1)}, "下一页")
+                    )
+                    )
             }
-        }else{
+        } else {
             return React.createElement("li", null, 
-            React.createElement("a", {className: "k_itemList_more", href: "/recent"}, "更多新主题")
-        )
+                React.createElement("a", {className: "k_itemList_more", href: "/recent"}, "更多新主题")
+            )
         }
 
     },
@@ -340,23 +385,32 @@ var MainPage = React.createClass({displayName: "MainPage",
 });
 
 
-
 var Container = React.createClass({displayName: "Container",
     render: function () {
         if (self == top) {
-            return(
+            if(this.props.pageUrl['isList']){
+                return(
                 React.createElement("div", {id: "k_container"}, 
                     React.createElement(SideBar, {userInfo: this.props.userInfo, pageUrl: this.props.pageUrl}), 
                     React.createElement("div", {id: "k_main"}), 
                     React.createElement("div", {id: "k_faster"})
                 )
                 )
-        }else{
+            }else{
+                return(
+                React.createElement("div", {id: "k_container"}, 
+                    React.createElement(SideBar, {userInfo: this.props.userInfo, pageUrl: this.props.pageUrl}), 
+                    React.createElement("div", {id: "k_main"})
+                )
+                )
+            }
+
+        } else {
             return(
-            React.createElement("div", {id: "k_container"}, 
-                 React.createElement("div", {id: "k_faster"})
-            )
-            )
+                React.createElement("div", {id: "k_container"}, 
+                    React.createElement("div", {id: "k_faster"})
+                )
+                )
         }
     }
 });
@@ -384,7 +438,7 @@ var ReplyArea = React.createClass({displayName: "ReplyArea",
 });
 
 var NotificationItem = React.createClass({displayName: "NotificationItem",
-    render: function (){
+    render: function () {
         return(
             React.createElement("li", null, 
                 React.createElement("a", {className: "k_notifiList_avatar", href: this.props.item.userUrl}, 
@@ -414,15 +468,15 @@ var Notification = React.createClass({displayName: "Notification",
     }
 });
 
-var MakeQR = function(dom,url){
-    $(dom).qrcode({width: 128,height: 128,text: 'http://v2ex.com'+url});
+var MakeQR = function (dom, url) {
+    $(dom).qrcode({width: 128, height: 128, text: 'http://v2ex.com' + url});
 };
 
 
 $(function () {
     var userInfo = getUserInfo();
     var pageUrl = checkUrl();
-    var listData,nodeData;
+    var listData, nodeData;
     if (pageUrl['isList']) {
         listData = getList(pageUrl);
         nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
@@ -433,17 +487,17 @@ $(function () {
         React.createElement(Container, {userInfo: userInfo, pageUrl: pageUrl}),
         document.body
     );
-
-    console.info(mainDom);
-
-
-    if (pageUrl['isList']) {
-        React.render(
-            React.createElement(MainPage, {ListData: listData, NodeData: nodeData, pageUrl: pageUrl, NodeName: pageUrl['nodeName']}),
-            document.getElementById('k_main')
-        );
+//先判断是否为ifame，再判断是否为列表
+    if (self == top) {
+        if (pageUrl['isList']) {
+            React.render(
+                React.createElement(MainPage, {ListData: listData, NodeData: nodeData, pageUrl: pageUrl, NodeName: pageUrl['nodeName']}),
+                document.getElementById('k_main')
+            );
+        } else {
+            $('#k_main').html(mainDom);
+        }
     }else{
-        console.info('ss');
         $('#k_faster').html(mainDom);
     }
 
@@ -453,7 +507,7 @@ $(function () {
         $(this).parent().addClass('k_itemList_choosen');
 
         React.render(
-            React.createElement(FastReader, {width: '680px', height: $(window).height(), src: 'http://www.v2ex.com'+url}),
+            React.createElement(FastReader, {width: '680px', height: $(window).height(), src: 'http://www.v2ex.com' + url}),
             document.getElementById('k_faster')
         );
     });
@@ -470,18 +524,18 @@ $(function () {
 //        var item_title = $(window).width() - 140 - 680 - 20;
 //         $('#k_notifiList').css('width', item_title);
 //    });
-    $('.k_itemList_QR').click(function(){
+    $('.k_itemList_QR').click(function () {
         var url = $(this).parent().children('.k_itemList_title').attr('href');
         var $hover = $('#k_hover');
-        MakeQR($hover,url);
+        MakeQR($hover, url);
         var hoverCss = {
-            "z-index":1000,
-            "height":$(window).height(),
-            "width":$(window).width()
+            "z-index": 1000,
+            "height": $(window).height(),
+            "width": $(window).width()
         };
-        $hover.css(hoverCss).click(function(){
+        $hover.css(hoverCss).click(function () {
             $('canvas').remove();
-            $('#k_hover').css('z-index',-1);
+            $('#k_hover').css('z-index', -1);
         });
     });
 });
