@@ -359,6 +359,8 @@ body {
 #k_faster{
   display: inline-block;
   position: fixed;
+  overflow-y: scroll;
+  overflow-x: hidden;
   right: 0;
   top: 0;
   width: 680px;

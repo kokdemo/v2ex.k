@@ -14,6 +14,7 @@ var checkUrl = function () {
         isTopic: false,
         isList: false,
         isPost: false,
+        ifLogin: true,
         hostUrl: window.location.href,
         searchText: "",
         routeText: ""
@@ -62,8 +63,10 @@ var checkUrl = function () {
         pageUrl['routeText'] = pageUrl['hostUrl'].split('/').pop();
     }
 
+    //  判断是否登陆
+    pageUrl['ifLogin'] = ($('#Top').find('.top').length != 3);
     pageUrl['isList'] = pageUrl['isIndex'] || pageUrl['isRecent'] || pageUrl['isTopic'];
-    console.info(pageUrl);
+
     return pageUrl
 };
 
@@ -185,10 +188,9 @@ var SideBar = React.createClass({
         }
         return doms
     },
-    render: function () {
-        var aClassName = 'k_color_hover';
-        return(
-            <div id="k_sidebar">
+    login: function () {
+        if (this.props.pageUrl['ifLogin']) {
+            return(
                 <div id="k_navbar">
                     <a id="k_avatar" href={'/member/' + this.props.userInfo.userName} >
                         <img src={this.props.userInfo.userAvatar}/>
@@ -236,6 +238,32 @@ var SideBar = React.createClass({
                         <span>退出</span>
                     </a>
                 </div>
+                )
+
+        } else {
+            return(
+                <div id="k_navbar">
+                    <a href="/"  title="首页">
+                        <i className="fa fa-home fa-2x"></i>
+                        <span>首页</span>
+                    </a>
+                    <a href="/signup"  title="注册">
+                        <i className="fa fa-user fa-2x"></i>
+                        <span>注册</span>
+                    </a>
+                    <a href="/signin"  title="登陆">
+                        <i className="fa fa-sign-in fa-2x"></i>
+                        <span>登陆</span>
+                    </a>
+                </div>
+                )
+        }
+    },
+    render: function () {
+        var aClassName = 'k_color_hover';
+        return(
+            <div id="k_sidebar">
+                {this.login()}
 
                 <div id="k_tabbar">
                     {this.favorite()}
@@ -486,9 +514,8 @@ $(function () {
         document.body
     );
 
-    if (self != top) {
-        $('#k_faster').html(mainDom);
-    } else {
+//先判断是否为ifame，再判断是否为列表
+    if (self == top) {
         if (pageUrl['isList']) {
             React.render(
                 <MainPage ListData={listData} NodeData={nodeData} pageUrl={pageUrl} NodeName = {pageUrl['nodeName']}/>,
@@ -497,8 +524,9 @@ $(function () {
         } else {
             $('#k_main').html(mainDom);
         }
+    }else{
+        $('#k_faster').html(mainDom);
     }
-
 
     $('.k_itemList_title').click(function () {
         var url = $(this).attr('href');
@@ -509,7 +537,6 @@ $(function () {
             document.getElementById('k_faster')
         );
     });
-
     $('.k_itemList_QR').click(function () {
         var url = $(this).parent().children('.k_itemList_title').attr('href');
         var $hover = $('#k_hover');
