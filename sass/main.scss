@@ -24,6 +24,7 @@ $color_bg_grey: #ECF0F1;
 $color_bg_border: #DFE0E2;
 $color_title: #2D3E50;
 $color_item_choose: #F7F8FC;
+$color_item_hover: darken($color_item_choose,5%);
 $color_subtitle: #BCC3C9;
 
 body {
@@ -38,6 +39,10 @@ body {
       width: 1px;
 }
 
+#Top,#Wrapper,#Bottom{
+  display: none;
+}
+
 #k_sidebar {
   display: inline-block;
   position: fixed;
@@ -46,7 +51,6 @@ body {
   width: 140px;
   height: 100%;
   background-color: $color_nav_bg;
-  text-decoration: none;
   #k_navbar {
     display: inline-block;
     width: 80px;
@@ -68,6 +72,9 @@ body {
         vertical-align: top;
         transition: width .5s;
         overflow: hidden;
+      }
+      i{
+        font-size: 24px;
       }
 
       &:hover {
@@ -94,8 +101,8 @@ body {
         padding-right: 10px;
       }
       span {
-        line-height: 40px;
-        height: 40px;
+        line-height: 24px;
+        height: 24px;
         width: 70px;
       }
       #k_avatar {
@@ -106,6 +113,8 @@ body {
         span {
           color: #FFF;
           vertical-align: top;
+          line-height: 40px;
+          height: 40px;
         }
       }
     }
@@ -116,6 +125,7 @@ body {
     left: 80px;
     width: 60px;
     height: 100%;
+    padding-top: 80px;
     vertical-align: top;
     text-align: center;
     background-color: $color_nav_bg_light;
@@ -130,6 +140,9 @@ body {
         background-color: $color_nav_choose_light;
         color: #FFF;
       }
+    }
+    .k_tabbar_current{
+      background-color: $color_green;
     }
   }
 }
@@ -157,28 +170,36 @@ body {
     }
     #k_subNav {
       display: block;
+      box-sizing: border-box;
+      border-right: 2px solid $color_bg_border;
       a {
         color: $color_nav_text;
         text-align: center;
+        font-size: 16px;
         line-height: 32px;
         height: 32px;
         padding: 0 5px;
         margin: 0;
-        text-transform: uppercase;
+        text-decoration:none;
         letter-spacing: .8px;
         display: inline-block;
-        transition: color .28s ease;
+        transition: background-color .28s ease;
+
+        &:hover{
+          background-color: $color_green;
+          color: #FFF;
+        }
       }
     }
     #k_itemList_ul {
-      margin: 0 0 0 1px;
+      margin: 0 0 0 0;
       li {
         position: relative;
         background-color: #FFF;
         list-style-type: none;
         text-align: left;
         overflow: hidden;
-        border: 1px solid $color_bg_border;
+        border-top: 1px solid $color_bg_border;
         padding: 5px;
         a {
           vertical-align: text-top;
@@ -188,10 +209,12 @@ body {
           img {
             width: 48px;
             height: 48px;
+            border-radius: 50%;
           }
           width: 48px;
           height: 48px;
           overflow: hidden;
+          margin-right: 5px;
         }
         .k_itemList_title {
           vertical-align: text-top;
@@ -213,9 +236,11 @@ body {
           margin: 0;
           padding: 0;
           text-align: center;
+          opacity: 0.6;
           .k_itemList_vote {
             display: inline-block;
             width: 50%;
+            font-size: 10px;
             line-height: 24px;
             height: 24px;
             color: #ffffff;
@@ -223,10 +248,13 @@ body {
           .k_itemList_reply {
             display: inline-block;
             width: 50%;
+            font-size: 10px;
             line-height: 24px;
             height: 24px;
-            color: #ffffff;
-            background-color: $color_hover;
+            color: $color_title;
+            box-sizing: border-box;
+            background-color: $color_bg_grey;
+            border: 1px solid $color_bg_border;
             i {
               font-size: 7px;
             }
@@ -237,9 +265,12 @@ body {
             height: 24px;
             display: block;
             padding: 0 5px;
-            color: #ffffff;
-            background: $color_dark;
+            color: $color_title;
+            box-sizing: border-box;
+            background-color: $color_bg_grey;
+            border: 1px solid $color_bg_border;
           }
+          
         }
         .k_itemList_more {
           color: $color_background;
@@ -256,19 +287,23 @@ body {
         }
       }
       li:hover {
-        background-color: $color_hover;
+        background-color: $color_item_hover;
         .k_itemList_title {
           background-color: inherit;
           color: $color_item_a;
+        }
+        .k_itemList_node_vote{
+          opacity: 1;
         }
       }
-      li.k_itemList_choosen {
-        background-color: $color_node;
-
+      .k_itemList_choosen {
+        background-color: $color_item_choose;
+        border-right: 5px solid $color_green;
         .k_itemList_title {
           background-color: inherit;
           color: $color_item_a;
         }
+
       }
     }
   }
@@ -318,15 +353,18 @@ body {
     }
   }
 }
-
+#k_main.origin{
+  margin-right: auto;
+}
 #k_faster{
   display: inline-block;
   position: fixed;
   right: 0;
   top: 0;
   width: 680px;
-  height: 100%;
   background-color: $color_bg_grey;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 #k_infos {
   position: fixed;

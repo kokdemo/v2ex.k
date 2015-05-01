@@ -5,17 +5,18 @@
 //    获取当前链接中所对应的信息
 var checkUrl = function () {
     var pageUrl = {
-        originUrl :window.location.href,
+        originUrl: window.location.href,
         isHttps: false,
-        isIndex : false,
+        isIndex: false,
         isSetting: false,
-        isNotification : false,
-        isRecent : false,
-        isTopic : false,
-        isList:false,
-        hostUrl : window.location.href,
-        searchText : "",
-        routeText :""
+        isNotification: false,
+        isRecent: false,
+        isTopic: false,
+        isList: false,
+        isPost: false,
+        hostUrl: window.location.href,
+        searchText: "",
+        routeText: ""
     };
 //    判断https
     pageUrl['isHttps'] = ('https:' == document.location.protocol);
@@ -24,39 +25,44 @@ var checkUrl = function () {
     if (search != -1) {
         //如果链接中有问号，获取等号之后的内容，获取问号之前的内容。
         var tempPosition = pageUrl['originUrl'].indexOf('=');
-        pageUrl['searchText'] = pageUrl['originUrl'].slice(tempPosition+1);
-        pageUrl['hostUrl'] = pageUrl['originUrl'].slice(0,search);
+        pageUrl['searchText'] = pageUrl['originUrl'].slice(tempPosition + 1);
+        pageUrl['hostUrl'] = pageUrl['originUrl'].slice(0, search);
     }
 
     var hostUrl_last = pageUrl['hostUrl'].slice(-9);
 //    判断是否在首页
-    if(hostUrl_last === 'v2ex.com/'){
+    if (hostUrl_last === 'v2ex.com/') {
         pageUrl['isIndex'] = true;
     }
 
 //    判断是否在设置页
-    if(pageUrl['hostUrl'].indexOf('/settings') != -1){
+    if (pageUrl['hostUrl'].indexOf('/settings') != -1) {
         pageUrl['isSetting'] = true;
     }
 
 //    判断是否在设置页
-    if(pageUrl['hostUrl'].indexOf('/notifications') != -1){
+    if (pageUrl['hostUrl'].indexOf('/notifications') != -1) {
         pageUrl['isSetting'] = true;
     }
 
 //    判断是否在最新页
-    if(pageUrl['hostUrl'].indexOf('/recent') != -1){
+    if (pageUrl['hostUrl'].indexOf('/recent') != -1) {
         pageUrl['isRecent'] = true;
     }
 
 //  判断是否在话题页
-    if(pageUrl['hostUrl'].indexOf('/go/') != -1){
+    if (pageUrl['hostUrl'].indexOf('/go/') != -1) {
         pageUrl['isTopic'] = true;
         pageUrl['routeText'] = pageUrl['hostUrl'].split('/').pop();
     }
 
-    pageUrl['isList'] = pageUrl['isIndex']||pageUrl['isRecent']||pageUrl['isTopic'];
+//  判断是否在话题页
+    if (pageUrl['hostUrl'].indexOf('/t/') != -1) {
+        pageUrl['isPost'] = true;
+        pageUrl['routeText'] = pageUrl['hostUrl'].split('/').pop();
+    }
 
+    pageUrl['isList'] = pageUrl['isIndex'] || pageUrl['isRecent'] || pageUrl['isTopic'];
     console.info(pageUrl);
     return pageUrl
 };
@@ -81,8 +87,8 @@ var getList = function (pageUrl) {
         tempItem['vote'] = $(info[2]).children('.small.fade').children('.votes').text();
         if (tempItem['vote'] == '') {
             tempItem['vote'] = 0
-        } else {
-            tempItem['vote'] = tempItem['vote'][2]
+        }else{
+            tempItem['vote'] = parseInt(tempItem['vote']);
         }
         tempItem['nodeUrl'] = $(info[2]).children('.small.fade').children('.node').attr('href');
         tempItem['nodeText'] = $(info[2]).children('.small.fade').children('.node').text();
@@ -114,11 +120,11 @@ var getUserInfo = function () {
     return userInfo
 };
 
-var getNotifications = function (pageUrl){
+var getNotifications = function (pageUrl) {
     var $dom = $('.cell[id]');
     var array = [];
     var $tempitem;
-    for (var i= 0;i<$dom.length;i++){
+    for (var i = 0; i < $dom.length; i++) {
         $tempitem = $dom[i];
         var arrayItem = {};
         arrayItem['id'] = $($tempitem).attr('id');
@@ -135,17 +141,49 @@ var getNotifications = function (pageUrl){
 };
 
 var SideBar = React.createClass({
-    favorite:function(){
-        if(this.props.pageUrl['isTopic']){
-            return <a href=""><i className="fa fa-heart"></i></a>
+    favorite: function () {
+        if (this.props.pageUrl['isTopic']) {
+            return <a href="">
+                <i className="fa fa-heart"></i>
+            </a>
         }
     },
-    newPost : function(){
+    newPost: function () {
         var href = "/new/";
-        if(this.props.pageUrl['isTopic']){
-            href = "/new/"+this.props.pageUrl['routeText'];
+        if (this.props.pageUrl['isTopic']) {
+            href = "/new/" + this.props.pageUrl['routeText'];
         }
-        return(<a href={href} title="新主题"><i className="fa fa-pencil-square-o fa-2x"></i><span>新主题</span></a>)
+        return(<a href={href} title="新主题">
+            <i className="fa fa-pencil-square-o fa-2x"></i>
+            <span>新主题</span>
+        </a>)
+    },
+    tabbar : function () {
+        var doms = [];
+        var list = {
+            all:"全部",
+            tech:"技术",
+            creative:"创意",
+            play:"好玩",
+            apple:"Apple",
+            jobs:"酷工作",
+            deals:"交易",
+            city:"城市",
+            qna:"问与答",
+            hot:"最热",
+            r2:"R2",
+            nodes:"节点",
+            members:"关注"
+        }
+        for(value in list){
+            if(this.props.pageUrl['searchText'] == value){
+                doms.push(<a href={"/?tab="+value} className="k_tabbar_current">{list[value]}</a>)
+            }else{
+                doms.push(<a href={"/?tab="+value} >{list[value]}</a>)
+            }
+
+        }
+        return doms
     },
     render: function () {
         var aClassName = 'k_color_hover';
@@ -153,56 +191,55 @@ var SideBar = React.createClass({
             <div id="k_sidebar">
                 <div id="k_navbar">
                     <a id="k_avatar" href={'/member/' + this.props.userInfo.userName} >
-                        <img src={this.props.userInfo.userAvatar}/><span>{this.props.userInfo.userName}</span>
+                        <img src={this.props.userInfo.userAvatar}/>
+                        <span>{this.props.userInfo.userName}</span>
                     </a>
                     <a href="/notifications" title="提醒">
-                        <i className="fa fa-bell fa-2x" ></i><span>提醒</span>
+                        <i className="fa fa-bell fa-2x"></i>
+                        <span>提醒</span>
                     </a>
                     <a href="/"  title="首页">
-                        <i className="fa fa-home fa-2x"></i><span>首页</span>
+                        <i className="fa fa-home fa-2x"></i>
+                        <span>首页</span>
                     </a>
                     {this.newPost()}
                     <a href="/planes"  title="节点">
-                        <i className="fa fa-th fa-2x"></i><span>节点</span>
+                        <i className="fa fa-th fa-2x"></i>
+                        <span>节点</span>
                     </a>
                     <a href="//workspace.v2ex.com/" target="_blank"  title="工作空间">
-                        <i className="fa fa-laptop fa-2x"></i><span>工作空间</span>
+                        <i className="fa fa-laptop fa-2x"></i>
+                        <span>工作空间</span>
                     </a>
                     <a href="/notes"  title="笔记">
-                        <i className="fa fa-book fa-2x" ></i><span>笔记</span>
+                        <i className="fa fa-book fa-2x" ></i>
+                        <span>笔记</span>
                     </a>
                     <a href="/t"  title="时间轴">
-                        <i className="fa fa-list-alt fa-2x" ></i><span>时间轴</span>
+                        <i className="fa fa-list-alt fa-2x" ></i>
+                        <span>时间轴</span>
                     </a>
                     <a href="/events"  title="事件">
-                        <i className="fa fa-eye fa-2x"></i><span>事件</span>
+                        <i className="fa fa-eye fa-2x"></i>
+                        <span>事件</span>
                     </a>
                     <a href={'/place/' + this.props.userInfo.ip}  title="附近">
-                        <i className="fa fa-map-marker fa-2x"></i><span>附近</span>
+                        <i className="fa fa-map-marker fa-2x"></i>
+                        <span>附近</span>
                     </a>
                     <a href="/settings"  title="设置">
-                        <i className="fa fa-cog fa-2x"></i><span>设置</span>
+                        <i className="fa fa-cog fa-2x"></i>
+                        <span>设置</span>
                     </a>
                     <a href="#;" onclick="if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }"  title="退出">
-                        <i className="fa fa-sign-out fa-2x" ></i><span>退出</span>
+                        <i className="fa fa-sign-out fa-2x" ></i>
+                        <span>退出</span>
                     </a>
                 </div>
 
                 <div id="k_tabbar">
                     {this.favorite()}
-                    <a href="/?tab=all" >全部</a>
-                    <a href="/?tab=tech" >技术</a>
-                    <a href="/?tab=creative" >创意</a>
-                    <a href="/?tab=play" >好玩</a>
-                    <a href="/?tab=apple" >Apple</a>
-                    <a href="/?tab=jobs" >酷工作</a>
-                    <a href="/?tab=deals" >交易</a>
-                    <a href="/?tab=city" >城市</a>
-                    <a href="/?tab=qna" >问与答</a>
-                    <a href="/?tab=hot" >最热</a>
-                    <a href="/?tab=r2" >R2</a>
-                    <a href="/?tab=nodes" >节点</a>
-                    <a href="/?tab=members" >关注</a>
+                    {this.tabbar()}
                 </div>
             </div>
             );
@@ -233,7 +270,7 @@ var ListItem = React.createClass({
         }
     },
     getWidth: function () {
-        var width = $(window).width() - 140 - 680 - 20 - 48 - 20 - 10 - 10 -25 -23;
+        var width = $(window).width() - 140 - 680 - 20 - 48 - 20 - 10 - 10 - 25 - 23 - 5;
         return {
             width: width
         };
@@ -268,27 +305,27 @@ var ListItem = React.createClass({
 });
 var List = React.createClass({
     morePost: function () {
-        if(this.props.pageUrl['isTopic']||this.props.pageUrl['isRecent']){
-            if(this.props.pageUrl['searchText'] == "" ||this.props.pageUrl['searchText'] == "1"){
+        if (this.props.pageUrl['isTopic'] || this.props.pageUrl['isRecent']) {
+            if (this.props.pageUrl['searchText'] == "" || this.props.pageUrl['searchText'] == "1") {
                 //第一页
                 return(
-                <li>
-                    <a className ='k_itemList_more' href={this.props.pageUrl['pureUrl'] +'?p=2'}>下一页</a>
-                </li>
-                )
-            }else{
+                    <li>
+                        <a className ='k_itemList_more' href={this.props.pageUrl['pureUrl'] + '?p=2'}>下一页</a>
+                    </li>
+                    )
+            } else {
                 return(
-                 //第n页
-                <li>
-                    <a className ='k_itemList_more' href={this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) - 1)}>上一页</a>
-                    <a className ='k_itemList_more' href={this.props.pageUrl['nodePageUrl'] +'='+ (parseInt(this.props.pageUrl['searchText']) + 1)}>下一页</a>
-                </li>
-                )
+                    //第n页
+                    <li>
+                        <a className ='k_itemList_more' href={this.props.pageUrl['nodePageUrl'] + '=' + (parseInt(this.props.pageUrl['searchText']) - 1)}>上一页</a>
+                        <a className ='k_itemList_more' href={this.props.pageUrl['nodePageUrl'] + '=' + (parseInt(this.props.pageUrl['searchText']) + 1)}>下一页</a>
+                    </li>
+                    )
             }
-        }else{
+        } else {
             return <li>
-            <a className ='k_itemList_more' href="/recent">更多新主题</a>
-        </li>
+                <a className ='k_itemList_more' href="/recent">更多新主题</a>
+            </li>
         }
 
     },
@@ -340,23 +377,38 @@ var MainPage = React.createClass({
 });
 
 
-
 var Container = React.createClass({
+    getHeight: function () {
+        var height = $(window).height();
+        return {
+            height: height
+        };
+    },
     render: function () {
         if (self == top) {
-            return(
+            if(this.props.pageUrl['isList']){
+                return(
                 <div id='k_container'>
                     <SideBar userInfo={this.props.userInfo} pageUrl={this.props.pageUrl}/>
                     <div id="k_main"></div>
-                    <div id="k_faster" ></div>
+                    <div id="k_faster" style={this.getHeight()}></div>
                 </div>
                 )
-        }else{
+            }else{
+                return(
+                <div id='k_container'>
+                    <SideBar userInfo={this.props.userInfo} pageUrl={this.props.pageUrl}/>
+                    <div id="k_main" className='origin'></div>
+                </div>
+                )
+            }
+
+        } else {
             return(
-            <div id='k_container'>
-                 <div id="k_faster"></div>
-            </div>
-            )
+                <div id='k_container'>
+                    <div id="k_faster" style={this.getHeight()}></div>
+                </div>
+                )
         }
     }
 });
@@ -384,7 +436,7 @@ var ReplyArea = React.createClass({
 });
 
 var NotificationItem = React.createClass({
-    render: function (){
+    render: function () {
         return(
             <li>
                 <a className='k_notifiList_avatar' href= {this.props.item.userUrl}>
@@ -414,15 +466,15 @@ var Notification = React.createClass({
     }
 });
 
-var MakeQR = function(dom,url){
-    $(dom).qrcode({width: 128,height: 128,text: 'http://v2ex.com'+url});
+var MakeQR = function (dom, url) {
+    $(dom).qrcode({width: 128, height: 128, text: 'http://v2ex.com' + url});
 };
 
 
 $(function () {
     var userInfo = getUserInfo();
     var pageUrl = checkUrl();
-    var listData,nodeData;
+    var listData, nodeData;
     if (pageUrl['isList']) {
         listData = getList(pageUrl);
         nodeData = $($($('#Main').children('.box')[0]).children('.cell')[0]).children('a');
@@ -434,17 +486,17 @@ $(function () {
         document.body
     );
 
-    console.info(mainDom);
-
-
-    if (pageUrl['isList']) {
-        React.render(
-            <MainPage ListData={listData} NodeData={nodeData} pageUrl={pageUrl} NodeName = {pageUrl['nodeName']}/>,
-            document.getElementById('k_main')
-        );
-    }else{
-        console.info('ss');
+    if (self != top) {
         $('#k_faster').html(mainDom);
+    } else {
+        if (pageUrl['isList']) {
+            React.render(
+                <MainPage ListData={listData} NodeData={nodeData} pageUrl={pageUrl} NodeName = {pageUrl['nodeName']}/>,
+                document.getElementById('k_main')
+            );
+        } else {
+            $('#k_main').html(mainDom);
+        }
     }
 
 
@@ -453,35 +505,23 @@ $(function () {
         $(this).parent().addClass('k_itemList_choosen');
 
         React.render(
-            <FastReader width={'680px'} height={$(window).height()} src={'http://www.v2ex.com'+url}/>,
+            <FastReader width={'680px'} height={$(window).height()} src={'//www.v2ex.com' + url}/>,
             document.getElementById('k_faster')
         );
     });
-//     $('#k_notifiList li').click(function () {
-//        var url = $(this).children('.k_notifiList_title').attr('href');
-//        $(this).addClass('k_itemList_choosen');
-//
-//        React.render(
-//            <FastReader width={'680px'} height={$(window).height()} src={url}/>,
-//            document.getElementById('k_faster')
-//        );
-//
-//        $('#Rightbar').width('680px');
-//        var item_title = $(window).width() - 140 - 680 - 20;
-//         $('#k_notifiList').css('width', item_title);
-//    });
-    $('.k_itemList_QR').click(function(){
+
+    $('.k_itemList_QR').click(function () {
         var url = $(this).parent().children('.k_itemList_title').attr('href');
         var $hover = $('#k_hover');
-        MakeQR($hover,url);
+        MakeQR($hover, url);
         var hoverCss = {
-            "z-index":1000,
-            "height":$(window).height(),
-            "width":$(window).width()
+            "z-index": 1000,
+            "height": $(window).height(),
+            "width": $(window).width()
         };
-        $hover.css(hoverCss).click(function(){
+        $hover.css(hoverCss).click(function () {
             $('canvas').remove();
-            $('#k_hover').css('z-index',-1);
+            $('#k_hover').css('z-index', -1);
         });
     });
 });
