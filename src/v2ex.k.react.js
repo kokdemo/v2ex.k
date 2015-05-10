@@ -15,7 +15,9 @@ var checkUrl = function () {
         isList: false,
         isPost: false,
         ifLogin: true,
+        ifGetCoin: false,
         hostUrl: window.location.href,
+        timeStamp: "",
         searchText: "",
         routeText: ""
     };
@@ -51,13 +53,13 @@ var checkUrl = function () {
         pageUrl['isRecent'] = true;
     }
 
-//  判断是否在话题页
+//  判断是否在节点页
     if (pageUrl['hostUrl'].indexOf('/go/') != -1) {
         pageUrl['isTopic'] = true;
         pageUrl['routeText'] = pageUrl['hostUrl'].split('/').pop();
     }
 
-//  判断是否在话题页
+//  判断是否在帖子页
     if (pageUrl['hostUrl'].indexOf('/t/') != -1) {
         pageUrl['isPost'] = true;
         pageUrl['routeText'] = pageUrl['hostUrl'].split('/').pop();
@@ -66,7 +68,11 @@ var checkUrl = function () {
     //  判断是否登陆
     pageUrl['ifLogin'] = ($('#Top').find('.top').length != 3);
     pageUrl['isList'] = pageUrl['isIndex'] || pageUrl['isRecent'] || pageUrl['isTopic'];
-
+    if (pageUrl['ifLogin']) {
+        //获取时间戳和签到信息
+        pageUrl['timeStamp'] = $('#Top').find('.top:last').attr('onclick').slice(62, -4);
+        pageUrl['ifGetCoin'] = ($(".inner a[href='/mission/daily']").length == 1)
+    }
     return pageUrl
 };
 
@@ -84,14 +90,15 @@ var getList = function (pageUrl) {
         tempItem['top'] = !top.length;
         var info = $($itemDom[i]).children('table').children('tbody').children('tr').children();
         tempItem['userUrl'] = $(info[0]).children('a').attr('href');
-        tempItem['userName'] = tempItem['userUrl'].split('/').pop();;
+        tempItem['userName'] = tempItem['userUrl'].split('/').pop();
+        ;
         tempItem['avatar'] = $(info[0]).children('a').children('img').attr('src');
         tempItem['title'] = $(info[2]).children('.item_title').text();
         tempItem['postUrl'] = $(info[2]).children('.item_title').children('a').attr('href');
         tempItem['vote'] = $(info[2]).children('.small.fade').children('.votes').text();
         if (tempItem['vote'] == '') {
             tempItem['vote'] = 0
-        }else{
+        } else {
             tempItem['vote'] = parseInt(tempItem['vote']);
         }
         tempItem['nodeUrl'] = $(info[2]).children('.small.fade').children('.node').attr('href');
@@ -112,42 +119,36 @@ var getUserInfo = function () {
     var userDom = $Dom.children('.cell:first').children('table:first').children('tbody').children('tr').children();
     var collectDom = $Dom.children('.cell:first').children('table:last').children('tbody').children('tr').children('');
     var $topDom = $('#Top').find('.top');
+    if (localStorage['v2ex.k']) {
+//        将不太经常变化的信息存储到localStorage里面，当设置页面中点击保存时将整个删除初始化。
+        userInfo = JSON.parse(localStorage['v2ex.k']);
+    } else {
+        userInfo['userName'] = $(userDom[2]).children('.bigger').children('a').text();
+        userInfo['userMotto'] = $(userDom[2]).children('.fade').text();
+        userInfo['userAvatar'] = $(userDom[0]).children('a').children('img').attr('src');
+        userInfo['collectNode'] = $(collectDom[0]).children('a').children('.bigger').text();
+        userInfo['collectTopic'] = $(collectDom[1]).children('a').children('.bigger').text();
+        userInfo['following'] = $(collectDom[2]).children('a').children('.bigger').text();
+        localStorage['v2ex.k'] = JSON.stringify(userInfo);
+    }
     userInfo['notiNum'] = $Dom.children('.inner').children('a').text().slice(0, -6);
-    userInfo['userName'] = $(userDom[2]).children('.bigger').children('a').text();
-    userInfo['userMotto'] = $(userDom[2]).children('.fade').text();
-    userInfo['userAvatar'] = $(userDom[0]).children('a').children('img').attr('src');
-    userInfo['collectNode'] = $(collectDom[0]).children('a').children('.bigger').text();
-    userInfo['collectTopic'] = $(collectDom[1]).children('a').children('.bigger').text();
-    userInfo['following'] = $(collectDom[2]).children('a').children('.bigger').text();
     userInfo['ip'] = $($topDom[6]).attr('href');
-    userInfo['logout'] = $($topDom[8]).attr('onclick');
     return userInfo
 };
 
-var getNotifications = function (pageUrl) {
-    var $dom = $('.cell[id]');
-    var array = [];
-    var $tempitem;
-    for (var i = 0; i < $dom.length; i++) {
-        $tempitem = $dom[i];
-        var arrayItem = {};
-        arrayItem['id'] = $($tempitem).attr('id');
-        $tempitem = $($tempitem).children('table').children('tbody').children('tr').children('td');
-        arrayItem['avatar'] = $($tempitem[0]).children('a').children('img').attr('src');
-        arrayItem['userUrl'] = $($tempitem[0]).children('a').attr('href');
-        arrayItem['userName'] = $($tempitem[1]).children('span').children('a:first').children('strong').text();
-        arrayItem['postUrl'] = $($tempitem[1]).children('span').children('a:nth-child(2)').attr('href');
-        arrayItem['postName'] = $($tempitem[1]).children('span').children('a:nth-child(2)').text();
-        arrayItem['reply'] = $($tempitem[1]).children('.payload').text();
-        array.push(arrayItem);
-    }
-    return array
-};
-
 var SideBar = React.createClass({
+    getCoin: function () {
+        if (this.props.pageUrl['ifGetCoin']) {
+            return <a href={"/mission/daily/redeem?once=" + this.props.pageUrl['timeStamp']}>
+                <i className="fa fa-money"></i>
+                <span>签到</span>
+            </a>
+        }
+    },
     favorite: function () {
         if (this.props.pageUrl['isTopic']) {
-            return <a href="">
+            var href = $('.fr.f12 a').attr('href');
+            return <a href={href}>
                 <i className="fa fa-heart"></i>
             </a>
         }
@@ -162,28 +163,30 @@ var SideBar = React.createClass({
             <span>新主题</span>
         </a>)
     },
-    tabbar : function () {
+    tabbar: function () {
         var doms = [];
         var list = {
-            all:"全部",
-            tech:"技术",
-            creative:"创意",
-            play:"好玩",
-            apple:"Apple",
-            jobs:"酷工作",
-            deals:"交易",
-            city:"城市",
-            qna:"问与答",
-            hot:"最热",
-            r2:"R2",
-            nodes:"节点",
-            members:"关注"
-        }
-        for(value in list){
-            if(this.props.pageUrl['searchText'] == value){
-                doms.push(<a href={"/?tab="+value} className="k_tabbar_current">{list[value]}</a>)
-            }else{
-                doms.push(<a href={"/?tab="+value} >{list[value]}</a>)
+            all: "全部",
+            tech: "技术",
+            creative: "创意",
+            play: "好玩",
+            apple: "Apple",
+            jobs: "酷工作",
+            deals: "交易",
+            city: "城市",
+            qna: "问与答",
+            hot: "最热",
+            r2: "R2",
+            nodes: "节点",
+            members: "关注"
+        };
+        var choose = $('.tab_current').text();
+        console.info(choose+"--=");
+        for (value in list) {
+            if (this.props.pageUrl['searchText'] == value || choose == list[value]) {
+                doms.push(<a href={"/?tab=" + value} className="k_tabbar_current">{list[value]}</a>)
+            } else {
+                doms.push(<a href={"/?tab=" + value} >{list[value]}</a>)
             }
 
         }
@@ -197,13 +200,14 @@ var SideBar = React.createClass({
                         <img src={this.props.userInfo.userAvatar}/>
                         <span>{this.props.userInfo.userName}</span>
                     </a>
-                    <a href="/notifications" title="提醒">
-                        <i className="fa fa-bell fa-2x"></i>
-                        <span>提醒</span>
-                    </a>
+                    {this.getCoin()}
                     <a href="/"  title="首页">
                         <i className="fa fa-home fa-2x"></i>
                         <span>首页</span>
+                    </a>
+                    <a href="/notifications" title="提醒">
+                        <i className="fa fa-bell fa-2x"></i>
+                        <span>提醒</span>
                     </a>
                     {this.newPost()}
                     <a href="/planes"  title="节点">
@@ -234,7 +238,7 @@ var SideBar = React.createClass({
                         <i className="fa fa-cog fa-2x"></i>
                         <span>设置</span>
                     </a>
-                    <a href="#;" onclick="if (confirm('确定要从 V2EX 登出？')) { location.href= '/signout'; }"  title="退出">
+                    <a href={"/signout?once=" + this.props.pageUrl['timeStamp']} title="退出">
                         <i className="fa fa-sign-out fa-2x" ></i>
                         <span>退出</span>
                     </a>
@@ -295,7 +299,7 @@ var ListItem = React.createClass({
         if (!pageUrl['isTopic']) {
             return <span >{this.props.item.nodeText}</span>;
         } else {
-            return <span >{this.props.nodeName}</span>;
+            return <span >{this.props.pageUrl['routeText']}</span>;
         }
     },
     getWidth: function () {
@@ -417,21 +421,21 @@ var Container = React.createClass({
     },
     render: function () {
         if (self == top) {
-            if(this.props.pageUrl['isList']){
+            if (this.props.pageUrl['isList']) {
                 return(
-                <div id='k_container'>
-                    <SideBar userInfo={this.props.userInfo} pageUrl={this.props.pageUrl}/>
-                    <div id="k_main"></div>
-                    <div id="k_faster" style={this.getHeight()}></div>
-                </div>
-                )
-            }else{
+                    <div id='k_container'>
+                        <SideBar userInfo={this.props.userInfo} pageUrl={this.props.pageUrl}/>
+                        <div id="k_main"></div>
+                        <div id="k_faster" style={this.getHeight()}></div>
+                    </div>
+                    )
+            } else {
                 return(
-                <div id='k_container'>
-                    <SideBar userInfo={this.props.userInfo} pageUrl={this.props.pageUrl}/>
-                    <div id="k_main" className='origin'></div>
-                </div>
-                )
+                    <div id='k_container'>
+                        <SideBar userInfo={this.props.userInfo} pageUrl={this.props.pageUrl}/>
+                        <div id="k_main" className='origin'></div>
+                    </div>
+                    )
             }
 
         } else {
@@ -527,7 +531,7 @@ $(function () {
         } else {
             $('#k_main').html(mainDom);
         }
-    }else{
+    } else {
         $('#k_faster').html(mainDom);
     }
 
