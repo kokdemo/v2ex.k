@@ -84,6 +84,7 @@ var getList = function (pageUrl) {
         tempItem['top'] = !top.length;
         var info = $($itemDom[i]).children('table').children('tbody').children('tr').children();
         tempItem['userUrl'] = $(info[0]).children('a').attr('href');
+        tempItem['userName'] = tempItem['userUrl'].split('/').pop();;
         tempItem['avatar'] = $(info[0]).children('a').children('img').attr('src');
         tempItem['title'] = $(info[2]).children('.item_title').text();
         tempItem['postUrl'] = $(info[2]).children('.item_title').children('a').attr('href');
@@ -225,7 +226,7 @@ var SideBar = React.createClass({
                         <i className="fa fa-eye fa-2x"></i>
                         <span>事件</span>
                     </a>
-                    <a href={'/place/' + this.props.userInfo.ip}  title="附近">
+                    <a href={this.props.userInfo.ip}  title="附近">
                         <i className="fa fa-map-marker fa-2x"></i>
                         <span>附近</span>
                     </a>
@@ -307,9 +308,7 @@ var ListItem = React.createClass({
     render: function () {
         return(
             <li>
-                <a className='k_itemList_avatar' href= {this.props.item.userUrl}>
-                    <img src={this.props.item.avatar}/>
-                </a>
+
                 <div className='k_itemList_node_vote'>
                     <a className={'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}>
                         <span >
@@ -321,9 +320,13 @@ var ListItem = React.createClass({
                             <i className="fa fa-reply"></i>{this.props.item.replyNum}
                         </span>
                     </a>
+                    <a className = 'k_itemList_userName'>{this.props.item.userName}</a>
                     <a className='k_itemList_node' href={this.props.item.nodeUrl}>{this.nodeDom(this.props.pageUrl)}</a>
 
                 </div>
+                <a className='k_itemList_avatar' href= {this.props.item.userUrl}>
+                    <img src={this.props.item.avatar}/>
+                </a>
                 <div className='k_itemList_title' style={this.getWidth()} href={this.props.item.postUrl}>
                     {this.props.item.title}
                 </div>

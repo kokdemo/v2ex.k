@@ -214,7 +214,7 @@ body {
           width: 48px;
           height: 48px;
           overflow: hidden;
-          margin-right: 5px;
+          margin-left: 5px;
         }
         .k_itemList_title {
           vertical-align: text-top;
@@ -231,22 +231,31 @@ body {
         .k_itemList_node_vote {
           display: inline-block;
           vertical-align: text-top;
+
           height: 48px;
           width: 80px;
           margin: 0;
           padding: 0;
           text-align: center;
-          opacity: 0.6;
+
           .k_itemList_vote {
+            z-index: 1000;
             display: inline-block;
+            position: relative;
+            left: -90px;
             width: 50%;
             font-size: 10px;
             line-height: 24px;
             height: 24px;
             color: #ffffff;
+            transition: left 0.2s ease-out;
+
           }
           .k_itemList_reply {
+            z-index: 1000;
             display: inline-block;
+            position: relative;
+            left: -90px;
             width: 50%;
             font-size: 10px;
             line-height: 24px;
@@ -258,8 +267,24 @@ body {
             i {
               font-size: 7px;
             }
+            transition: left 0.2s ease-out;
+          }
+          .k_itemList_userName{
+            display: block;
+            position: relative;
+            top: -24px;
+            height: 24px;
+            font-size: 8px;
+            line-height: 24px;
+            padding: 0 5px;
+            color: $color_bg_grey;
+            box-sizing: border-box;
+            background-color: $color_nav_bg_light;
+            border: 1px solid $color_bg_border;
           }
           .k_itemList_node {
+            position: relative;
+            top: -24px;
             font-size: 8px;
             line-height: 24px;
             height: 24px;
@@ -273,9 +298,9 @@ body {
           
         }
         .k_itemList_more {
-          color: $color_background;
+          color: $color_title;
           height: 48px;
-          font-size: 20px;
+          font-size: 16px;
           line-height: 48px;
         }
         .k_itemList_QR {
@@ -293,7 +318,10 @@ body {
           color: $color_item_a;
         }
         .k_itemList_node_vote{
-          opacity: 1;
+            .k_itemList_vote,.k_itemList_reply{
+              z-index: 1000;
+              left: 0;
+            }
         }
       }
       .k_itemList_choosen {

@@ -84,6 +84,7 @@ var getList = function (pageUrl) {
         tempItem['top'] = !top.length;
         var info = $($itemDom[i]).children('table').children('tbody').children('tr').children();
         tempItem['userUrl'] = $(info[0]).children('a').attr('href');
+        tempItem['userName'] = tempItem['userUrl'].split('/').pop();;
         tempItem['avatar'] = $(info[0]).children('a').children('img').attr('src');
         tempItem['title'] = $(info[2]).children('.item_title').text();
         tempItem['postUrl'] = $(info[2]).children('.item_title').children('a').attr('href');
@@ -225,7 +226,7 @@ var SideBar = React.createClass({displayName: "SideBar",
                         React.createElement("i", {className: "fa fa-eye fa-2x"}), 
                         React.createElement("span", null, "事件")
                     ), 
-                    React.createElement("a", {href: '/place/' + this.props.userInfo.ip, title: "附近"}, 
+                    React.createElement("a", {href: this.props.userInfo.ip, title: "附近"}, 
                         React.createElement("i", {className: "fa fa-map-marker fa-2x"}), 
                         React.createElement("span", null, "附近")
                     ), 
@@ -307,9 +308,7 @@ var ListItem = React.createClass({displayName: "ListItem",
     render: function () {
         return(
             React.createElement("li", null, 
-                React.createElement("a", {className: "k_itemList_avatar", href: this.props.item.userUrl}, 
-                    React.createElement("img", {src: this.props.item.avatar})
-                ), 
+
                 React.createElement("div", {className: "k_itemList_node_vote"}, 
                     React.createElement("a", {className: 'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}, 
                         React.createElement("span", null, 
@@ -321,8 +320,12 @@ var ListItem = React.createClass({displayName: "ListItem",
                             React.createElement("i", {className: "fa fa-reply"}), this.props.item.replyNum
                         )
                     ), 
+                    React.createElement("a", {className: "k_itemList_userName"}, this.props.item.userName), 
                     React.createElement("a", {className: "k_itemList_node", href: this.props.item.nodeUrl}, this.nodeDom(this.props.pageUrl))
 
+                ), 
+                React.createElement("a", {className: "k_itemList_avatar", href: this.props.item.userUrl}, 
+                    React.createElement("img", {src: this.props.item.avatar})
                 ), 
                 React.createElement("div", {className: "k_itemList_title", style: this.getWidth(), href: this.props.item.postUrl}, 
                     this.props.item.title
