@@ -154,7 +154,7 @@ var SideBar = React.createClass({displayName: "SideBar",
         }
     },
     newPost: function () {
-        var href = "/new/";
+        var href = "/new";
         if (this.props.pageUrl['isTopic']) {
             href = "/new/" + this.props.pageUrl['routeText'];
         }
