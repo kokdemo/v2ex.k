@@ -1,0 +1,112 @@
+// @import "compass/reset";
+@import "compass/css3";
+@import "navbar";
+@import "tabbar";
+@import "main";
+@import "forum";
+@import "const"; //page hidden
+#Bottom,
+#Main,
+#Rightbar,
+#Tabs,
+#Top,
+#Wrapper .sep20 {
+    display: none;
+}
+#Main {
+    width: auto;
+    margin: 0 !important;
+}
+#Search div,
+#Top,
+#Wrapper,
+.dock_area,
+.item,
+.item_node,
+.super.button,
+.super.button:hover,
+.topic_buttons,
+.topic_buttons:hover {
+    background-image: none !important;
+}
+.topic_buttons {
+    background-color: #eee;
+    border-bottom: 1px solid #999;
+}
+.normal.button,
+.normal.buttonhover {
+    text-shadow: 0 0 0 #fff;
+}
+.box,
+.normal.button,
+.normal.button:hover,
+input.sl,
+textarea {
+    text-shadow: 0 0 0 #fff;
+    box-shadow: 0 0 0 #fff !important;
+}
+.box {
+    border-width: 0;
+}
+#Wrapper .content {
+    max-width: none;
+}
+//
+body {
+    -webkit-font-smoothing: antialiased;
+    font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+    height: 100%;
+    background-color: $color_bg_grey!important;
+    overflow-x: hidden;
+    min-width: 600px!important;
+}
+::-webkit-scrollbar {
+    width: 0!important;
+};
+/* 这是针对缺省样式 (必须的) */
+::-webkit-scrollbar-track {
+    background-color: $color_nav_bg_light2!important;
+};
+/* 滚动条的滑轨背景颜色 */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2)!important;
+};
+/* 滑块颜色 */
+.k-container {
+    display: -webkit-flex;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.k-container.origin{
+    display: -webkit-flex;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 140px;
+}
+.k-navbar {
+    -webkit-flex: initial;
+    flex: initial;
+    position: fixed;
+    width: 80px;
+    height: 100%;
+    z-index: 10;
+}
+.k-tabbar {
+    -webkit-flex: initial;
+    flex: initial;
+    position: fixed;
+    width: 60px;
+    height: 100%;
+}
+.k-main {
+    margin-left: 140px;
+    -webkit-flex: 1;
+    flex: 1;
+}

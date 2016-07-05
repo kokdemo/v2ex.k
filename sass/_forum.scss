@@ -1,0 +1,89 @@
+@import "const";
+
+
+.k-forum{
+    margin: 0;
+    padding: 0;
+    display: -webkit-flex;
+    display: flex;
+    .k-frame{
+        -webkit-flex: 1;
+        flex: 1;
+        border: none;
+        overflow-y: scroll;
+        height: 100vh;
+    }
+    .k-page-list{
+        -webkit-flex: initial;
+        flex: initial;
+        overflow-y: scroll;
+        height: 100vh;
+        max-width: 500px;
+        .k-list{
+            list-style: none;
+            margin: 0;
+            padding: 0 0;
+            background-color: $color_nav_bg_light2;
+            .k-list-item{
+                position: relative;
+                border-top: 1px solid $color_nav_bg_light;
+                padding: 15px 20px;
+                .k-list-item-title-reply{
+                    .k-list-item-title{
+                        display: inline-block;
+                        color: $color_choosen;
+                        padding-right: 40px;
+                        font-size: 16px;
+                        line-height: 20px;
+                        cursor: pointer;
+                    }
+                    .k-list-item-reply{
+                        position: absolute;
+                        text-align: center;
+                        width: 34px;
+                        right: 15px;
+                        top: 15px;
+                        padding: 3px 5px;
+                        color: $color_nav_bg_light2;
+                        background-color: $color_choosen;
+                        border-radius: 10px;
+                        font-size: 14px;
+                    }
+                }
+                .k-list-item-infos{
+                    height: 20px;
+                    padding: 5px 0 0 0;
+                    vertical-align: middle;
+                    .k-list-item-avatar{
+                        width: 15px;
+                        border-radius: 50%;
+                        vertical-align: middle;
+                    }
+                    .k-list-item-user{
+                        color: $color_choosen_dark;
+                        font-size: 14px;
+                    }
+                    .k-list-item-node{
+                        color: $color_choosen_dark;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+        .k-page{
+            padding: 10px 20px;
+            background-color: $color_nav_bg_light2;
+            position: relative;
+            height: 60px;
+            span{
+                line-height: 40px;
+                color: $color_choosen;
+            }
+            .k-page-next{
+                position: absolute;
+                right:20px;
+                top:10px;
+            }
+        }
+    }
+}

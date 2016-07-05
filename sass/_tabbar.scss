@@ -1,0 +1,27 @@
+@import "const";
+
+.k-tabbar {
+  display: inline-block;
+  left: 80px;
+  width: 60px;
+  height: 100%;
+  padding-top: 80px;
+  vertical-align: top;
+  text-align: center;
+  background-color: $color_nav_bg_light;
+  .k-tabbar-item {
+    display: block;
+    vertical-align: middle;
+    padding: 15px 0;
+    font-size: 12px;
+    text-decoration: none;
+    color:$color_choosen;
+    &:hover {
+      background-color: $color_nav_bg_light2;
+      color: $color_item;
+    }
+  }
+  .k_tabbar_current{
+    background-color: $color_green;
+  }
+}

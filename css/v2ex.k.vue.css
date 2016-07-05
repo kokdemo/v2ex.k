@@ -1,0 +1,361 @@
+@charset "UTF-8";
+/* line 2, ../sass/_navbar.scss */
+.k-navbar {
+  background-color: #34495E;
+  vertical-align: top;
+  transition: width 0.2s;
+}
+/* line 6, ../sass/_navbar.scss */
+.k-navbar .k-navbar-item {
+  display: block;
+  vertical-align: middle;
+  padding: 15px 0;
+  color: #95A5A4;
+  text-align: center;
+}
+/* line 12, ../sass/_navbar.scss */
+.k-navbar .k-navbar-item span {
+  display: inline-block;
+  text-align: left;
+  width: 0;
+  height: 0;
+  vertical-align: top;
+  transition: width 0.3s;
+  overflow: hidden;
+}
+/* line 21, ../sass/_navbar.scss */
+.k-navbar .k-navbar-item i {
+  font-size: 24px;
+}
+/* line 24, ../sass/_navbar.scss */
+.k-navbar .k-navbar-item:hover {
+  background-color: #233342;
+  color: #FFFFFF;
+}
+/* line 27, ../sass/_navbar.scss */
+.k-navbar .k-navbar-item:hover i {
+  color: #2DCC70;
+}
+/* line 32, ../sass/_navbar.scss */
+.k-navbar .k-avatar {
+  padding: 20px 0;
+  overflow: hidden;
+  height: 80px;
+  border-bottom: 1px solid #4f6f8f;
+}
+/* line 37, ../sass/_navbar.scss */
+.k-navbar .k-avatar img {
+  display: inline-block;
+  width: 40px;
+  border-radius: 50%;
+  margin-left: 20px;
+}
+/* line 43, ../sass/_navbar.scss */
+.k-navbar .k-avatar span {
+  display: inline-block;
+  text-align: left;
+  width: 0;
+  height: 0;
+  vertical-align: top;
+  transition: width .5s;
+  overflow: hidden;
+}
+/* line 53, ../sass/_navbar.scss */
+.k-navbar:hover {
+  width: 140px;
+}
+/* line 55, ../sass/_navbar.scss */
+.k-navbar:hover i {
+  text-align: right;
+  width: 40px;
+  padding-right: 10px;
+}
+/* line 60, ../sass/_navbar.scss */
+.k-navbar:hover span {
+  line-height: 24px;
+  height: 24px;
+  width: 70px;
+}
+/* line 65, ../sass/_navbar.scss */
+.k-navbar:hover .k-avatar {
+  height: 80px;
+}
+/* line 66, ../sass/_navbar.scss */
+.k-navbar:hover .k-avatar img {
+  width: 0;
+}
+/* line 69, ../sass/_navbar.scss */
+.k-navbar:hover .k-avatar span {
+  color: #FFF;
+  vertical-align: top;
+  line-height: 40px;
+  height: 40px;
+  width: 100px;
+}
+
+/* line 3, ../sass/_tabbar.scss */
+.k-tabbar {
+  display: inline-block;
+  left: 80px;
+  width: 60px;
+  height: 100%;
+  padding-top: 80px;
+  vertical-align: top;
+  text-align: center;
+  background-color: #4f6f8f;
+}
+/* line 12, ../sass/_tabbar.scss */
+.k-tabbar .k-tabbar-item {
+  display: block;
+  vertical-align: middle;
+  padding: 15px 0;
+  font-size: 12px;
+  text-decoration: none;
+  color: #EEE;
+}
+/* line 19, ../sass/_tabbar.scss */
+.k-tabbar .k-tabbar-item:hover {
+  background-color: #7796b4;
+  color: #FFFFFF;
+}
+/* line 24, ../sass/_tabbar.scss */
+.k-tabbar .k_tabbar_current {
+  background-color: #2DCC70;
+}
+
+/* line 4, ../sass/_forum.scss */
+.k-forum {
+  margin: 0;
+  padding: 0;
+  display: -webkit-flex;
+  display: flex;
+}
+/* line 9, ../sass/_forum.scss */
+.k-forum .k-frame {
+  -webkit-flex: 1;
+  flex: 1;
+  border: none;
+  overflow-y: scroll;
+  height: 100vh;
+}
+/* line 16, ../sass/_forum.scss */
+.k-forum .k-page-list {
+  -webkit-flex: initial;
+  flex: initial;
+  overflow-y: scroll;
+  height: 100vh;
+  max-width: 500px;
+}
+/* line 22, ../sass/_forum.scss */
+.k-forum .k-page-list .k-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0;
+  background-color: #7796b4;
+}
+/* line 27, ../sass/_forum.scss */
+.k-forum .k-page-list .k-list .k-list-item {
+  position: relative;
+  border-top: 1px solid #4f6f8f;
+  padding: 15px 20px;
+}
+/* line 32, ../sass/_forum.scss */
+.k-forum .k-page-list .k-list .k-list-item .k-list-item-title-reply .k-list-item-title {
+  display: inline-block;
+  color: #EEE;
+  padding-right: 40px;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+}
+/* line 40, ../sass/_forum.scss */
+.k-forum .k-page-list .k-list .k-list-item .k-list-item-title-reply .k-list-item-reply {
+  position: absolute;
+  text-align: center;
+  width: 34px;
+  right: 15px;
+  top: 15px;
+  padding: 3px 5px;
+  color: #7796b4;
+  background-color: #EEE;
+  border-radius: 10px;
+  font-size: 14px;
+}
+/* line 53, ../sass/_forum.scss */
+.k-forum .k-page-list .k-list .k-list-item .k-list-item-infos {
+  height: 20px;
+  padding: 5px 0 0 0;
+  vertical-align: middle;
+}
+/* line 57, ../sass/_forum.scss */
+.k-forum .k-page-list .k-list .k-list-item .k-list-item-infos .k-list-item-avatar {
+  width: 15px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+/* line 62, ../sass/_forum.scss */
+.k-forum .k-page-list .k-list .k-list-item .k-list-item-infos .k-list-item-user {
+  color: #d5d5d5;
+  font-size: 14px;
+}
+/* line 66, ../sass/_forum.scss */
+.k-forum .k-page-list .k-list .k-list-item .k-list-item-infos .k-list-item-node {
+  color: #d5d5d5;
+  font-size: 14px;
+}
+/* line 73, ../sass/_forum.scss */
+.k-forum .k-page-list .k-page {
+  padding: 10px 20px;
+  background-color: #7796b4;
+  position: relative;
+  height: 60px;
+}
+/* line 78, ../sass/_forum.scss */
+.k-forum .k-page-list .k-page span {
+  line-height: 40px;
+  color: #EEE;
+}
+/* line 82, ../sass/_forum.scss */
+.k-forum .k-page-list .k-page .k-page-next {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+/* line 8, ../sass/v2ex.k.vue.scss */
+#Bottom,
+#Main,
+#Rightbar,
+#Tabs,
+#Top,
+#Wrapper .sep20 {
+  display: none;
+}
+
+/* line 16, ../sass/v2ex.k.vue.scss */
+#Main {
+  width: auto;
+  margin: 0 !important;
+}
+
+/* line 20, ../sass/v2ex.k.vue.scss */
+#Search div,
+#Top,
+#Wrapper,
+.dock_area,
+.item,
+.item_node,
+.super.button,
+.super.button:hover,
+.topic_buttons,
+.topic_buttons:hover {
+  background-image: none !important;
+}
+
+/* line 32, ../sass/v2ex.k.vue.scss */
+.topic_buttons {
+  background-color: #eee;
+  border-bottom: 1px solid #999;
+}
+
+/* line 36, ../sass/v2ex.k.vue.scss */
+.normal.button,
+.normal.buttonhover {
+  text-shadow: 0 0 0 #fff;
+}
+
+/* line 40, ../sass/v2ex.k.vue.scss */
+.box,
+.normal.button,
+.normal.button:hover,
+input.sl,
+textarea {
+  text-shadow: 0 0 0 #fff;
+  box-shadow: 0 0 0 #fff !important;
+}
+
+/* line 48, ../sass/v2ex.k.vue.scss */
+.box {
+  border-width: 0;
+}
+
+/* line 51, ../sass/v2ex.k.vue.scss */
+#Wrapper .content {
+  max-width: none;
+}
+
+/* line 55, ../sass/v2ex.k.vue.scss */
+body {
+  -webkit-font-smoothing: antialiased;
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+  height: 100%;
+  background-color: #ECF0F1 !important;
+  overflow-x: hidden;
+  min-width: 600px !important;
+}
+
+/* line 63, ../sass/v2ex.k.vue.scss */
+::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+/* 这是针对缺省样式 (必须的) */
+/* line 67, ../sass/v2ex.k.vue.scss */
+::-webkit-scrollbar-track {
+  background-color: #7796b4 !important;
+}
+
+/* 滚动条的滑轨背景颜色 */
+/* line 71, ../sass/v2ex.k.vue.scss */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* 滑块颜色 */
+/* line 75, ../sass/v2ex.k.vue.scss */
+.k-container {
+  display: -webkit-flex;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* line 84, ../sass/v2ex.k.vue.scss */
+.k-container.origin {
+  display: -webkit-flex;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 140px;
+}
+
+/* line 93, ../sass/v2ex.k.vue.scss */
+.k-navbar {
+  -webkit-flex: initial;
+  flex: initial;
+  position: fixed;
+  width: 80px;
+  height: 100%;
+  z-index: 10;
+}
+
+/* line 101, ../sass/v2ex.k.vue.scss */
+.k-tabbar {
+  -webkit-flex: initial;
+  flex: initial;
+  position: fixed;
+  width: 60px;
+  height: 100%;
+}
+
+/* line 108, ../sass/v2ex.k.vue.scss */
+.k-main {
+  margin-left: 140px;
+  -webkit-flex: 1;
+  flex: 1;
+}

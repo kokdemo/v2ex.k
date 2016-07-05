@@ -139,8 +139,8 @@ var getUserInfo = function () {
 var SideBar = React.createClass({displayName: "SideBar",
     getCoin: function () {
         if (this.props.pageUrl['ifGetCoin']) {
-            return React.createElement("a", {href: "/mission/daily/redeem?once=" + this.props.pageUrl['timeStamp']}, 
-                React.createElement("i", {className: "fa fa-money"}), 
+            return React.createElement("a", {href: "/mission/daily/redeem?once=" + this.props.pageUrl['timeStamp']},
+                React.createElement("i", {className: "fa fa-money"}),
                 React.createElement("span", null, "签到")
             )
         }
@@ -148,7 +148,7 @@ var SideBar = React.createClass({displayName: "SideBar",
     favorite: function () {
         if (this.props.pageUrl['isTopic']) {
             var href = $('.fr.f12 a').attr('href');
-            return React.createElement("a", {href: href}, 
+            return React.createElement("a", {href: href},
                 React.createElement("i", {className: "fa fa-heart"})
             )
         }
@@ -158,8 +158,8 @@ var SideBar = React.createClass({displayName: "SideBar",
         if (this.props.pageUrl['isTopic']) {
             href = "/new/" + this.props.pageUrl['routeText'];
         }
-        return(React.createElement("a", {href: href, title: "新主题"}, 
-            React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"}), 
+        return(React.createElement("a", {href: href, title: "新主题"},
+            React.createElement("i", {className: "fa fa-pencil-square-o fa-2x"}),
             React.createElement("span", null, "新主题")
         ))
     },
@@ -195,51 +195,51 @@ var SideBar = React.createClass({displayName: "SideBar",
     login: function () {
         if (this.props.pageUrl['ifLogin']) {
             return(
-                React.createElement("div", {id: "k_navbar"}, 
-                    React.createElement("a", {id: "k_avatar", href: '/member/' + this.props.userInfo.userName}, 
-                        React.createElement("img", {src: this.props.userInfo.userAvatar}), 
+                React.createElement("div", {id: "k_navbar"},
+                    React.createElement("a", {id: "k_avatar", href: '/member/' + this.props.userInfo.userName},
+                        React.createElement("img", {src: this.props.userInfo.userAvatar}),
                         React.createElement("span", null, this.props.userInfo.userName)
-                    ), 
-                    this.getCoin(), 
-                    React.createElement("a", {href: "/", title: "首页"}, 
-                        React.createElement("i", {className: "fa fa-home fa-2x"}), 
+                    ),
+                    this.getCoin(),
+                    React.createElement("a", {href: "/", title: "首页"},
+                        React.createElement("i", {className: "fa fa-home fa-2x"}),
                         React.createElement("span", null, "首页")
-                    ), 
-                    React.createElement("a", {href: "/notifications", title: "提醒"}, 
-                        React.createElement("i", {className: "fa fa-bell fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "/notifications", title: "提醒"},
+                        React.createElement("i", {className: "fa fa-bell fa-2x"}),
                         React.createElement("span", null, "提醒")
-                    ), 
-                    this.newPost(), 
-                    React.createElement("a", {href: "/planes", title: "节点"}, 
-                        React.createElement("i", {className: "fa fa-th fa-2x"}), 
+                    ),
+                    this.newPost(),
+                    React.createElement("a", {href: "/planes", title: "节点"},
+                        React.createElement("i", {className: "fa fa-th fa-2x"}),
                         React.createElement("span", null, "节点")
-                    ), 
-                    React.createElement("a", {href: "//workspace.v2ex.com/", target: "_blank", title: "工作空间"}, 
-                        React.createElement("i", {className: "fa fa-laptop fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "//workspace.v2ex.com/", target: "_blank", title: "工作空间"},
+                        React.createElement("i", {className: "fa fa-laptop fa-2x"}),
                         React.createElement("span", null, "工作空间")
-                    ), 
-                    React.createElement("a", {href: "/notes", title: "笔记"}, 
-                        React.createElement("i", {className: "fa fa-book fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "/notes", title: "笔记"},
+                        React.createElement("i", {className: "fa fa-book fa-2x"}),
                         React.createElement("span", null, "笔记")
-                    ), 
-                    React.createElement("a", {href: "/t", title: "时间轴"}, 
-                        React.createElement("i", {className: "fa fa-list-alt fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "/t", title: "时间轴"},
+                        React.createElement("i", {className: "fa fa-list-alt fa-2x"}),
                         React.createElement("span", null, "时间轴")
-                    ), 
-                    React.createElement("a", {href: "/events", title: "事件"}, 
-                        React.createElement("i", {className: "fa fa-eye fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "/events", title: "事件"},
+                        React.createElement("i", {className: "fa fa-eye fa-2x"}),
                         React.createElement("span", null, "事件")
-                    ), 
-                    React.createElement("a", {href: this.props.userInfo.ip, title: "附近"}, 
-                        React.createElement("i", {className: "fa fa-map-marker fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: this.props.userInfo.ip, title: "附近"},
+                        React.createElement("i", {className: "fa fa-map-marker fa-2x"}),
                         React.createElement("span", null, "附近")
-                    ), 
-                    React.createElement("a", {href: "/settings", title: "设置"}, 
-                        React.createElement("i", {className: "fa fa-cog fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "/settings", title: "设置"},
+                        React.createElement("i", {className: "fa fa-cog fa-2x"}),
                         React.createElement("span", null, "设置")
-                    ), 
-                    React.createElement("a", {href: "/signout?once=" + this.props.pageUrl['timeStamp'], title: "退出"}, 
-                        React.createElement("i", {className: "fa fa-sign-out fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "/signout?once=" + this.props.pageUrl['timeStamp'], title: "退出"},
+                        React.createElement("i", {className: "fa fa-sign-out fa-2x"}),
                         React.createElement("span", null, "退出")
                     )
                 )
@@ -247,17 +247,17 @@ var SideBar = React.createClass({displayName: "SideBar",
 
         } else {
             return(
-                React.createElement("div", {id: "k_navbar"}, 
-                    React.createElement("a", {href: "/", title: "首页"}, 
-                        React.createElement("i", {className: "fa fa-home fa-2x"}), 
+                React.createElement("div", {id: "k_navbar"},
+                    React.createElement("a", {href: "/", title: "首页"},
+                        React.createElement("i", {className: "fa fa-home fa-2x"}),
                         React.createElement("span", null, "首页")
-                    ), 
-                    React.createElement("a", {href: "/signup", title: "注册"}, 
-                        React.createElement("i", {className: "fa fa-user fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "/signup", title: "注册"},
+                        React.createElement("i", {className: "fa fa-user fa-2x"}),
                         React.createElement("span", null, "注册")
-                    ), 
-                    React.createElement("a", {href: "/signin", title: "登陆"}, 
-                        React.createElement("i", {className: "fa fa-sign-in fa-2x"}), 
+                    ),
+                    React.createElement("a", {href: "/signin", title: "登陆"},
+                        React.createElement("i", {className: "fa fa-sign-in fa-2x"}),
                         React.createElement("span", null, "登陆")
                     )
                 )
@@ -267,11 +267,11 @@ var SideBar = React.createClass({displayName: "SideBar",
     render: function () {
         var aClassName = 'k_color_hover';
         return(
-            React.createElement("div", {id: "k_sidebar"}, 
-                this.login(), 
+            React.createElement("div", {id: "k_sidebar"},
+                this.login(),
 
-                React.createElement("div", {id: "k_tabbar"}, 
-                    this.favorite(), 
+                React.createElement("div", {id: "k_tabbar"},
+                    this.favorite(),
                     this.tabbar()
                 )
             )
@@ -311,27 +311,27 @@ var ListItem = React.createClass({displayName: "ListItem",
 
     render: function () {
         return(
-            React.createElement("li", null, 
+            React.createElement("li", null,
 
-                React.createElement("div", {className: "k_itemList_node_vote"}, 
-                    React.createElement("a", {className: 'k_itemList_vote ' + this.voteClassName(this.props.item.vote)}, 
-                        React.createElement("span", null, 
+                React.createElement("div", {className: "k_itemList_node_vote"},
+                    React.createElement("a", {className: 'k_itemList_vote ' + this.voteClassName(this.props.item.vote)},
+                        React.createElement("span", null,
                             React.createElement("i", {className: "fa fa-chevron-up"}), this.props.item.vote
                         )
-                    ), 
-                    React.createElement("a", {className: "k_itemList_reply"}, 
-                        React.createElement("span", null, 
+                    ),
+                    React.createElement("a", {className: "k_itemList_reply"},
+                        React.createElement("span", null,
                             React.createElement("i", {className: "fa fa-reply"}), this.props.item.replyNum
                         )
-                    ), 
-                    React.createElement("a", {className: "k_itemList_userName"}, this.props.item.userName), 
+                    ),
+                    React.createElement("a", {className: "k_itemList_userName"}, this.props.item.userName),
                     React.createElement("a", {className: "k_itemList_node", href: this.props.item.nodeUrl}, this.nodeDom(this.props.pageUrl))
 
-                ), 
-                React.createElement("a", {className: "k_itemList_avatar", href: this.props.item.userUrl}, 
+                ),
+                React.createElement("a", {className: "k_itemList_avatar", href: this.props.item.userUrl},
                     React.createElement("img", {src: this.props.item.avatar})
-                ), 
-                React.createElement("div", {className: "k_itemList_title", style: this.getWidth(), href: this.props.item.postUrl}, 
+                ),
+                React.createElement("div", {className: "k_itemList_title", style: this.getWidth(), href: this.props.item.postUrl},
                     this.props.item.title
                 )
             )
@@ -344,21 +344,21 @@ var List = React.createClass({displayName: "List",
             if (this.props.pageUrl['searchText'] == "" || this.props.pageUrl['searchText'] == "1") {
                 //第一页
                 return(
-                    React.createElement("li", null, 
+                    React.createElement("li", null,
                         React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['pureUrl'] + '?p=2'}, "下一页")
                     )
                     )
             } else {
                 return(
                     //第n页
-                    React.createElement("li", null, 
-                        React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] + '=' + (parseInt(this.props.pageUrl['searchText']) - 1)}, "上一页"), 
+                    React.createElement("li", null,
+                        React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] + '=' + (parseInt(this.props.pageUrl['searchText']) - 1)}, "上一页"),
                         React.createElement("a", {className: "k_itemList_more", href: this.props.pageUrl['nodePageUrl'] + '=' + (parseInt(this.props.pageUrl['searchText']) + 1)}, "下一页")
                     )
                     )
             }
         } else {
-            return React.createElement("li", null, 
+            return React.createElement("li", null,
                 React.createElement("a", {className: "k_itemList_more", href: "/recent"}, "更多新主题")
             )
         }
@@ -372,8 +372,8 @@ var List = React.createClass({displayName: "List",
             Dom.push(React.createElement(ListItem, {item: item, pageUrl: url, nodeName: nodeName}));
         });
         return (
-            React.createElement("ul", {id: "k_itemList_ul"}, 
-                    Dom, 
+            React.createElement("ul", {id: "k_itemList_ul"},
+                    Dom,
                 this.morePost()
             )
             )
@@ -402,9 +402,9 @@ var MainPage = React.createClass({displayName: "MainPage",
     },
     render: function () {
         return(
-            React.createElement("div", {id: "k_itemList", style: this.getWidth()}, 
-                React.createElement("div", {id: "k_hover"}), 
-                React.createElement(SubNav, {node: this.props.NodeData}), 
+            React.createElement("div", {id: "k_itemList", style: this.getWidth()},
+                React.createElement("div", {id: "k_hover"}),
+                React.createElement(SubNav, {node: this.props.NodeData}),
                 React.createElement(List, {list: this.props.ListData, pageUrl: this.props.pageUrl, nodeName: this.props.NodeName})
             )
             )
@@ -422,25 +422,28 @@ var Container = React.createClass({displayName: "Container",
     render: function () {
         if (self == top) {
             if (this.props.pageUrl['isList']) {
+                //页面中有列表和快速访问
                 return(
-                    React.createElement("div", {id: "k_container"}, 
-                        React.createElement(SideBar, {userInfo: this.props.userInfo, pageUrl: this.props.pageUrl}), 
-                        React.createElement("div", {id: "k_main"}), 
+                    React.createElement("div", {id: "k_container",layout:"rows justify-stretch"},
+                        React.createElement(SideBar, {userInfo: this.props.userInfo, pageUrl: this.props.pageUrl}),
+                        React.createElement("div", {id: "k_main"}),
                         React.createElement("div", {id: "k_faster", style: this.getHeight()})
                     )
                     )
             } else {
+                //页面中有列表
                 return(
-                    React.createElement("div", {id: "k_container"}, 
-                        React.createElement(SideBar, {userInfo: this.props.userInfo, pageUrl: this.props.pageUrl}), 
+                    React.createElement("div", {id: "k_container",layout:"rows justify-stretch"},
+                        React.createElement(SideBar, {userInfo: this.props.userInfo, pageUrl: this.props.pageUrl}),
                         React.createElement("div", {id: "k_main", className: "origin"})
                     )
                     )
             }
 
         } else {
+            //页面中没有列表
             return(
-                React.createElement("div", {id: "k_container"}, 
+                React.createElement("div", {id: "k_container",layout:"rows justify-stretch"},
                     React.createElement("div", {id: "k_faster", style: this.getHeight()})
                 )
                 )
@@ -462,8 +465,8 @@ var FastReader = React.createClass({displayName: "FastReader",
 var ReplyArea = React.createClass({displayName: "ReplyArea",
     render: function () {
         return(
-            React.createElement("form", {method: "post", action: this.props.url}, 
-                React.createElement("textarea", {name: "content", maxlength: "10000", class: "mll", id: "reply_content", style: "overflow: hidden; word-wrap: break-word; resize: horizontal; height: 112px;"}), 
+            React.createElement("form", {method: "post", action: this.props.url},
+                React.createElement("textarea", {name: "content", maxlength: "10000", class: "mll", id: "reply_content", style: "overflow: hidden; word-wrap: break-word; resize: horizontal; height: 112px;"}),
                 React.createElement("input", {type: "submit", value: "回复", class: "super normal button"})
             )
             )
@@ -473,14 +476,14 @@ var ReplyArea = React.createClass({displayName: "ReplyArea",
 var NotificationItem = React.createClass({displayName: "NotificationItem",
     render: function () {
         return(
-            React.createElement("li", null, 
-                React.createElement("a", {className: "k_notifiList_avatar", href: this.props.item.userUrl}, 
+            React.createElement("li", null,
+                React.createElement("a", {className: "k_notifiList_avatar", href: this.props.item.userUrl},
                     React.createElement("img", {src: this.props.item.avatar})
-                ), 
-                React.createElement("div", {className: "k_notifiList_title", href: this.props.item.postUrl}, 
+                ),
+                React.createElement("div", {className: "k_notifiList_title", href: this.props.item.postUrl},
                     this.props.item.postName
-                ), 
-                React.createElement("div", {className: "k_notifiList_reply"}, 
+                ),
+                React.createElement("div", {className: "k_notifiList_reply"},
                     this.props.item.reply
                 )
             ))
@@ -494,7 +497,7 @@ var Notification = React.createClass({displayName: "Notification",
             Dom.push(React.createElement(NotificationItem, {item: this.props.NotificationList[i]}))
         }
         return(
-            React.createElement("ul", {id: "k_notifiList"}, 
+            React.createElement("ul", {id: "k_notifiList"},
                 Dom
             )
             )
@@ -521,7 +524,7 @@ $(function () {
         document.body
     );
 
-//先判断是否为ifame，再判断是否为列表
+//先判断是否为iframe，再判断是否为列表
     if (self == top) {
         if (pageUrl['isList']) {
             React.render(

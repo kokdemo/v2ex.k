@@ -25,14 +25,14 @@
                 "*://v2ex.com/*"
             ],
             "css": [
-                "css/main.css",
-                "css/font.css"
+                "css/flex-layout-attribute.min.css",
+                "css/font.css",
+                "css/v2ex.k.vue.css"
             ],
             "js": [
-                "js/jquery-2.1.1.min.js",
-                "js/jquery-qr.js",
-                "js/react.js",
-                "js/v2ex.k.react.js"
+                "js/vue.js",
+                "js/vue-href.js",
+                "js/v2ex.k.vue.js"
             ],
             "run_at": "document_start"
         }
