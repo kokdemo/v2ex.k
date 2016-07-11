@@ -27,7 +27,7 @@
 
 /* 导航栏部分 */
 var k_navbar = Vue.extend({
-    props:['data'],
+    props: ['data'],
     data: function() {
         return ({
             navbarItems: [{
@@ -69,23 +69,23 @@ var k_navbar = Vue.extend({
         'k_navbar_item': {
             props: ['info'],
             template: '\
-            <div class="k-navbar-item" v-href="info.navbarUrl">\
+            <div class="k-navbar-item k-hover-nav" v-href="info.navbarUrl">\
                 <i :class="info.navbarIcon"></i>\
                 <span>{{info.navbarText}}</span>\
             </div>'
         },
         'k_avatar': {
             props: ['user'],
-            data:function(){
-                return({
-                    userUrl:route.origin+'/member/'
+            data: function() {
+                return ({
+                    userUrl: route.origin + '/member/'
                 })
             },
-            template: '<div class="k-avatar" v-href="userUrl+user.name"><img :src="user.avatar" /><span>{{user.name}}</span></div>'
+            template: '<div class="k-avatar k-hover-nav" v-href="userUrl+user.name"><img :src="user.avatar" /><span>{{user.name}}</span></div>'
         }
     },
     template: '\
-    <div class="k-navbar">\
+    <div class="k-navbar k-bg-nav k-text-nav">\
         <k_avatar :user=data></k_avatar>\
         <k_navbar_item v-for="item in navbarItems" :info="item"></k_navbar_item>\
     </div>'
@@ -99,143 +99,145 @@ var k_tabbar = Vue.extend({
         return ({
             tabbarItems: [{
                 tabbarText: '全部',
-                tabbarUrl: '/?tab=all'
+                tabbarUrl: '/?tab=all',
+                tabbar: 'all',
             }, {
                 tabbarText: '技术',
-                tabbarUrl: '/?tab=tech'
+                tabbarUrl: '/?tab=tech',
+                tabbar: 'tech'
             }, {
                 tabbarText: '创意',
-                tabbarUrl: '/?tab=creative'
+                tabbarUrl: '/?tab=creative',
+                tabbar: 'creative'
             }, {
                 tabbarText: '好玩',
-                tabbarUrl: '/?tab=play'
+                tabbarUrl: '/?tab=play',
+                tabbar: 'play'
             }, {
                 tabbarText: 'Apple',
-                tabbarUrl: '/?tab=apple'
+                tabbarUrl: '/?tab=apple',
+                tabbar: 'apple'
             }, {
                 tabbarText: '酷工作',
-                tabbarUrl: '/?tab=jobs'
+                tabbarUrl: '/?tab=jobs',
+                tabbar: 'jobs'
             }, {
                 tabbarText: '交易',
-                tabbarUrl: '/?tab=deals'
+                tabbarUrl: '/?tab=deals',
+                tabbar: 'deals'
             }, {
                 tabbarText: '城市',
-                tabbarUrl: '/?tab=city'
+                tabbarUrl: '/?tab=city',
+                tabbar: 'city'
             }, {
                 tabbarText: '问与答',
-                tabbarUrl: '/?tab=qna'
+                tabbarUrl: '/?tab=qna',
+                tabbar: 'qna'
             }, {
                 tabbarText: '最热',
-                tabbarUrl: '/?tab=hot'
+                tabbarUrl: '/?tab=hot',
+                tabbar: 'hot'
             }, {
                 tabbarText: 'R2',
-                tabbarUrl: '/?tab=r2'
+                tabbarUrl: '/?tab=r2',
+                tabbar: 'r2'
             }, {
                 tabbarText: '节点',
-                tabbarUrl: '/?tab=nodes'
+                tabbarUrl: '/?tab=nodes',
+                tabbar: 'nodes'
             }, {
                 tabbarText: '关注',
-                tabbarUrl: '/?tab=members'
-            }]
+                tabbarUrl: '/?tab=members',
+                tabbar: 'members'
+            }, {
+                tabbarText: '收藏',
+                tabbarUrl: '/my/topics'
+            }],
+            route: {
+                tab: route.tab
+            }
         })
     },
     components: {
         'k_tabbar_item': {
-            props: ['info'],
-            template: '<div class="k-tabbar-item" v-href="info.tabbarUrl"><span>{{info.tabbarText}}</span></div>'
+            props: ['info','route'],
+            template: '<div class="k-tabbar-item k-hover-tab" v-bind:class="{active: info.tabbar == route.tab}" v-href="info.tabbarUrl"><span>{{info.tabbarText}}</span></div>'
         }
     },
-    template: '<div class="k-tabbar"><k_tabbar_item v-for="item in tabbarItems" :info="item"></k_tabbar_item></div>'
+    template: '<div class="k-tabbar k-text-tab k-bg-tab"><k_tabbar_item v-for="item in tabbarItems" :info="item" :route="route"></k_tabbar_item></div>'
 })
 Vue.component('k-tabbar', k_tabbar)
 
 /* 列表和主体部分 */
 var k_forum = Vue.extend({
-    porps:['nodebaritems','data','url'],
+    porps: ['nodebaritems', 'data', 'url'],
     data: function() {
         return ({
-            nodebarItems: [{
-                nodebarText: '全部',
-                nodebarUrl: '/?tab=all'
-            }, {
-                nodebarText: '全部',
-                nodebarUrl: '/?tab=all'
-            }, {
-                nodebarText: '全部',
-                nodebarUrl: '/?tab=all'
-            }],
             listItems: getList(),
-            iframeUrl:'',
-            route:{
-                topic:route.topic,
-                node:route.node
+            iframeUrl: '',
+            route: {
+                topic: route.topic,
+                node: route.node
             }
         })
     },
     components: {
-        'k_nodebar': {
-            props: ['nodebar'],
-            template: '\
-            <div class="k-nodebar">\
-                <span v-for="item in nodebar" v-href="item.nodebarUrl">{{item.nodebarText}}</span>\
-            </div>'
-        },
         'k_list': {
-            props: ['list','route'],
+            props: ['list', 'route'],
             template: '\
-            <ul class="k-list">\
+            <ul class="k-list k-border-list">\
                 <li class="k-list-item" v-for="item in list" >\
                     <div class="k-list-item-title-reply"><span class="k-list-item-title" v-on:click="open(item.url)">{{item.title}}</span>\
-                    <span class="k-list-item-reply">{{item.reply}}</span></div>\
-                    <div class="k-list-item-infos"><img class="k-list-item-avatar" :src="item.avatar" v-href="item.userUrl">\
+                    <span class="k-list-item-reply k-reply-list">{{item.reply}}</span></div>\
+                    <div class="k-list-item-infos k-info-list"><img class="k-list-item-avatar" :src="item.avatar" v-href="item.userUrl">\
                     <span class="k-list-item-user" v-href="item.userUrl">{{item.userName}}</span>\
                     <span class="k-list-item-node" v-href="item.node" v-if="!route.node"> &nbsp·&nbsp {{item.nodeText}}</span></div>\
                 </li>\
             </ul>',
             methods: {
-                open: function (url) {
+                open: function(url) {
                     this.$parent.iframeUrl = url;
                 }
             }
         },
-        'k_page':{
-            props:['route'],
-            data:function () {
-                if(route.page === undefined){
+        'k_page': {
+            props: ['route'],
+            data: function() {
+                if (route.page === undefined) {
                     route.page = 1;
                 }
                 var isrecent = '';
-                if(route.index){
+                if (route.index) {
                     isrecent = 'recent'
                 }
                 return {
-                    lastpage:route.pathname+'?p='+(route.page-1),
-                    ifLastpage:(route.page-1 > 0),
-                    nextpage:route.pathname+isrecent+'?p='+(route.page-0+1)
+                    lastpage: route.pathname + '?p=' + (route.page - 1),
+                    ifLastpage: (route.page - 1 > 0),
+                    nextpage: route.pathname + isrecent + '?p=' + (route.page - 0 + 1)
                 }
             },
-            template:'\
+            template: '\
             <div class="k-page">\
                 <span v-if="ifLastpage" v-href="lastpage">上一页</span>\
                 <span class="k-page-next" v-href="nextpage">下一页</span>\
             </div>'
         },
-        'k_frame':{
-            props:['url'],
-            template:'<iframe :src=url class="k-frame"></iframe>'
+        'k_frame': {
+            props: ['url'],
+            template: '<iframe :src=url class="k-frame"></iframe>'
         }
     },
     template: '\
     <div class="k-forum">\
-        <div class="k-page-list"><k_page :route="route"></k_page>\
+        <div class="k-page-list k-bg-list k-text-list"><k_page :route="route"></k_page>\
         <k_list :list="listItems" :route="route"></k_list><k_page :route="route"></k_page></div>\
-        <k_frame :url="iframeUrl"></k_frame>\
+        <k_frame class="spinner" :url="iframeUrl"></k_frame>\
     </div>'
 })
 Vue.component('k-forum', k_forum)
 
 var k_main = Vue.extend({
-    porps:['list'],
+    porps: ['list'],
     template: '<div class="k-main"><k-forum></k-forum></div>'
 })
 Vue.component('k-main', k_main)
@@ -260,7 +262,7 @@ function ready(fn) {
 
 /* 预设函数*/
 
-var getList = function () {
+var getList = function() {
     var itemList = [];
     var $itemDom;
     if (route.node) {
@@ -268,21 +270,23 @@ var getList = function () {
     } else {
         $itemDom = document.getElementsByClassName('cell item');
     }
-    var tempItem = {},top='',info='';
+    var tempItem = {},
+        top = '',
+        info = '';
     for (var i = 0, len = $itemDom.length; i < len; i++) {
         tempItem['avatar'] = $itemDom[i].getElementsByTagName('img')[0].src;
         tempItem['userUrl'] = $itemDom[i].getElementsByTagName('a')[0].href;
         tempItem['userName'] = tempItem['userUrl'].split('/').pop();
         tempItem['url'] = $itemDom[i].getElementsByTagName('a')[1].href;
         tempItem['title'] = $itemDom[i].getElementsByTagName('a')[1].text;
-        if(!route.node){
+        if (!route.node) {
             tempItem['node'] = $itemDom[i].getElementsByClassName('node')[0].href;
             tempItem['nodeText'] = $itemDom[i].getElementsByClassName('node')[0].text;
         }
         tempItem['reply'] = $itemDom[i].getElementsByClassName('count_livid')[0];
         if (tempItem['reply'] == undefined) {
             tempItem['reply'] = 0
-        }else{
+        } else {
             tempItem['reply'] = tempItem['reply'].text
         }
         itemList.push(tempItem);
@@ -291,10 +295,10 @@ var getList = function () {
     return itemList
 };
 
-var getUserInfo = function () {
+var getUserInfo = function() {
     var userInfo = {};
     if (localStorage['v2ex.k'] !== undefined) {
-//        将不太经常变化的信息存储到localStorage里面，当设置页面中点击保存时将整个删除初始化。
+        //将不太经常变化的信息存储到localStorage里面，当设置页面中点击保存时将整个删除初始化。
         userInfo = JSON.parse(localStorage['v2ex.k']);
     } else {
         userInfo.name = document.getElementById("Rightbar").getElementsByTagName("a")[0].href.split("/member/")[1];
@@ -305,29 +309,31 @@ var getUserInfo = function () {
 };
 
 /* 数据获取部分 */
-var dateinfo=new Date().getUTCDate();
+var dateinfo = new Date().getUTCDate();
 var originHref = window.location.href;
 var route = {
     pathname: window.location.pathname,
-    page:originHref.split('p=')[1],
+    page: originHref.split('p=')[1],
     https: ('https:' == document.location.protocol),
     node: (originHref.indexOf('/go/') != -1),
-    nodeText: (this.node?document.title.split(' › ')[1]:false),
-    topic:(originHref.indexOf('/t/') != -1),
-    iframe:(self.frameElement && self.frameElement.tagName == "IFRAME"),
-    index:(window.location.pathname == '/'),
-    recent:(window.location.pathname == '/recent'),
-    origin:window.location.origin
+    nodeText: (this.node ? document.title.split(' › ')[1] : false),
+    topic: (originHref.indexOf('/t/') != -1),
+    iframe: (self.frameElement && self.frameElement.tagName == "IFRAME"),
+    index: (window.location.pathname == '/'),
+    recent: (window.location.pathname == '/recent'),
+    mytopics: (window.location.pathname == '/my/topics'),
+    origin: window.location.origin,
+    search: window.location.search,
+    tab:(window.location.search.split('tab=')[1])
 };
 
 ready(function() {
     var userData = getUserInfo();
-    if(!route.index && !route.node && !route.recent){
+    if (!route.index && !route.node && !route.recent && !route.mytopics) {
         // 在非首页，recent，node页面中，展示原来的页面
         document.getElementById('Main').style.display = 'block';
-        // document.getElementsByClassName('k-container')[0].style.width = '140px';
     }
-    if(!route.iframe){
+    if (!route.iframe) {
         // 调整原来页面的宽度和边距
         var content = document.getElementById('Wrapper').getElementsByClassName('content')[0];
         content.style.margin = '0 0 0 140px';
@@ -340,21 +346,24 @@ ready(function() {
         beforeCompile: function() {
             /* 总体部分 */
             Vue.component('k-container', {
-                data:function(){
+                data: function() {
                     var originText = '';
                     var iforigin = false;
-                    if(!route.index && !route.node && !route.recent){
-                        originText = 'origin',
+                    if (!route.index && !route.node && !route.recent && !route.mytopics) {
+                        originText = 'origin';
                         iforigin = true;
                     }
-                    return (
-                        {userData:userData,route:route,origin:originText,iforigin:iforigin}
-                    );
+                    return ({
+                        userData: userData,
+                        route: route,
+                        origin: originText,
+                        iforigin: iforigin
+                    });
                 },
                 template: '<div class="k-container" v-bind:class="{origin:iforigin}" v-if="!route.iframe">\
                                 <k-navbar :data="userData"></k-navbar>\
                                 <k-tabbar></k-tabbar>\
-                                <k-main v-if="route.index||route.node||route.recent"></k-main>\
+                                <k-main v-if="route.index||route.node||route.recent||route.mytopics"></k-main>\
                             </div>'
             })
             document.body.appendChild(document.createElement('k-container'));

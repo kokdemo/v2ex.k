@@ -9,6 +9,7 @@
     .k-frame{
         -webkit-flex: 1;
         flex: 1;
+        min-width: 600px;
         border: none;
         overflow-y: scroll;
         height: 100vh;
@@ -18,34 +19,36 @@
         flex: initial;
         overflow-y: scroll;
         height: 100vh;
-        max-width: 500px;
+        min-width: 300px;
+        max-width: 600px;
         .k-list{
             list-style: none;
             margin: 0;
             padding: 0 0;
-            background-color: $color_nav_bg_light2;
+            border-style: solid;
+            border-bottom-width: 1px;
+
             .k-list-item{
                 position: relative;
-                border-top: 1px solid $color_nav_bg_light;
-                padding: 15px 20px;
+                border-style: solid;
+                border-top-width: 1px;
+                border-color: inherit;
+                padding: 10px 15px;
                 .k-list-item-title-reply{
                     .k-list-item-title{
                         display: inline-block;
-                        color: $color_choosen;
-                        padding-right: 40px;
+                        padding-right: 45px;
                         font-size: 16px;
-                        line-height: 20px;
+                        line-height: 22px;
                         cursor: pointer;
                     }
                     .k-list-item-reply{
                         position: absolute;
                         text-align: center;
-                        width: 34px;
+                        width: 30px;
                         right: 15px;
                         top: 15px;
                         padding: 3px 5px;
-                        color: $color_nav_bg_light2;
-                        background-color: $color_choosen;
                         border-radius: 10px;
                         font-size: 14px;
                     }
@@ -60,24 +63,20 @@
                         vertical-align: middle;
                     }
                     .k-list-item-user{
-                        color: $color_choosen_dark;
-                        font-size: 14px;
+                        font-size: 13px;
                     }
                     .k-list-item-node{
-                        color: $color_choosen_dark;
-                        font-size: 14px;
+                        font-size: 13px;
                     }
                 }
             }
         }
         .k-page{
             padding: 10px 20px;
-            background-color: $color_nav_bg_light2;
             position: relative;
-            height: 60px;
+            height: 40px;
             span{
                 line-height: 40px;
-                color: $color_choosen;
             }
             .k-page-next{
                 position: absolute;

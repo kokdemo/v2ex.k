@@ -1,10 +1,11 @@
-// @import "compass/reset";
+@import "compass/reset";
 @import "compass/css3";
 @import "navbar";
 @import "tabbar";
 @import "main";
 @import "forum";
-@import "const"; //page hidden
+@import "const";
+@import "loading";
 #Bottom,
 #Main,
 #Rightbar,

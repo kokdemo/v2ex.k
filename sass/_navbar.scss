@@ -1,13 +1,11 @@
 @import "const";
 .k-navbar {
-    background-color: $color_nav_bg;
     vertical-align: top;
     transition: width 0.2s;
     .k-navbar-item {
         display: block;
         vertical-align: middle;
         padding: 15px 0;
-        color: $color_nav_text;
         text-align: center;
         span {
             display: inline-block;
@@ -21,19 +19,10 @@
         i {
             font-size: 24px;
         }
-        &:hover {
-            background-color: $color_nav_choose;
-            color: $color_item;
-            i {
-                color: $color_green;
-            }
-        }
     }
     .k-avatar {
         padding: 20px 0;
         overflow: hidden;
-        height: 80px;
-        border-bottom: 1px solid $color_nav_bg_light;
         img {
             display: inline-block;
             width: 40px;
@@ -67,13 +56,11 @@
                 width: 0;
             }
             span{
-                color: #FFF;
                 vertical-align: top;
                 line-height: 40px;
                 height: 40px;
                 width: 100px;
             }
-            height: 80px;
         }
     }
 }

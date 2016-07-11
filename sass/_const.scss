@@ -12,6 +12,7 @@ $color_green: #2DCC70;
 $color_nav_bg: #34495E;
 $color_nav_bg_light: lighten($color_nav_bg, 15%);
 $color_nav_bg_light2: lighten($color_nav_bg, 30%);
+$color_nav_bg_light3: lighten($color_nav_bg, 40%);
 $color_nav_choose: #233342;
 $color_nav_choose_light: lighten($color_nav_choose, 15%);
 $color_nav_choose_dark: darken($color_nav_choose, 10%);
@@ -22,3 +23,54 @@ $color_title: #2D3E50;
 $color_item_choose: #F7F8FC;
 $color_item_hover: darken($color_item_choose,5%);
 $color_subtitle: #BCC3C9;
+
+.k-bg-nav{
+    background-color: $color_nav_bg;
+}
+.k-hover-nav{
+    &:hover{
+        background-color: $color_nav_choose;
+    }
+}
+.k-text-nav{
+    color: $color_choosen;
+}
+
+.k-bg-tab{
+    background-color: $color_nav_bg_light;
+}
+.k-hover-tab{
+    &:hover{
+        background-color: $color_nav_bg_light2;
+    }
+}
+.k-hover-tab.active{
+    background-color: $color_nav_bg_light2;
+}
+.k-text-tab{
+    color: $color_choosen;
+}
+
+.k-bg-list{
+    background-color: $color_nav_bg_light2;
+}
+.k-text-list{
+    color: $color_choosen;
+}
+.k-border-list{
+    border-color: $color_nav_bg_light3;
+}
+.k-info-list{
+    color: $color_nav_bg_light3;
+    &:hover{
+        color: $color_choosen;
+    }
+}
+.k-reply-list{
+    background-color: $color_choosen;
+    color: $color_nav_bg_light2;
+}
+
+.k_bg-iframe{
+    background-color: $color_nav_bg_light3;
+}

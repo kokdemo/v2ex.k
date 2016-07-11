@@ -5,7 +5,6 @@
     "description": "V2EX Extension",
     "homepage_url": "https://github.com/kokdemo/v2ex.k",
     "author": "kokdemo",
-    "options_page": "options.html",
     "icons": {
         "16": "v2ex.png",
         "48": "v2ex.png",
@@ -25,7 +24,6 @@
                 "*://v2ex.com/*"
             ],
             "css": [
-                "css/flex-layout-attribute.min.css",
                 "css/font.css",
                 "css/v2ex.k.vue.css"
             ],
