@@ -149,9 +149,6 @@ var k_tabbar = Vue.extend({
                 tabbarText: '关注',
                 tabbarUrl: '/?tab=members',
                 tabbar: 'members'
-            }, {
-                tabbarText: '收藏',
-                tabbarUrl: '/my/topics'
             }],
             route: {
                 tab: route.tab
@@ -231,7 +228,7 @@ var k_forum = Vue.extend({
     <div class="k-forum">\
         <div class="k-page-list k-bg-list k-text-list"><k_page :route="route"></k_page>\
         <k_list :list="listItems" :route="route"></k_list><k_page :route="route"></k_page></div>\
-        <k_frame class="spinner" :url="iframeUrl"></k_frame>\
+        <k_frame class="" :url="iframeUrl"></k_frame>\
     </div>'
 })
 Vue.component('k-forum', k_forum)
