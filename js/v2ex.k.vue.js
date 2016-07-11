@@ -39,6 +39,10 @@ var k_navbar = Vue.extend({
                 navbarUrl: '/notifications',
                 navbarIcon: 'fa fa-bell'
             }, {
+                navbarText: '新主题',
+                navbarUrl: '/new',
+                navbarIcon: 'fa fa-pencil-square-o'
+            }, {
                 navbarText: '奖励',
                 navbarUrl: '/mission/daily',
                 navbarIcon: 'fa fa-money'
