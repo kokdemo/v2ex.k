@@ -22,52 +22,70 @@
             k-iframe 内嵌浏览区域
             *直接页面原有dom
 */
-
 /* 模板部分 */
 
 /* 导航栏部分 */
 var k_navbar = Vue.extend({
     props: ['data'],
     data: function() {
-        return ({
-            navbarItems: [{
-                navbarText: '首页',
-                navbarUrl: '/',
-                navbarIcon: 'fa fa-home'
-            }, {
-                navbarText: '提醒',
-                navbarUrl: '/notifications',
-                navbarIcon: 'fa fa-bell'
-            }, {
-                navbarText: '新主题',
-                navbarUrl: '/new',
-                navbarIcon: 'fa fa-pencil-square-o'
-            }, {
-                navbarText: '奖励',
-                navbarUrl: '/mission/daily',
-                navbarIcon: 'fa fa-money'
-            }, {
-                navbarText: '节点',
-                navbarUrl: '/planes',
-                navbarIcon: 'fa fa-th'
-            }, {
-                navbarText: '笔记',
-                navbarUrl: '/notes',
-                navbarIcon: 'fa fa-book'
-            }, {
-                navbarText: '时间轴',
-                navbarUrl: '/t',
-                navbarIcon: 'fa fa-list-alt'
-            }, {
-                navbarText: '设置',
-                navbarUrl: '/settings',
-                navbarIcon: 'fa fa-cog'
-            }, {
-                navbarText: '退出',
-                navbarUrl: '/signout',
-                navbarIcon: 'fa fa-sign-out'
-            }]
-        })
+        if(route.login){
+            return ({
+                navbarItems: [{
+                    navbarText: '首页',
+                    navbarUrl: '/',
+                    navbarIcon: 'fa fa-home'
+                }, {
+                    navbarText: '提醒',
+                    navbarUrl: '/notifications',
+                    navbarIcon: 'fa fa-bell'
+                }, {
+                    navbarText: '新主题',
+                    navbarUrl: '/new',
+                    navbarIcon: 'fa fa-pencil-square-o'
+                }, {
+                    navbarText: '奖励',
+                    navbarUrl: '/mission/daily',
+                    navbarIcon: 'fa fa-money'
+                }, {
+                    navbarText: '节点',
+                    navbarUrl: '/planes',
+                    navbarIcon: 'fa fa-th'
+                }, {
+                    navbarText: '笔记',
+                    navbarUrl: '/notes',
+                    navbarIcon: 'fa fa-book'
+                }, {
+                    navbarText: '时间轴',
+                    navbarUrl: '/t',
+                    navbarIcon: 'fa fa-list-alt'
+                }, {
+                    navbarText: '设置',
+                    navbarUrl: '/settings',
+                    navbarIcon: 'fa fa-cog'
+                }, {
+                    navbarText: '退出',
+                    navbarUrl: '/signout',
+                    navbarIcon: 'fa fa-sign-out'
+                }]
+            })
+        }else{
+            return ({
+                navbarItems: [{
+                    navbarText: '首页',
+                    navbarUrl: '/',
+                    navbarIcon: 'fa fa-home'
+                }, {
+                    navbarText: '注册',
+                    navbarUrl: '/signup',
+                    navbarIcon: 'fa fa-user'
+                }, {
+                    navbarText: '登录',
+                    navbarUrl: '/signin',
+                    navbarIcon: 'fa fa-sign-in'
+                }]
+            })
+        }
+
     },
     components: {
         'k_navbar_item': {
@@ -298,7 +316,7 @@ var getList = function() {
 
 var getUserInfo = function() {
     var userInfo = {};
-    if (localStorage['v2ex.k'] !== undefined) {
+    if (localStorage['v2ex.k'] !== undefined && route.login) {
         //将不太经常变化的信息存储到localStorage里面，当设置页面中点击保存时将整个删除初始化。
         userInfo = JSON.parse(localStorage['v2ex.k']);
     } else {
@@ -312,6 +330,7 @@ var getUserInfo = function() {
 /* 数据获取部分 */
 var dateinfo = new Date().getUTCDate();
 var originHref = window.location.href;
+var topDom = document.getElementsByClassName('top');
 var route = {
     pathname: window.location.pathname,
     page: originHref.split('p=')[1],
@@ -325,7 +344,8 @@ var route = {
     mytopics: (window.location.pathname == '/my/topics'),
     origin: window.location.origin,
     search: window.location.search,
-    tab:(window.location.search.split('tab=')[1])
+    tab:(window.location.search.split('tab=')[1]),
+    login:(topDom.length !== 3)
 };
 
 ready(function() {

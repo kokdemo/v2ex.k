@@ -1,0 +1,409 @@
+a:active,
+a:link,
+a:visited {
+    color: #778087;
+}
+.cell,
+.header {
+    border-bottom: 1px solid #eaeaea;
+}
+.cell,
+.inner,
+.item {
+    padding: 20px;
+}
+.avatar {
+    border-radius: 100% !important;
+}
+
+#Top a[name='top'] img {
+    opacity: 0;
+}
+#Top td:last-child {
+    position: fixed;
+    right: 20px;
+}
+#Search form div {
+    background: url("//dn-startplay.qbox.me/v2ex-material-theme/search.svg") no-repeat 10px center rgba(255,255,255,0.15) !important;
+    border-radius: 2px;
+    height: 36px !important;
+    width: 820px !important;
+}
+#Search form div:hover {
+    background-color: rgba(255,255,255,0.25) !important;
+}
+#Search form input {
+    color: #fff;
+    height: 36px;
+    width: 760px;
+    margin-left: 40px;
+}
+#Top td:last-child {
+    visibility: hidden;
+}
+#Rightbar .inner > a[href='/notifications'],
+#Rightbar .inner > strong > a[href='/notifications'],
+#Rightbar > .box:nth-child(2) td:first-child a[href^='/member/'],
+#Rightbar a[href='/mission/daily'],
+#Top a[href='/settings'],
+#Top td:last-child a:last-child {
+    visibility: visible;
+    position: fixed;
+    top: 10px;
+    color: rgba(255,255,255,0);
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+#Rightbar .inner > a[href='/notifications']:focus,
+#Rightbar .inner > strong > a[href='/notifications']:focus,
+#Rightbar a[href='/mission/daily']:focus,
+#Top a[href='/settings']:focus,
+#Top td:last-child a:last-child:focus {
+    background-color: rgba(0,0,0,0.1);
+}
+#Top td:last-child a:last-child {
+    right: 26px;
+    background: url("//dn-startplay.qbox.me/v2ex-material-theme/exit_to_app.svg") no-repeat center;
+}
+#Top a[href='/settings'] {
+    right: 72px;
+    background: url("//dn-startplay.qbox.me/v2ex-material-theme/settings.svg") no-repeat center;
+}
+#Rightbar .inner > a[href='/notifications'] {
+    right: 120px;
+    background: url("//dn-startplay.qbox.me/v2ex-material-theme/notifications_none.svg") no-repeat center;
+}
+#Rightbar .inner > strong > a[href='/notifications'] {
+    right: 120px;
+    background: url("//dn-startplay.qbox.me/v2ex-material-theme/notifications_none_hl.svg") no-repeat center;
+}
+#Rightbar > .box:nth-child(2) td:first-child a[href^='/member/'] {
+    right: 180px;
+}
+#Rightbar > .box:nth-child(2) td:first-child a[href^='/member/'] .avatar {
+    width: 36px;
+    height: 36px;
+}
+#Rightbar a[href='/mission/daily'] {
+    right: 240px;
+    background: url("//dn-startplay.qbox.me/v2ex-material-theme/wallet_giftcard_hl.svg") no-repeat center;
+}
+@media only screen and (max-width:1400px) {
+    #Top form div {
+        width: 276px !important;
+    }
+    #Top form input {
+        width: 236px;
+    }
+    #Search {
+        position: fixed;
+        left: 140px;
+    }
+}
+#Wrapper {
+    background-color: #ececec;
+    padding-top: 80px;
+}
+#Rightbar {
+    visibility: hidden;
+    position: fixed;
+    z-index: 999;
+}
+#MyNodes .node a:nth-of-type(1),
+#Rightbar > .sep20:first-child,
+#Rightbar table td:nth-of-type(3) a[href='/new'] {
+    border-radius: 100%;
+    box-shadow: 0 0 4px rgba(0,0,0,0.14),0 4px 8px rgba(0,0,0,0.28);
+    transition: all 150ms cubic-bezier(.25, .25, 0, 1);
+}
+#MyNodes .node a:nth-of-type(1):hover,
+#Rightbar > .sep20:first-child:hover,
+#Rightbar table td:nth-of-type(3) a[href='/new']:hover {
+    box-shadow: 0 0 6px rgba(0,0,0,0.16),0 6px 12px rgba(0,0,0,0.32);
+    transition: box-shadow 150ms cubic-bezier(0, 0, .2, 1);
+}
+#MyNodes .node a:nth-of-type(1):active,
+#Rightbar > .sep20:first-child:active,
+#Rightbar table td:nth-of-type(3) a[href='/new']:active {
+    box-shadow: 0 0 8px rgba(0,0,0,0.18),0 8px 16px rgba(0,0,0,0.36);
+}
+#MyNodes {
+    visibility: visible;
+    position: fixed;
+    right: 20px;
+    bottom: 48px;
+    width: 56px;
+    height: 372px;
+}
+#MyNodes .node {
+    padding: 0;
+    position: relative;
+    height: 58px;
+    text-align: right;
+}
+#MyNodes .node:hover {
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+#MyNodes .node a:last-child {
+    position: absolute;
+    display: none;
+    right: 60px;
+    top: 8px;
+    white-space: nowrap;
+    background: rgba(70,70,70,0.9);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    color: #ececec;
+    font-weight: bold;
+    line-height: 1em;
+    font-size: 12px;
+    min-width: 20px;
+    max-width: 200px;
+    overflow: hidden;
+    padding: 6px 8px;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 150ms cubic-bezier(.4, 0, 1, 1);
+}
+#MyNodes .node a:nth-of-type(1) {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    transform: scale(0);
+}
+#MyNodes .node a:nth-of-type(1):hover+a {
+    display: block;
+    opacity: 1;
+    transition-delay: 10ms;
+    transition: opacity 150ms cubic-bezier(0, 0, .2, 1);
+}
+#MyNodes .node a:nth-of-type(1) img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+#MyNodes .node_compose {
+    display: none;
+}
+#Rightbar > .sep20:first-child {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
+    color: rgba(255,255,255,0);
+    visibility: visible;
+    background: url("//dn-startplay.qbox.me/v2ex-material-theme/add.svg") no-repeat center #db4437;
+    z-index: 99;
+    cursor: pointer;
+}
+#MyNodes:hover .node:nth-child(-n+6) a:nth-of-type(1),
+#Rightbar .box:nth-child(2) .cell:nth-last-child(2) table td:nth-of-type(3):hover a[href='/new'],
+#Rightbar > .sep20:first-child:hover~.box #MyNodes .node:nth-child(-n+6) a:nth-of-type(1),
+#Rightbar > .sep20:first-child:hover~.box table td:nth-of-type(3) a[href='/new'] {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 150ms cubic-bezier(.25, .25, 0, 1);
+}
+#MyNodes:hover .node:nth-child(1) a:nth-of-type(1),
+#Rightbar > .sep20:first-child:hover~.box #MyNodes .node:nth-child(1) a:nth-of-type(1) {
+    transition-delay: 75ms;
+}
+#MyNodes:hover .node:nth-child(2) a:nth-of-type(1),
+#Rightbar > .sep20:first-child:hover~.box #MyNodes .node:nth-child(2) a:nth-of-type(1) {
+    transition-delay: 60ms;
+}
+#MyNodes:hover .node:nth-child(3) a:nth-of-type(1),
+#Rightbar > .sep20:first-child:hover~.box #MyNodes .node:nth-child(3) a:nth-of-type(1) {
+    transition-delay: 45ms;
+}
+#MyNodes:hover .node:nth-child(4) a:nth-of-type(1),
+#Rightbar > .sep20:first-child:hover~.box #MyNodes .node:nth-child(4) a:nth-of-type(1) {
+    transition-delay: 30ms;
+}
+#MyNodes:hover .node:nth-child(5) a:nth-of-type(1),
+#Rightbar > .sep20:first-child:hover~.box #MyNodes .node:nth-child(5) a:nth-of-type(1) {
+    transition-delay: 15ms;
+}
+#MyNodes:hover .node:nth-child(6) a:nth-of-type(1),
+#Rightbar > .sep20:first-child:hover~.box #MyNodes .node:nth-child(6) a:nth-of-type(1) {
+    transition-delay: 0;
+}
+#Rightbar .box:nth-child(2) .cell:nth-last-child(2) table td:nth-of-type(3) {
+    position: fixed;
+    right: 48px;
+    bottom: 20px;
+    width: 86px;
+    height: 56px;
+    visibility: visible;
+}
+#Rightbar table td:nth-of-type(3) a[href='/new'] {
+    position: fixed;
+    right: 94px;
+    bottom: 28px;
+    width: 40px;
+    height: 40px;
+    color: rgba(255,255,255,0);
+    visibility: visible;
+    background: url("//dn-startplay.qbox.me/v2ex-material-theme/create.svg") no-repeat center #4caf50;
+    opacity: 0;
+    transform: scale(0);
+}
+#Main {
+    margin: 0;
+}
+#Main > .box {
+    border-radius: 0;
+    box-shadow: 0 -1px 0 #e5e5e5,0 0 2px rgba(0,0,0,0.12),0 2px 4px rgba(0,0,0,0.24);
+    border-bottom: none;
+    background-color: #fff;
+    color: #212121;
+}
+#Main > .box:nth-child(2) .cell {
+    padding: 10px 20px;
+    position: relative;
+}
+#Main > .box:nth-child(2) .cell.item > div {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0 !important;
+}
+#Main > .box:nth-child(2) .cell .small.fade {
+    visibility: hidden;
+}
+#Main > .box:nth-child(2) .cell .small.fade strong:nth-of-type(1) {
+    visibility: visible;
+    position: absolute;
+    left: 72px;
+    font-size: 14px;
+}
+#Main > .box:nth-child(2) .cell .item_title {
+    position: absolute;
+    left: 256px;
+    right: 60px;
+    height: 24px;
+    line-height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#Main > .box:nth-child(2) .cell .vote {
+    display: none;
+}
+#Main > .box:nth-child(2) .cell .avatar {
+    width: 28px;
+    height: 28px;
+}
+.header {
+    padding: 20px;
+}
+.topic_buttons {
+    border-radius: 0;
+    line-height: 36px;
+    background: #e8e9ed;
+}
+.topic_buttons > div {
+    line-height: 36px !important;
+}
+.inner,
+.payload,
+.reply_content,
+.topic_content {
+    color: #212121;
+    font: 400 14px/1.8 Avenir,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
+}
+.mle,
+.mll,
+.sll {
+    background-color: #fff;
+    color: #212121;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    padding: 10px;
+}
+.no {
+    background-color: #f0f0f0;
+    color: #ccc;
+}
+.cell .avatar,
+.inner:last-child .avatar {
+    width: 40px;
+    height: 40px;
+}
+.subtle {
+    padding: 20px;
+}
+.super.button {
+    background-color: #4285f4;
+    background-image: none;
+    text-shadow: none;
+    color: #fff;
+    border: none !important;
+    box-shadow: 0 0 2px rgba(0,0,0,0.12),0 2px 4px rgba(0,0,0,0.24);
+    border-radius: 2px;
+    line-height: 2.5;
+    margin: 4px 0;
+    padding: 0 16px;
+    letter-spacing: 0.5px;
+    transition: box-shadow 0.2s cubic-bezier(.4, 0, .2, 1),background-color 0.2s cubic-bezier(.4, 0, .2, 1);
+}
+.super.button:hover {
+    background-color: #3a76e5 !important;
+    color: #fff !important;
+    border: none !important;
+    text-shadow: none !important;
+    box-shadow: 0 0 4px rgba(0,0,0,0.14),0 4px 8px rgba(0,0,0,0.28) !important;
+}
+.super.button:active {
+    background-color: #3367d6 !important;
+    color: #fff !important;
+    border: none !important;
+    text-shadow: none !important;
+    box-shadow: 0 0 6px rgba(0,0,0,0.16),0 6px 12px rgba(0,0,0,0.32) !important;
+}
+.super.button.disable_now,
+.super.button.disable_now:active,
+.super.button.disable_now:hover,
+.super.button[disabled],
+.super.button[disabled]:active,
+.super.button[disabled]:hover {
+    background-color: rgba(0,0,0,0.12) !important;
+    color: rgba(0,0,0,0.26) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+.page_current,
+.page_normal {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 2px !important;
+    line-height: 2.5 !important;
+    margin: 4px 0 !important;
+    padding: 0 10px !important;
+    letter-spacing: 0.5px;
+    transition: box-shadow 0.2s cubic-bezier(.4, 0, .2, 1),background-color 0.2s cubic-bezier(.4, 0, .2, 1);
+    font-size: 13px !important;
+}
+.page_input {
+    line-height: 30px !important;
+    padding: 0 0 0 8px !important;
+    width: 60px !important;
+    box-shadow: none !important;
+}
+a[onclick^='deleteNotification'] {
+    float: right;
+}
+.payload {
+    background-color: rgba(255,255,255,0);
+    padding-top: 15px;
+}

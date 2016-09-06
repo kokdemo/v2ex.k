@@ -1,11 +1,11 @@
-@import "compass/reset";
+// @import "compass/reset";
 @import "compass/css3";
 @import "navbar";
 @import "tabbar";
 @import "main";
 @import "forum";
 @import "const";
-@import "loading";
+// @import "material";
 #Bottom,
 #Main,
 #Rightbar,
@@ -13,6 +13,9 @@
 #Top,
 #Wrapper .sep20 {
     display: none;
+}
+#Wrapper {
+    padding-top: 0 !important;
 }
 #Main {
     width: auto;
