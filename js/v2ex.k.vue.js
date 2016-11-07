@@ -27,8 +27,8 @@
 /* 导航栏部分 */
 var k_navbar = Vue.extend({
     props: ['data'],
-    data: function() {
-        if(route.login){
+    data: function () {
+        if (route.login) {
             return ({
                 navbarItems: [{
                     navbarText: '首页',
@@ -68,7 +68,7 @@ var k_navbar = Vue.extend({
                     navbarIcon: 'fa fa-sign-out'
                 }]
             })
-        }else{
+        } else {
             return ({
                 navbarItems: [{
                     navbarText: '首页',
@@ -98,17 +98,18 @@ var k_navbar = Vue.extend({
         },
         'k_avatar': {
             props: ['user'],
-            data: function() {
+            data: function () {
                 return ({
-                    userUrl: route.origin + '/member/'
+                    userUrl: route.origin + '/member/',
+                    login: route.login
                 })
             },
-            template: '<div class="k-avatar k-hover-nav" v-href="userUrl+user.name"><img :src="user.avatar" /><span>{{user.name}}</span></div>'
+            template: '<div v-if="login" class="k-avatar k-hover-nav" v-href="userUrl+user.name"><img :src="user.avatar" /><span>{{user.name}}</span></div>'
         }
     },
     template: '\
     <div class="k-navbar k-bg-nav k-text-nav">\
-        <k_avatar :user=data></k_avatar>\
+        <k_avatar :user=data ></k_avatar>\
         <k_navbar_item v-for="item in navbarItems" :info="item"></k_navbar_item>\
     </div>'
 })
@@ -117,7 +118,7 @@ Vue.component('k-navbar', k_navbar)
 /* 快速导航部分 */
 
 var k_tabbar = Vue.extend({
-    data: function() {
+    data: function () {
         return ({
             tabbarItems: [{
                 tabbarText: '全部',
@@ -179,7 +180,7 @@ var k_tabbar = Vue.extend({
     },
     components: {
         'k_tabbar_item': {
-            props: ['info','route'],
+            props: ['info', 'route'],
             template: '<div class="k-tabbar-item k-hover-tab" v-bind:class="{active: info.tabbar == route.tab}" v-href="info.tabbarUrl"><span>{{info.tabbarText}}</span></div>'
         }
     },
@@ -190,7 +191,7 @@ Vue.component('k-tabbar', k_tabbar)
 /* 列表和主体部分 */
 var k_forum = Vue.extend({
     porps: ['nodebaritems', 'data', 'url'],
-    data: function() {
+    data: function () {
         return ({
             listItems: getList(),
             iframeUrl: '',
@@ -214,14 +215,14 @@ var k_forum = Vue.extend({
                 </li>\
             </ul>',
             methods: {
-                open: function(url) {
+                open: function (url) {
                     this.$parent.iframeUrl = url;
                 }
             }
         },
         'k_page': {
             props: ['route'],
-            data: function() {
+            data: function () {
                 if (route.page === undefined) {
                     route.page = 1;
                 }
@@ -264,13 +265,13 @@ Vue.component('k-main', k_main)
 /* 页面部分 */
 function ready(fn) {
     if (document.addEventListener) { //标准浏览器
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             //注销时间，避免反复触发
             document.removeEventListener('DOMContentLoaded', arguments.callee, false);
             fn(); //执行函数
         }, false);
     } else if (document.attachEvent) { //IE浏览器
-        document.attachEvent('onreadystatechange', function() {
+        document.attachEvent('onreadystatechange', function () {
             if (document.readyState == 'complete') {
                 document.detachEvent('onreadystatechange', arguments.callee);
                 fn(); //函数执行
@@ -281,7 +282,7 @@ function ready(fn) {
 
 /* 预设函数*/
 
-var getList = function() {
+var getList = function () {
     var itemList = [];
     var $itemDom;
     if (route.node) {
@@ -314,15 +315,29 @@ var getList = function() {
     return itemList
 };
 
-var getUserInfo = function() {
+var version = '0.4';
+
+var getUserInfo = function (route) {
     var userInfo = {};
-    if (localStorage['v2ex.k'] !== undefined && route.login) {
-        //将不太经常变化的信息存储到localStorage里面，当设置页面中点击保存时将整个删除初始化。
-        userInfo = JSON.parse(localStorage['v2ex.k']);
+    if (route.login) {
+        //只有登录的时候才修改存储
+        if (localStorage['v2ex.k'] !== undefined && route.login) {
+            //将不太经常变化的信息存储到localStorage里面，当设置页面中点击保存时将整个删除初始化。
+            userInfo = JSON.parse(localStorage['v2ex.k']);
+        } else if (localStorage['v2ex.k'] === undefined) {
+            //当前没有存储数据
+            userInfo.name = document.getElementById("Rightbar").getElementsByTagName("a")[0].href.split("/member/")[1];
+            userInfo.avatar = document.getElementById("Rightbar").getElementsByTagName("img")[0].src;
+            userInfo.version = version;
+            localStorage['v2ex.k'] = JSON.stringify(userInfo);
+        } else if (localStorage['v2ex.k'].version !== version || localStorage['v2ex.k'].version === version) {
+            userInfo.name = document.getElementById("Rightbar").getElementsByTagName("a")[0].href.split("/member/")[1];
+            userInfo.avatar = document.getElementById("Rightbar").getElementsByTagName("img")[0].src;
+            userInfo.version = version;
+            localStorage['v2ex.k'] = JSON.stringify(userInfo);
+        }
     } else {
-        userInfo.name = document.getElementById("Rightbar").getElementsByTagName("a")[0].href.split("/member/")[1];
-        userInfo.avatar = document.getElementById("Rightbar").getElementsByTagName("img")[0].src;
-        localStorage['v2ex.k'] = JSON.stringify(userInfo);
+        localStorage.removeItem('v2ex.k')
     }
     return userInfo
 };
@@ -330,26 +345,28 @@ var getUserInfo = function() {
 /* 数据获取部分 */
 var dateinfo = new Date().getUTCDate();
 var originHref = window.location.href;
-var topDom = document.getElementsByClassName('top');
-var route = {
-    pathname: window.location.pathname,
-    page: originHref.split('p=')[1],
-    https: ('https:' == document.location.protocol),
-    node: (originHref.indexOf('/go/') != -1),
-    nodeText: (this.node ? document.title.split(' › ')[1] : false),
-    topic: (originHref.indexOf('/t/') != -1),
-    iframe: (self.frameElement && self.frameElement.tagName == "IFRAME"),
-    index: (window.location.pathname == '/'),
-    recent: (window.location.pathname == '/recent'),
-    mytopics: (window.location.pathname == '/my/topics'),
-    origin: window.location.origin,
-    search: window.location.search,
-    tab:(window.location.search.split('tab=')[1]),
-    login:(topDom.length !== 3)
-};
+var route = {};
 
-ready(function() {
-    var userData = getUserInfo();
+ready(function () {
+    var topDom = document.getElementsByClassName('top');
+    route = {
+        pathname: window.location.pathname,
+        page: originHref.split('p=')[1],
+        https: ('https:' == document.location.protocol),
+        node: (originHref.indexOf('/go/') != -1),
+        nodeText: (this.node ? document.title.split(' › ')[1] : false),
+        topic: (originHref.indexOf('/t/') != -1),
+        iframe: (self.frameElement && self.frameElement.tagName == "IFRAME"),
+        index: (window.location.pathname == '/'),
+        recent: (window.location.pathname == '/recent'),
+        mytopics: (window.location.pathname == '/my/topics'),
+        origin: window.location.origin,
+        search: window.location.search,
+        tab: (window.location.search.split('tab=')[1]),
+        login: (topDom.length !== 3)
+    };
+    console.info(route);
+    var userData = getUserInfo(route);
     if (!route.index && !route.node && !route.recent && !route.mytopics) {
         // 在非首页，recent，node页面中，展示原来的页面
         document.getElementById('Main').style.display = 'block';
@@ -364,10 +381,10 @@ ready(function() {
 
     var vue = new Vue({
         el: "body",
-        beforeCompile: function() {
+        beforeCompile: function () {
             /* 总体部分 */
             Vue.component('k-container', {
-                data: function() {
+                data: function () {
                     var originText = '';
                     var iforigin = false;
                     if (!route.index && !route.node && !route.recent && !route.mytopics) {

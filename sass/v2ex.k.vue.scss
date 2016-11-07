@@ -114,3 +114,17 @@ body {
     -webkit-flex: 1;
     flex: 1;
 }
+@media (max-width: 1040px) {
+    .k-tabbar {
+        -webkit-flex: initial;
+        flex: initial;
+        position: fixed;
+        left: -60px;
+        height: 100%;
+    }
+    .k-main {
+        margin-left: 80px;
+        -webkit-flex: 1;
+        flex: 1;
+    }
+}

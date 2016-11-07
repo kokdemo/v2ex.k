@@ -93,7 +93,7 @@
 }
 /* line 19, ../sass/_navbar.scss */
 .k-navbar .k-navbar-item i {
-  font-size: 24px;
+  font-size: 22px;
 }
 /* line 23, ../sass/_navbar.scss */
 .k-navbar .k-avatar {
@@ -402,4 +402,22 @@ body {
   margin-left: 140px;
   -webkit-flex: 1;
   flex: 1;
+}
+
+@media (max-width: 1040px) {
+  /* line 118, ../sass/v2ex.k.vue.scss */
+  .k-tabbar {
+    -webkit-flex: initial;
+    flex: initial;
+    position: fixed;
+    left: -60px;
+    height: 100%;
+  }
+
+  /* line 125, ../sass/v2ex.k.vue.scss */
+  .k-main {
+    margin-left: 80px;
+    -webkit-flex: 1;
+    flex: 1;
+  }
 }
