@@ -365,7 +365,7 @@ ready(function () {
         tab: (window.location.search.split('tab=')[1]),
         login: (topDom.length !== 3)
     };
-    console.info(route);
+    // console.info(route);
     var userData = getUserInfo(route);
     if (!route.index && !route.node && !route.recent && !route.mytopics) {
         // 在非首页，recent，node页面中，展示原来的页面
@@ -377,6 +377,13 @@ ready(function () {
         content.style.margin = '0 0 0 140px';
         content.style.maxWidth = 'none';
         content.style.zIndex = '10000';
+    } else {
+        var link = document.getElementsByTagName('a');
+        for (var i = 0, len = link.length; i < len; i++) {
+            if (link[i].rel == 'nofollow') {
+                link[i].target = '_blank'
+            }
+        }
     }
 
     var vue = new Vue({
