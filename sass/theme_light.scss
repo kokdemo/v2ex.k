@@ -1,0 +1,94 @@
+// Set a variable containing current brand
+$brand: 'theme-light';
+// Import all components
+@import "compass/css3";
+// @import "navbar";
+// @import "tabbar";
+// @import "main";
+// @import "forum";
+
+$nav_bg:#34495E;
+$nav_hover:#233342;
+$nav_text:#FFFFFF;
+
+$tab_bg:lighten($nav_bg, 15%);
+$tab_hover:lighten($nav_bg, 30%);
+$tab_text:#FFFFFF;
+
+$list_bg:#FEFEFE;
+$list_border:#DDD;
+$list_text:darken($nav_bg, 10%);
+$list_text_dark:darken($nav_bg, 10%);
+$list_reply_bg:lighten($nav_bg, 30%);
+$list_reply_text:#FFFFFF;
+
+$iframe-bg:lighten($nav_bg, 65%);
+
+$body-bg : #FFFFFF;
+
+body.k-light{
+    background-color: $body-bg!important;
+    /* 这是针对缺省样式 (必须的) */
+    ::-webkit-scrollbar-track {
+        background-color: #FFFFFF!important;
+    };
+    /* 滚动条的滑轨背景颜色 */
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2)!important;
+    };
+
+    /* nav */
+    .k-nav-bg{
+        background-color: $nav_bg;
+    }
+    .k-nav-hover:hover{
+        background-color: $nav_hover;
+    }
+    .k-nav-text{
+        color: $nav_text;
+    }
+
+    /* tab */
+    .k-tab-bg{
+        background-color: $tab_bg;
+    }
+    .k-tab-hover{
+        &:hover,&.active{
+            background-color: $tab_hover;
+        }
+    }
+    .k-tab-text{
+        color: $tab_text;
+    }
+    /* list */
+    .k-list-bg{
+        background-color: $list_bg;
+        border-right: solid 1px $list_border;
+    }
+    .k-list-text{
+        color: $list_text;
+    }
+    .k-list-text-2{
+        color: $list_text_dark;
+        &:hover{
+            color: $list_text;
+        }
+    }
+    .k-list-border{
+        border-color: $list_border;
+    }
+    .k-list-reply{
+        background-color: $list_reply_text;
+        border-color: $list_reply_bg;
+        border-width: 1px!important;
+        border-style: solid;
+        color: $list_reply_bg;
+    }
+
+    /* iframe */
+
+    .k-iframe-bg{
+        background-color: $iframe-bg;
+    }
+
+}

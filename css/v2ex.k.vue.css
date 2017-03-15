@@ -1,71 +1,87 @@
 @charset "UTF-8";
-/* line 27, ../sass/_const.scss */
-.k-bg-nav {
+/* line 20, ../sass/_const.scss */
+body {
+  background-color: #FFFFFF !important;
+}
+
+/* 这是针对缺省样式 (必须的) */
+/* line 25, ../sass/_const.scss */
+::-webkit-scrollbar-track {
+  background-color: #FFFFFF !important;
+}
+
+/* 滚动条的滑轨背景颜色 */
+/* line 29, ../sass/_const.scss */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* nav */
+/* line 34, ../sass/_const.scss */
+.k-nav-bg {
   background-color: #34495E;
 }
 
-/* line 31, ../sass/_const.scss */
-.k-hover-nav:hover {
+/* line 37, ../sass/_const.scss */
+.k-nav-hover:hover {
   background-color: #233342;
 }
 
-/* line 35, ../sass/_const.scss */
-.k-text-nav {
-  color: #FFF;
+/* line 40, ../sass/_const.scss */
+.k-nav-text {
+  color: #FFFFFF;
 }
 
-/* line 39, ../sass/_const.scss */
-.k-bg-tab {
+/* tab */
+/* line 45, ../sass/_const.scss */
+.k-tab-bg {
   background-color: #4f6f8f;
 }
 
-/* line 43, ../sass/_const.scss */
-.k-hover-tab:hover {
+/* line 49, ../sass/_const.scss */
+.k-tab-hover:hover, .k-tab-hover.active {
   background-color: #7796b4;
 }
 
-/* line 47, ../sass/_const.scss */
-.k-hover-tab.active {
-  background-color: #7796b4;
+/* line 53, ../sass/_const.scss */
+.k-tab-text {
+  color: #FFFFFF;
 }
 
-/* line 50, ../sass/_const.scss */
-.k-text-tab {
-  color: #FFF;
-}
-
-/* line 54, ../sass/_const.scss */
-.k-bg-list {
-  background-color: #7796b4;
-}
-
+/* list */
 /* line 57, ../sass/_const.scss */
-.k-text-list {
-  color: #FFF;
+.k-list-bg {
+  background-color: #7796b4;
 }
 
 /* line 60, ../sass/_const.scss */
-.k-border-list {
-  border-color: #98afc6;
+.k-list-text {
+  color: #FFFFFF;
 }
 
 /* line 63, ../sass/_const.scss */
-.k-info-list {
-  color: #98afc6;
+.k-list-text-2 {
+  color: #7796b4;
 }
 /* line 65, ../sass/_const.scss */
-.k-info-list:hover {
-  color: #FFF;
+.k-list-text-2:hover {
+  color: #FFFFFF;
 }
 
 /* line 69, ../sass/_const.scss */
-.k-reply-list {
-  background-color: #FFF;
+.k-list-border {
+  border-color: #98afc6;
+}
+
+/* line 72, ../sass/_const.scss */
+.k-list-reply {
+  background-color: #FFFFFF;
   color: #7796b4;
 }
 
-/* line 74, ../sass/_const.scss */
-.k_bg-iframe {
+/* iframe */
+/* line 79, ../sass/_const.scss */
+.k-iframe-bg {
   background-color: #98afc6;
 }
 
@@ -98,16 +114,17 @@
 /* line 23, ../sass/_navbar.scss */
 .k-navbar .k-avatar {
   padding: 20px 0;
+  max-height: 80px;
   overflow: hidden;
 }
-/* line 26, ../sass/_navbar.scss */
+/* line 27, ../sass/_navbar.scss */
 .k-navbar .k-avatar img {
   display: inline-block;
   width: 40px;
   border-radius: 50%;
   margin-left: 20px;
 }
-/* line 32, ../sass/_navbar.scss */
+/* line 33, ../sass/_navbar.scss */
 .k-navbar .k-avatar span {
   display: inline-block;
   text-align: left;
@@ -117,27 +134,27 @@
   transition: width .5s;
   overflow: hidden;
 }
-/* line 42, ../sass/_navbar.scss */
+/* line 43, ../sass/_navbar.scss */
 .k-navbar:hover {
   width: 140px;
 }
-/* line 44, ../sass/_navbar.scss */
-.k-navbar:hover i {
+/* line 45, ../sass/_navbar.scss */
+.k-navbar:hover > .k-navbar-item > i {
   text-align: right;
   width: 40px;
   padding-right: 10px;
 }
-/* line 49, ../sass/_navbar.scss */
+/* line 50, ../sass/_navbar.scss */
 .k-navbar:hover span {
   line-height: 24px;
   height: 24px;
   width: 70px;
 }
-/* line 55, ../sass/_navbar.scss */
+/* line 56, ../sass/_navbar.scss */
 .k-navbar:hover .k-avatar img {
   width: 0;
 }
-/* line 58, ../sass/_navbar.scss */
+/* line 59, ../sass/_navbar.scss */
 .k-navbar:hover .k-avatar span {
   vertical-align: top;
   line-height: 40px;
@@ -162,6 +179,190 @@
   padding: 15px 0;
   font-size: 12px;
   text-decoration: none;
+}
+
+/* line 2, ../sass/_main.scss */
+#Bottom,
+#Main,
+#Rightbar,
+#Tabs,
+#Top,
+#Wrapper .sep20 {
+  display: none;
+}
+
+/* line 10, ../sass/_main.scss */
+#Wrapper {
+  padding-top: 0 !important;
+}
+
+/* line 13, ../sass/_main.scss */
+#Main {
+  width: auto;
+  margin: 0 !important;
+}
+
+/* line 17, ../sass/_main.scss */
+#Search div,
+#Top,
+#Wrapper,
+.dock_area,
+.item,
+.item_node,
+.super.button,
+.super.button:hover,
+.topic_buttons,
+.topic_buttons:hover {
+  background-image: none !important;
+}
+
+/* line 29, ../sass/_main.scss */
+.topic_buttons {
+  background-color: #eee;
+  border-bottom: 1px solid #999;
+}
+
+/* line 33, ../sass/_main.scss */
+.normal.button,
+.normal.buttonhover {
+  text-shadow: 0 0 0 #fff;
+}
+
+/* line 37, ../sass/_main.scss */
+.box,
+.normal.button,
+.normal.button:hover,
+input.sl,
+textarea {
+  text-shadow: 0 0 0 #fff;
+  box-shadow: 0 0 0 #fff !important;
+}
+
+/* line 45, ../sass/_main.scss */
+.box {
+  border-width: 0;
+}
+
+/* line 48, ../sass/_main.scss */
+#Wrapper .content {
+  max-width: none;
+}
+
+/* line 52, ../sass/_main.scss */
+body {
+  -webkit-font-smoothing: antialiased;
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+  height: 100%;
+  overflow-x: hidden;
+  min-width: 600px !important;
+}
+
+/* line 59, ../sass/_main.scss */
+::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+/* 滑块颜色 */
+/* line 64, ../sass/_main.scss */
+.k-container {
+  display: -webkit-flex;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* line 73, ../sass/_main.scss */
+.k-container.origin {
+  display: -webkit-flex;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 140px;
+}
+
+/* line 82, ../sass/_main.scss */
+.k-navbar {
+  -webkit-flex: initial;
+  flex: initial;
+  position: fixed;
+  width: 80px;
+  height: 100%;
+  z-index: 10;
+}
+
+/* line 90, ../sass/_main.scss */
+.k-tabbar {
+  -webkit-flex: initial;
+  flex: initial;
+  position: fixed;
+  width: 60px;
+  height: 100%;
+}
+
+/* line 97, ../sass/_main.scss */
+.k-main {
+  margin-left: 140px;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+@media (max-width: 1040px) {
+  /* line 103, ../sass/_main.scss */
+  .k-tabbar {
+    -webkit-flex: initial;
+    flex: initial;
+    position: fixed;
+    left: -60px;
+    height: 100%;
+  }
+
+  /* line 110, ../sass/_main.scss */
+  .k-main {
+    margin-left: 80px;
+    -webkit-flex: 1;
+    flex: 1;
+  }
+}
+/* line 116, ../sass/_main.scss */
+.k-config {
+  width: 600px;
+  height: 300px;
+  display: flex;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -300px;
+  margin-top: -150px;
+  z-index: 100;
+  background-color: #FFF;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  color: #444;
+}
+/* line 129, ../sass/_main.scss */
+.k-config .k-config-theme {
+  flex: 1;
+  border: 1px solid #CCC;
+  margin: 20px;
+  text-align: center !important;
+  padding-top: 15%;
+}
+/* line 135, ../sass/_main.scss */
+.k-config .k-config-theme i {
+  display: block;
+  font-size: 3rem;
+}
+/* line 139, ../sass/_main.scss */
+.k-config .k-config-theme:hover {
+  background-color: #CCC;
+}
+/* line 141, ../sass/_main.scss */
+.k-config .k-config-theme:hover i {
+  text-align: center !important;
 }
 
 /* line 4, ../sass/_forum.scss */
@@ -261,163 +462,88 @@
   top: 10px;
 }
 
-/* line 9, ../sass/v2ex.k.vue.scss */
-#Bottom,
-#Main,
-#Rightbar,
-#Tabs,
-#Top,
-#Wrapper .sep20 {
-  display: none;
-}
-
-/* line 17, ../sass/v2ex.k.vue.scss */
-#Wrapper {
-  padding-top: 0 !important;
-}
-
-/* line 20, ../sass/v2ex.k.vue.scss */
-#Main {
-  width: auto;
-  margin: 0 !important;
-}
-
-/* line 24, ../sass/v2ex.k.vue.scss */
-#Search div,
-#Top,
-#Wrapper,
-.dock_area,
-.item,
-.item_node,
-.super.button,
-.super.button:hover,
-.topic_buttons,
-.topic_buttons:hover {
-  background-image: none !important;
-}
-
-/* line 36, ../sass/v2ex.k.vue.scss */
-.topic_buttons {
-  background-color: #eee;
-  border-bottom: 1px solid #999;
-}
-
-/* line 40, ../sass/v2ex.k.vue.scss */
-.normal.button,
-.normal.buttonhover {
-  text-shadow: 0 0 0 #fff;
-}
-
-/* line 44, ../sass/v2ex.k.vue.scss */
-.box,
-.normal.button,
-.normal.button:hover,
-input.sl,
-textarea {
-  text-shadow: 0 0 0 #fff;
-  box-shadow: 0 0 0 #fff !important;
-}
-
-/* line 52, ../sass/v2ex.k.vue.scss */
-.box {
-  border-width: 0;
-}
-
-/* line 55, ../sass/v2ex.k.vue.scss */
-#Wrapper .content {
-  max-width: none;
-}
-
-/* line 59, ../sass/v2ex.k.vue.scss */
+/* line 26, ../sass/v2ex.k.vue.scss */
 body {
-  -webkit-font-smoothing: antialiased;
-  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
-  height: 100%;
-  background-color: #ECF0F1 !important;
-  overflow-x: hidden;
-  min-width: 600px !important;
-}
-
-/* line 67, ../sass/v2ex.k.vue.scss */
-::-webkit-scrollbar {
-  width: 0 !important;
+  background-color: #FFFFFF !important;
 }
 
 /* 这是针对缺省样式 (必须的) */
-/* line 71, ../sass/v2ex.k.vue.scss */
+/* line 31, ../sass/v2ex.k.vue.scss */
 ::-webkit-scrollbar-track {
-  background-color: #7796b4 !important;
+  background-color: #FFFFFF !important;
 }
 
 /* 滚动条的滑轨背景颜色 */
-/* line 75, ../sass/v2ex.k.vue.scss */
+/* line 35, ../sass/v2ex.k.vue.scss */
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
-/* 滑块颜色 */
-/* line 79, ../sass/v2ex.k.vue.scss */
-.k-container {
-  display: -webkit-flex;
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+/* nav */
+/* line 40, ../sass/v2ex.k.vue.scss */
+.k-nav-bg {
+  background-color: #34495E;
 }
 
-/* line 88, ../sass/v2ex.k.vue.scss */
-.k-container.origin {
-  display: -webkit-flex;
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 140px;
+/* line 43, ../sass/v2ex.k.vue.scss */
+.k-nav-hover:hover {
+  background-color: #233342;
 }
 
-/* line 97, ../sass/v2ex.k.vue.scss */
-.k-navbar {
-  -webkit-flex: initial;
-  flex: initial;
-  position: fixed;
-  width: 80px;
-  height: 100%;
-  z-index: 10;
+/* line 46, ../sass/v2ex.k.vue.scss */
+.k-nav-text {
+  color: #FFFFFF;
 }
 
-/* line 105, ../sass/v2ex.k.vue.scss */
-.k-tabbar {
-  -webkit-flex: initial;
-  flex: initial;
-  position: fixed;
-  width: 60px;
-  height: 100%;
+/* tab */
+/* line 51, ../sass/v2ex.k.vue.scss */
+.k-tab-bg {
+  background-color: #4f6f8f;
 }
 
-/* line 112, ../sass/v2ex.k.vue.scss */
-.k-main {
-  margin-left: 140px;
-  -webkit-flex: 1;
-  flex: 1;
+/* line 55, ../sass/v2ex.k.vue.scss */
+.k-tab-hover:hover, .k-tab-hover.active {
+  background-color: #7796b4;
 }
 
-@media (max-width: 1040px) {
-  /* line 118, ../sass/v2ex.k.vue.scss */
-  .k-tabbar {
-    -webkit-flex: initial;
-    flex: initial;
-    position: fixed;
-    left: -60px;
-    height: 100%;
-  }
+/* line 59, ../sass/v2ex.k.vue.scss */
+.k-tab-text {
+  color: #FFFFFF;
+}
 
-  /* line 125, ../sass/v2ex.k.vue.scss */
-  .k-main {
-    margin-left: 80px;
-    -webkit-flex: 1;
-    flex: 1;
-  }
+/* list */
+/* line 63, ../sass/v2ex.k.vue.scss */
+.k-list-bg {
+  background-color: #7796b4;
+}
+
+/* line 66, ../sass/v2ex.k.vue.scss */
+.k-list-text {
+  color: #FFFFFF;
+}
+
+/* line 69, ../sass/v2ex.k.vue.scss */
+.k-list-text-2 {
+  color: #98afc6;
+}
+/* line 71, ../sass/v2ex.k.vue.scss */
+.k-list-text-2:hover {
+  color: #FFFFFF;
+}
+
+/* line 75, ../sass/v2ex.k.vue.scss */
+.k-list-border {
+  border-color: #98afc6;
+}
+
+/* line 78, ../sass/v2ex.k.vue.scss */
+.k-list-reply {
+  background-color: #FFFFFF;
+  color: #7796b4;
+}
+
+/* iframe */
+/* line 85, ../sass/v2ex.k.vue.scss */
+.k-iframe-bg {
+  background-color: #dae2ea;
 }

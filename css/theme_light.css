@@ -1,0 +1,76 @@
+@charset "UTF-8";
+/* line 29, ../sass/theme_light.scss */
+body.k-light {
+  background-color: #FFFFFF !important;
+  /* 这是针对缺省样式 (必须的) */
+  /* 滚动条的滑轨背景颜色 */
+  /* nav */
+  /* tab */
+  /* list */
+  /* iframe */
+}
+/* line 32, ../sass/theme_light.scss */
+body.k-light ::-webkit-scrollbar-track {
+  background-color: #FFFFFF !important;
+}
+/* line 36, ../sass/theme_light.scss */
+body.k-light ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+/* line 41, ../sass/theme_light.scss */
+body.k-light .k-nav-bg {
+  background-color: #34495E;
+}
+/* line 44, ../sass/theme_light.scss */
+body.k-light .k-nav-hover:hover {
+  background-color: #233342;
+}
+/* line 47, ../sass/theme_light.scss */
+body.k-light .k-nav-text {
+  color: #FFFFFF;
+}
+/* line 52, ../sass/theme_light.scss */
+body.k-light .k-tab-bg {
+  background-color: #4f6f8f;
+}
+/* line 56, ../sass/theme_light.scss */
+body.k-light .k-tab-hover:hover, body.k-light .k-tab-hover.active {
+  background-color: #7796b4;
+}
+/* line 60, ../sass/theme_light.scss */
+body.k-light .k-tab-text {
+  color: #FFFFFF;
+}
+/* line 64, ../sass/theme_light.scss */
+body.k-light .k-list-bg {
+  background-color: #FEFEFE;
+  border-right: solid 1px #DDD;
+}
+/* line 68, ../sass/theme_light.scss */
+body.k-light .k-list-text {
+  color: #22303d;
+}
+/* line 71, ../sass/theme_light.scss */
+body.k-light .k-list-text-2 {
+  color: #22303d;
+}
+/* line 73, ../sass/theme_light.scss */
+body.k-light .k-list-text-2:hover {
+  color: #22303d;
+}
+/* line 77, ../sass/theme_light.scss */
+body.k-light .k-list-border {
+  border-color: #DDD;
+}
+/* line 80, ../sass/theme_light.scss */
+body.k-light .k-list-reply {
+  background-color: #FFFFFF;
+  border-color: #7796b4;
+  border-width: 1px !important;
+  border-style: solid;
+  color: #7796b4;
+}
+/* line 90, ../sass/theme_light.scss */
+body.k-light .k-iframe-bg {
+  background-color: #eaeff3;
+}

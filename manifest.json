@@ -25,7 +25,9 @@
             ],
             "css": [
                 "css/font.css",
-                "css/v2ex.k.vue.css"
+                "css/v2ex.k.vue.css",
+                "css/theme_light.css",
+                "css/theme_dark.css"
             ],
             "js": [
                 "js/vue.js",

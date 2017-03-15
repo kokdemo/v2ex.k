@@ -1,0 +1,109 @@
+@charset "UTF-8";
+/* line 29, ../sass/theme_dark.scss */
+body.k-dark {
+  background-color: #2E313B !important;
+  /* 这是针对缺省样式 (必须的) */
+  /* 滚动条的滑轨背景颜色 */
+  /* nav */
+  /* tab */
+  /* list */
+  /* iframe */
+}
+/* line 31, ../sass/theme_dark.scss */
+body.k-dark * {
+  text-shadow: none !important;
+}
+/* line 33, ../sass/theme_dark.scss */
+body.k-dark #Main .box {
+  background-color: #2E313B;
+  color: #DDD !important;
+  border-bottom-color: #505566;
+  border-radius: 0px;
+}
+/* line 38, ../sass/theme_dark.scss */
+body.k-dark #Main .box .cell {
+  border-bottom-color: #505566;
+  color: #DDD !important;
+}
+/* line 41, ../sass/theme_dark.scss */
+body.k-dark #Main .box .cell .topic_content {
+  color: #DDD !important;
+}
+/* line 46, ../sass/theme_dark.scss */
+body.k-dark .reply_content {
+  color: #DDD !important;
+}
+/* line 50, ../sass/theme_dark.scss */
+body.k-dark #reply_content {
+  background-color: #505566;
+}
+/* line 54, ../sass/theme_dark.scss */
+body.k-dark a.tb:link, body.k-dark a.tb:visited, body.k-dark a.tb:active {
+  color: #DDD !important;
+  text-shadow: none !important;
+}
+/* line 60, ../sass/theme_dark.scss */
+body.k-dark ::-webkit-scrollbar-track {
+  background-color: #FFFFFF !important;
+}
+/* line 64, ../sass/theme_dark.scss */
+body.k-dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+/* line 69, ../sass/theme_dark.scss */
+body.k-dark .k-nav-bg {
+  background-color: #2E313B;
+}
+/* line 72, ../sass/theme_dark.scss */
+body.k-dark .k-nav-hover:hover {
+  background-color: #505566;
+}
+/* line 75, ../sass/theme_dark.scss */
+body.k-dark .k-nav-text {
+  color: #DDD;
+}
+/* line 80, ../sass/theme_dark.scss */
+body.k-dark .k-tab-bg {
+  background-color: #505566;
+}
+/* line 84, ../sass/theme_dark.scss */
+body.k-dark .k-tab-hover:hover, body.k-dark .k-tab-hover.active {
+  background-color: #717991;
+}
+/* line 88, ../sass/theme_dark.scss */
+body.k-dark .k-tab-text {
+  color: #DDD;
+}
+/* line 92, ../sass/theme_dark.scss */
+body.k-dark .k-list-bg {
+  background-color: #2E313B;
+  border-right: solid 1px #505566;
+}
+/* line 96, ../sass/theme_dark.scss */
+body.k-dark .k-list-text {
+  color: #DDD;
+}
+/* line 99, ../sass/theme_dark.scss */
+body.k-dark .k-list-text-2 {
+  color: #505566;
+}
+/* line 101, ../sass/theme_dark.scss */
+body.k-dark .k-list-text-2:hover {
+  color: #DDD;
+}
+/* line 105, ../sass/theme_dark.scss */
+body.k-dark .k-list-border {
+  border-color: #505566;
+}
+/* line 108, ../sass/theme_dark.scss */
+body.k-dark .k-list-reply {
+  background-color: #FFFFFF;
+  border-color: #717991;
+  border-width: 1px !important;
+  border-style: solid;
+  color: #717991;
+}
+/* line 118, ../sass/theme_dark.scss */
+body.k-dark .k-iframe-bg {
+  background-color: #2E313B;
+}

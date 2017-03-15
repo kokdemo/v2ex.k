@@ -1,0 +1,121 @@
+// Set a variable containing current brand
+$brand: 'theme-dark';
+// Import all components
+@import "compass/css3";
+// @import "navbar";
+// @import "tabbar";
+// @import "main";
+// @import "forum";
+
+$nav_bg:#2E313B;
+$nav_hover:lighten($nav_bg, 15%);
+$nav_text:#DDD;
+
+$tab_bg:lighten($nav_bg, 15%);
+$tab_hover:lighten($nav_bg, 30%);
+$tab_text:#DDD;
+
+$list_bg:#2E313B;
+$list_border:lighten($nav_bg, 15%);
+$list_text:#DDD;
+$list_text_dark:lighten($nav_bg, 15%);
+$list_reply_bg:lighten($nav_bg, 30%);
+$list_reply_text:#FFFFFF;
+
+$iframe-bg:#2E313B;
+
+$body-bg : #2E313B;
+
+body.k-dark{
+    background-color: $body-bg!important;
+    * {text-shadow:none!important; }
+    // 设置原有主题页面颜色
+    #Main .box{
+        background-color: $nav_bg;
+        color: #DDD!important;
+        border-bottom-color: $list_border;
+        border-radius: 0px;
+        .cell{
+            border-bottom-color: $list_border;
+            color: #DDD!important;
+            .topic_content{
+                color: #DDD!important;
+            }
+        }
+    }
+    .reply_content{
+        color: #DDD!important;
+    }
+
+    #reply_content{
+        background-color: $list_text_dark;
+    }
+
+    a.tb:link, a.tb:visited, a.tb:active{
+        color:#DDD!important;
+        text-shadow: none!important;
+    }
+
+    /* 这是针对缺省样式 (必须的) */
+    ::-webkit-scrollbar-track {
+        background-color: #FFFFFF!important;
+    };
+    /* 滚动条的滑轨背景颜色 */
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2)!important;
+    };
+
+    /* nav */
+    .k-nav-bg{
+        background-color: $nav_bg;
+    }
+    .k-nav-hover:hover{
+        background-color: $nav_hover;
+    }
+    .k-nav-text{
+        color: $nav_text;
+    }
+
+    /* tab */
+    .k-tab-bg{
+        background-color: $tab_bg;
+    }
+    .k-tab-hover{
+        &:hover,&.active{
+            background-color: $tab_hover;
+        }
+    }
+    .k-tab-text{
+        color: $tab_text;
+    }
+    /* list */
+    .k-list-bg{
+        background-color: $list_bg;
+        border-right: solid 1px $list_border;
+    }
+    .k-list-text{
+        color: $list_text;
+    }
+    .k-list-text-2{
+        color: $list_text_dark;
+        &:hover{
+            color: $list_text;
+        }
+    }
+    .k-list-border{
+        border-color: $list_border;
+    }
+    .k-list-reply{
+        background-color: $list_reply_text;
+        border-color: $list_reply_bg;
+        border-width: 1px!important;
+        border-style: solid;
+        color: $list_reply_bg;
+    }
+
+    /* iframe */
+
+    .k-iframe-bg{
+        background-color: $iframe-bg;
+    }
+}

@@ -1,1 +1,147 @@
-@import "const";
+// @import "material";
+#Bottom,
+#Main,
+#Rightbar,
+#Tabs,
+#Top,
+#Wrapper .sep20 {
+    display: none;
+}
+#Wrapper {
+    padding-top: 0 !important;
+}
+#Main {
+    width: auto;
+    margin: 0 !important;
+}
+#Search div,
+#Top,
+#Wrapper,
+.dock_area,
+.item,
+.item_node,
+.super.button,
+.super.button:hover,
+.topic_buttons,
+.topic_buttons:hover {
+    background-image: none !important;
+}
+.topic_buttons {
+    background-color: #eee;
+    border-bottom: 1px solid #999;
+}
+.normal.button,
+.normal.buttonhover {
+    text-shadow: 0 0 0 #fff;
+}
+.box,
+.normal.button,
+.normal.button:hover,
+input.sl,
+textarea {
+    text-shadow: 0 0 0 #fff;
+    box-shadow: 0 0 0 #fff !important;
+}
+.box {
+    border-width: 0;
+}
+#Wrapper .content {
+    max-width: none;
+}
+//
+body {
+    -webkit-font-smoothing: antialiased;
+    font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+    height: 100%;
+    overflow-x: hidden;
+    min-width: 600px!important;
+}
+::-webkit-scrollbar {
+    width: 0!important;
+};
+
+/* 滑块颜色 */
+.k-container {
+    display: -webkit-flex;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.k-container.origin{
+    display: -webkit-flex;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 140px;
+}
+.k-navbar {
+    -webkit-flex: initial;
+    flex: initial;
+    position: fixed;
+    width: 80px;
+    height: 100%;
+    z-index: 10;
+}
+.k-tabbar {
+    -webkit-flex: initial;
+    flex: initial;
+    position: fixed;
+    width: 60px;
+    height: 100%;
+}
+.k-main {
+    margin-left: 140px;
+    -webkit-flex: 1;
+    flex: 1;
+}
+@media (max-width: 1040px) {
+    .k-tabbar {
+        -webkit-flex: initial;
+        flex: initial;
+        position: fixed;
+        left: -60px;
+        height: 100%;
+    }
+    .k-main {
+        margin-left: 80px;
+        -webkit-flex: 1;
+        flex: 1;
+    }
+}
+.k-config{
+    width:600px;
+    height:300px;
+    display:flex;
+    position: fixed;
+    top:50%;
+    left:50%;
+    margin-left:-300px;
+    margin-top:-150px;
+    z-index: 100;
+    background-color: #FFF;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    color: #444;
+    .k-config-theme{
+        flex: 1;
+        border: 1px solid #CCC;
+        margin: 20px;
+        text-align: center!important;
+        padding-top: 15%;
+        i{
+            display: block;
+            font-size: 3rem;
+        }
+        &:hover{
+            background-color: #CCC;
+            i{
+                text-align: center!important;
+            }
+
+        }
+    }
+}

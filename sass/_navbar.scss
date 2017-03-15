@@ -22,6 +22,7 @@
     }
     .k-avatar {
         padding: 20px 0;
+        max-height: 80px;
         overflow: hidden;
         img {
             display: inline-block;
@@ -41,7 +42,7 @@
     }
     &:hover {
         width: 140px;
-        i {
+        & > .k-navbar-item > i {
             text-align: right;
             width: 40px;
             padding-right: 10px;

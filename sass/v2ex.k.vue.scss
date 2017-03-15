@@ -1,130 +1,87 @@
-// @import "compass/reset";
 @import "compass/css3";
 @import "navbar";
 @import "tabbar";
 @import "main";
 @import "forum";
-@import "const";
-// @import "material";
-#Bottom,
-#Main,
-#Rightbar,
-#Tabs,
-#Top,
-#Wrapper .sep20 {
-    display: none;
+
+$nav_bg:#34495E;
+$nav_hover:#233342;
+$nav_text:#FFFFFF;
+
+$tab_bg:lighten($nav_bg, 15%);
+$tab_hover:lighten($nav_bg, 30%);
+$tab_text:#FFFFFF;
+
+$list_bg:lighten($nav_bg, 30%);
+$list_border:lighten($nav_bg, 40%);
+$list_text:#FFFFFF;
+$list_text_dark:lighten($nav_bg, 40%);
+$list_reply_bg:#FFFFFF;
+$list_reply_text:lighten($nav_bg, 30%);
+
+$iframe-bg:lighten($nav_bg, 60%);
+
+$body-bg : #FFFFFF;
+
+body{
+    background-color: $body-bg!important;
 }
-#Wrapper {
-    padding-top: 0 !important;
-}
-#Main {
-    width: auto;
-    margin: 0 !important;
-}
-#Search div,
-#Top,
-#Wrapper,
-.dock_area,
-.item,
-.item_node,
-.super.button,
-.super.button:hover,
-.topic_buttons,
-.topic_buttons:hover {
-    background-image: none !important;
-}
-.topic_buttons {
-    background-color: #eee;
-    border-bottom: 1px solid #999;
-}
-.normal.button,
-.normal.buttonhover {
-    text-shadow: 0 0 0 #fff;
-}
-.box,
-.normal.button,
-.normal.button:hover,
-input.sl,
-textarea {
-    text-shadow: 0 0 0 #fff;
-    box-shadow: 0 0 0 #fff !important;
-}
-.box {
-    border-width: 0;
-}
-#Wrapper .content {
-    max-width: none;
-}
-//
-body {
-    -webkit-font-smoothing: antialiased;
-    font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
-    height: 100%;
-    background-color: $color_bg_grey!important;
-    overflow-x: hidden;
-    min-width: 600px!important;
-}
-::-webkit-scrollbar {
-    width: 0!important;
-};
+
 /* 这是针对缺省样式 (必须的) */
 ::-webkit-scrollbar-track {
-    background-color: $color_nav_bg_light2!important;
+    background-color: #FFFFFF!important;
 };
 /* 滚动条的滑轨背景颜色 */
 ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2)!important;
 };
-/* 滑块颜色 */
-.k-container {
-    display: -webkit-flex;
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+
+/* nav */
+.k-nav-bg{
+    background-color: $nav_bg;
 }
-.k-container.origin{
-    display: -webkit-flex;
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 140px;
+.k-nav-hover:hover{
+    background-color: $nav_hover;
 }
-.k-navbar {
-    -webkit-flex: initial;
-    flex: initial;
-    position: fixed;
-    width: 80px;
-    height: 100%;
-    z-index: 10;
+.k-nav-text{
+    color: $nav_text;
 }
-.k-tabbar {
-    -webkit-flex: initial;
-    flex: initial;
-    position: fixed;
-    width: 60px;
-    height: 100%;
+
+/* tab */
+.k-tab-bg{
+    background-color: $tab_bg;
 }
-.k-main {
-    margin-left: 140px;
-    -webkit-flex: 1;
-    flex: 1;
-}
-@media (max-width: 1040px) {
-    .k-tabbar {
-        -webkit-flex: initial;
-        flex: initial;
-        position: fixed;
-        left: -60px;
-        height: 100%;
+.k-tab-hover{
+    &:hover,&.active{
+        background-color: $tab_hover;
     }
-    .k-main {
-        margin-left: 80px;
-        -webkit-flex: 1;
-        flex: 1;
+}
+.k-tab-text{
+    color: $tab_text;
+}
+/* list */
+.k-list-bg{
+    background-color: $list_bg;
+}
+.k-list-text{
+    color: $list_text;
+}
+.k-list-text-2{
+    color: $list_text_dark;
+    &:hover{
+        color: $list_text;
     }
+}
+.k-list-border{
+    border-color: $list_border;
+}
+.k-list-reply{
+    background-color: $list_reply_bg;
+    color: $list_reply_text;
+}
+
+/* iframe */
+
+.k-iframe-bg{
+    background-color: $iframe-bg;
 }
