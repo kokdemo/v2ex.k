@@ -21,12 +21,12 @@ body.k-dark #Main .box {
   border-radius: 0px;
 }
 /* line 38, ../sass/theme_dark.scss */
-body.k-dark #Main .box .cell {
+body.k-dark #Main .box .cell, body.k-dark #Main .box .subtle {
   border-bottom-color: #505566;
   color: #DDD !important;
 }
 /* line 41, ../sass/theme_dark.scss */
-body.k-dark #Main .box .cell .topic_content {
+body.k-dark #Main .box .cell .topic_content, body.k-dark #Main .box .subtle .topic_content {
   color: #DDD !important;
 }
 /* line 46, ../sass/theme_dark.scss */

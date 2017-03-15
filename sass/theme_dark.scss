@@ -35,7 +35,7 @@ body.k-dark{
         color: #DDD!important;
         border-bottom-color: $list_border;
         border-radius: 0px;
-        .cell{
+        .cell,.subtle{
             border-bottom-color: $list_border;
             color: #DDD!important;
             .topic_content{
