@@ -26,7 +26,7 @@ body.k-dark #Main .box .cell, body.k-dark #Main .box .subtle {
   color: #DDD !important;
 }
 /* line 42, ../sass/theme_dark.scss */
-body.k-dark #Main .box .topic_content, body.k-dark #Main .box .subtle {
+body.k-dark #Main .box .topic_content, body.k-dark #Main .box .subtle, body.k-dark #Main .box .payload {
   background-color: #2E313B;
   color: #DDD !important;
 }
