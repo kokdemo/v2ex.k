@@ -93,6 +93,7 @@ body {
     position: fixed;
     width: 60px;
     height: 100%;
+
 }
 .k-main {
     margin-left: 140px;
@@ -111,6 +112,16 @@ body {
         margin-left: 80px;
         -webkit-flex: 1;
         flex: 1;
+    }
+}
+@media( max-height: 650px){
+    .k-tabbar {
+        -webkit-flex: initial;
+        flex: initial;
+        position: fixed;
+        width: 60px;
+        height: 100%;
+        padding-top: 20px;
     }
 }
 .k-config{

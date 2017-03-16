@@ -1,4 +1,159 @@
 @charset "UTF-8";
+/* line 1, ../sass/_navbar.scss */
+.k-navbar {
+  vertical-align: top;
+  transition: width 0.2s;
+}
+/* line 4, ../sass/_navbar.scss */
+.k-navbar .k-navbar-item {
+  display: block;
+  vertical-align: middle;
+  padding: 15px 0;
+  text-align: center;
+}
+/* line 9, ../sass/_navbar.scss */
+.k-navbar .k-navbar-item span {
+  display: inline-block;
+  text-align: left;
+  width: 0;
+  height: 0;
+  vertical-align: top;
+  transition: width 0.3s;
+  overflow: hidden;
+}
+/* line 18, ../sass/_navbar.scss */
+.k-navbar .k-navbar-item i {
+  font-size: 22px;
+}
+/* line 22, ../sass/_navbar.scss */
+.k-navbar .k-avatar {
+  padding: 20px 0;
+  max-height: 80px;
+  overflow: hidden;
+}
+/* line 26, ../sass/_navbar.scss */
+.k-navbar .k-avatar img {
+  display: inline-block;
+  width: 40px;
+  border-radius: 50%;
+  margin-left: 20px;
+}
+/* line 32, ../sass/_navbar.scss */
+.k-navbar .k-avatar span {
+  display: inline-block;
+  text-align: left;
+  width: 0;
+  height: 0;
+  vertical-align: top;
+  transition: width .5s;
+  overflow: hidden;
+}
+/* line 42, ../sass/_navbar.scss */
+.k-navbar:hover {
+  width: 140px;
+}
+/* line 44, ../sass/_navbar.scss */
+.k-navbar:hover > .k-navbar-item > i {
+  text-align: right;
+  width: 40px;
+  padding-right: 10px;
+}
+/* line 49, ../sass/_navbar.scss */
+.k-navbar:hover span {
+  line-height: 24px;
+  height: 24px;
+  width: 70px;
+}
+/* line 55, ../sass/_navbar.scss */
+.k-navbar:hover .k-avatar img {
+  width: 0;
+}
+/* line 58, ../sass/_navbar.scss */
+.k-navbar:hover .k-avatar span {
+  vertical-align: top;
+  line-height: 40px;
+  height: 40px;
+  width: 100px;
+}
+
+@media (max-height: 650px) {
+  /* line 68, ../sass/_navbar.scss */
+  .k-navbar {
+    vertical-align: top;
+    transition: width 0.2s;
+  }
+  /* line 71, ../sass/_navbar.scss */
+  .k-navbar .k-navbar-item {
+    display: block;
+    vertical-align: middle;
+    padding: 12px 0;
+    text-align: center;
+  }
+  /* line 76, ../sass/_navbar.scss */
+  .k-navbar .k-navbar-item span {
+    display: inline-block;
+    text-align: left;
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    transition: width 0.3s;
+    overflow: hidden;
+  }
+  /* line 85, ../sass/_navbar.scss */
+  .k-navbar .k-navbar-item i {
+    font-size: 20px;
+  }
+  /* line 89, ../sass/_navbar.scss */
+  .k-navbar .k-avatar {
+    padding: 15px 0;
+    max-height: 80px;
+    overflow: hidden;
+  }
+  /* line 93, ../sass/_navbar.scss */
+  .k-navbar .k-avatar img {
+    display: inline-block;
+    width: 40px;
+    border-radius: 50%;
+    margin-left: 20px;
+  }
+  /* line 99, ../sass/_navbar.scss */
+  .k-navbar .k-avatar span {
+    display: inline-block;
+    text-align: left;
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    transition: width .5s;
+    overflow: hidden;
+  }
+  /* line 109, ../sass/_navbar.scss */
+  .k-navbar:hover {
+    width: 140px;
+  }
+  /* line 111, ../sass/_navbar.scss */
+  .k-navbar:hover > .k-navbar-item > i {
+    text-align: right;
+    width: 40px;
+    padding-right: 10px;
+  }
+  /* line 116, ../sass/_navbar.scss */
+  .k-navbar:hover span {
+    line-height: 22px;
+    height: 22px;
+    width: 70px;
+  }
+  /* line 122, ../sass/_navbar.scss */
+  .k-navbar:hover .k-avatar img {
+    width: 0;
+  }
+  /* line 125, ../sass/_navbar.scss */
+  .k-navbar:hover .k-avatar span {
+    vertical-align: top;
+    line-height: 40px;
+    height: 40px;
+    width: 100px;
+  }
+}
 /* line 20, ../sass/_const.scss */
 body {
   background-color: #FFFFFF !important;
@@ -83,83 +238,6 @@ body {
 /* line 79, ../sass/_const.scss */
 .k-iframe-bg {
   background-color: #98afc6;
-}
-
-/* line 2, ../sass/_navbar.scss */
-.k-navbar {
-  vertical-align: top;
-  transition: width 0.2s;
-}
-/* line 5, ../sass/_navbar.scss */
-.k-navbar .k-navbar-item {
-  display: block;
-  vertical-align: middle;
-  padding: 15px 0;
-  text-align: center;
-}
-/* line 10, ../sass/_navbar.scss */
-.k-navbar .k-navbar-item span {
-  display: inline-block;
-  text-align: left;
-  width: 0;
-  height: 0;
-  vertical-align: top;
-  transition: width 0.3s;
-  overflow: hidden;
-}
-/* line 19, ../sass/_navbar.scss */
-.k-navbar .k-navbar-item i {
-  font-size: 22px;
-}
-/* line 23, ../sass/_navbar.scss */
-.k-navbar .k-avatar {
-  padding: 20px 0;
-  max-height: 80px;
-  overflow: hidden;
-}
-/* line 27, ../sass/_navbar.scss */
-.k-navbar .k-avatar img {
-  display: inline-block;
-  width: 40px;
-  border-radius: 50%;
-  margin-left: 20px;
-}
-/* line 33, ../sass/_navbar.scss */
-.k-navbar .k-avatar span {
-  display: inline-block;
-  text-align: left;
-  width: 0;
-  height: 0;
-  vertical-align: top;
-  transition: width .5s;
-  overflow: hidden;
-}
-/* line 43, ../sass/_navbar.scss */
-.k-navbar:hover {
-  width: 140px;
-}
-/* line 45, ../sass/_navbar.scss */
-.k-navbar:hover > .k-navbar-item > i {
-  text-align: right;
-  width: 40px;
-  padding-right: 10px;
-}
-/* line 50, ../sass/_navbar.scss */
-.k-navbar:hover span {
-  line-height: 24px;
-  height: 24px;
-  width: 70px;
-}
-/* line 56, ../sass/_navbar.scss */
-.k-navbar:hover .k-avatar img {
-  width: 0;
-}
-/* line 59, ../sass/_navbar.scss */
-.k-navbar:hover .k-avatar span {
-  vertical-align: top;
-  line-height: 40px;
-  height: 40px;
-  width: 100px;
 }
 
 /* line 3, ../sass/_tabbar.scss */
@@ -304,7 +382,7 @@ body {
   height: 100%;
 }
 
-/* line 97, ../sass/_main.scss */
+/* line 98, ../sass/_main.scss */
 .k-main {
   margin-left: 140px;
   -webkit-flex: 1;
@@ -312,7 +390,7 @@ body {
 }
 
 @media (max-width: 1040px) {
-  /* line 103, ../sass/_main.scss */
+  /* line 104, ../sass/_main.scss */
   .k-tabbar {
     -webkit-flex: initial;
     flex: initial;
@@ -321,14 +399,25 @@ body {
     height: 100%;
   }
 
-  /* line 110, ../sass/_main.scss */
+  /* line 111, ../sass/_main.scss */
   .k-main {
     margin-left: 80px;
     -webkit-flex: 1;
     flex: 1;
   }
 }
-/* line 116, ../sass/_main.scss */
+@media (max-height: 650px) {
+  /* line 118, ../sass/_main.scss */
+  .k-tabbar {
+    -webkit-flex: initial;
+    flex: initial;
+    position: fixed;
+    width: 60px;
+    height: 100%;
+    padding-top: 20px;
+  }
+}
+/* line 127, ../sass/_main.scss */
 .k-config {
   width: 600px;
   height: 300px;
@@ -343,7 +432,7 @@ body {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   color: #444;
 }
-/* line 129, ../sass/_main.scss */
+/* line 140, ../sass/_main.scss */
 .k-config .k-config-theme {
   flex: 1;
   border: 1px solid #CCC;
@@ -351,16 +440,16 @@ body {
   text-align: center !important;
   padding-top: 15%;
 }
-/* line 135, ../sass/_main.scss */
+/* line 146, ../sass/_main.scss */
 .k-config .k-config-theme i {
   display: block;
   font-size: 3rem;
 }
-/* line 139, ../sass/_main.scss */
+/* line 150, ../sass/_main.scss */
 .k-config .k-config-theme:hover {
   background-color: #CCC;
 }
-/* line 141, ../sass/_main.scss */
+/* line 152, ../sass/_main.scss */
 .k-config .k-config-theme:hover i {
   text-align: center !important;
 }

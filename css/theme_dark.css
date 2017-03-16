@@ -25,77 +25,83 @@ body.k-dark #Main .box .cell, body.k-dark #Main .box .subtle {
   border-bottom-color: #505566;
   color: #DDD !important;
 }
-/* line 41, ../sass/theme_dark.scss */
-body.k-dark #Main .box .cell .topic_content, body.k-dark #Main .box .subtle .topic_content {
+/* line 42, ../sass/theme_dark.scss */
+body.k-dark #Main .box .topic_content, body.k-dark #Main .box .subtle {
+  background-color: #2E313B;
   color: #DDD !important;
 }
-/* line 46, ../sass/theme_dark.scss */
+/* line 47, ../sass/theme_dark.scss */
 body.k-dark .reply_content {
   color: #DDD !important;
 }
-/* line 50, ../sass/theme_dark.scss */
+/* line 51, ../sass/theme_dark.scss */
 body.k-dark #reply_content {
   background-color: #505566;
+  color: #DDD !important;
 }
-/* line 54, ../sass/theme_dark.scss */
+/* line 55, ../sass/theme_dark.scss */
+body.k-dark .no {
+  color: #505566;
+}
+/* line 58, ../sass/theme_dark.scss */
 body.k-dark a.tb:link, body.k-dark a.tb:visited, body.k-dark a.tb:active {
   color: #DDD !important;
   text-shadow: none !important;
 }
-/* line 60, ../sass/theme_dark.scss */
+/* line 64, ../sass/theme_dark.scss */
 body.k-dark ::-webkit-scrollbar-track {
   background-color: #FFFFFF !important;
 }
-/* line 64, ../sass/theme_dark.scss */
+/* line 68, ../sass/theme_dark.scss */
 body.k-dark ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2) !important;
 }
-/* line 69, ../sass/theme_dark.scss */
+/* line 73, ../sass/theme_dark.scss */
 body.k-dark .k-nav-bg {
   background-color: #2E313B;
 }
-/* line 72, ../sass/theme_dark.scss */
+/* line 76, ../sass/theme_dark.scss */
 body.k-dark .k-nav-hover:hover {
   background-color: #505566;
 }
-/* line 75, ../sass/theme_dark.scss */
+/* line 79, ../sass/theme_dark.scss */
 body.k-dark .k-nav-text {
   color: #DDD;
 }
-/* line 80, ../sass/theme_dark.scss */
+/* line 84, ../sass/theme_dark.scss */
 body.k-dark .k-tab-bg {
   background-color: #505566;
 }
-/* line 84, ../sass/theme_dark.scss */
+/* line 88, ../sass/theme_dark.scss */
 body.k-dark .k-tab-hover:hover, body.k-dark .k-tab-hover.active {
   background-color: #717991;
 }
-/* line 88, ../sass/theme_dark.scss */
+/* line 92, ../sass/theme_dark.scss */
 body.k-dark .k-tab-text {
   color: #DDD;
 }
-/* line 92, ../sass/theme_dark.scss */
+/* line 96, ../sass/theme_dark.scss */
 body.k-dark .k-list-bg {
   background-color: #2E313B;
   border-right: solid 1px #505566;
 }
-/* line 96, ../sass/theme_dark.scss */
+/* line 100, ../sass/theme_dark.scss */
 body.k-dark .k-list-text {
   color: #DDD;
 }
-/* line 99, ../sass/theme_dark.scss */
+/* line 103, ../sass/theme_dark.scss */
 body.k-dark .k-list-text-2 {
   color: #505566;
 }
-/* line 101, ../sass/theme_dark.scss */
+/* line 105, ../sass/theme_dark.scss */
 body.k-dark .k-list-text-2:hover {
   color: #DDD;
 }
-/* line 105, ../sass/theme_dark.scss */
+/* line 109, ../sass/theme_dark.scss */
 body.k-dark .k-list-border {
   border-color: #505566;
 }
-/* line 108, ../sass/theme_dark.scss */
+/* line 112, ../sass/theme_dark.scss */
 body.k-dark .k-list-reply {
   background-color: #FFFFFF;
   border-color: #717991;
@@ -103,7 +109,7 @@ body.k-dark .k-list-reply {
   border-style: solid;
   color: #717991;
 }
-/* line 118, ../sass/theme_dark.scss */
+/* line 122, ../sass/theme_dark.scss */
 body.k-dark .k-iframe-bg {
   background-color: #2E313B;
 }
