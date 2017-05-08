@@ -250,9 +250,14 @@ Vue.component('k-tabbar', k_tabbar)
 var k_forum = Vue.extend({
     porps: ['nodebaritems', 'data', 'url'],
     data: function () {
+        if (route.topicID != undefined) {
+            var iframeUrl = route.origin + '/t/' + route.topicID;
+        } else {
+            var iframeUrl = ''
+        }
         return ({
             listItems: getList(),
-            iframeUrl: '',
+            iframeUrl: iframeUrl,
             route: {
                 topic: route.topic,
                 node: route.node
@@ -279,6 +284,21 @@ var k_forum = Vue.extend({
             methods: {
                 open: function (url) {
                     this.$parent.iframeUrl = url;
+                    var topicID = url.split('/t/')[1].split('#')[0];
+                    route.topicID = topicID;
+                    var topicHref = window.location.href;
+                    if (window.location.search.length == 0) {
+                        topicHref = topicHref + '?topicID=' + topicID;
+                    } else {
+                        if (topicHref.indexOf('topicID=') == '-1') {
+                            topicHref = topicHref + '&topicID=' + topicID;
+                        } else {
+                            topicHref = topicHref.split('topicID=')[0] + 'topicID=' + topicID;
+                        }
+                    }
+                    history.pushState({
+                        'topicID': route.topicID
+                    }, null, topicHref)
                 }
             }
         },
@@ -428,9 +448,10 @@ ready(function () {
         origin: window.location.origin,
         search: window.location.search,
         tab: (window.location.search.split('tab=')[1]),
-        login: (topDom.length !== 3)
+        login: (topDom.length !== 3),
+        topicID: (window.location.search.split('topicID=')[1])
     };
-    // console.info(route);
+    console.info(route);
     var userData = getUserInfo(route);
     if (userData.theme == 'light') {
         document.body.className = 'k-light'
