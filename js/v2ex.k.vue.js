@@ -427,6 +427,21 @@ var getUserInfo = function (route) {
     return userInfo
 };
 
+// 获取页面中的图片文本替换为 img 标签
+var urlToImg = function(){
+    var regex = new RegExp(/.+\.(jpg|jpeg|gif|png|webp)/);
+    var urls = document.querySelectorAll("a[rel='nofollow']");
+    for (let i = 0; i < urls.length; i++) {
+        var element  = urls[i];
+        if(regex.test(element.href)){
+            var imgDom = document.createElement('img');
+            imgDom.src = element.href
+            element.text='';
+            element.appendChild(imgDom);
+        }  
+    }   
+}
+
 /* 数据获取部分 */
 var dateinfo = new Date().getUTCDate();
 var originHref = window.location.href;
@@ -451,7 +466,7 @@ ready(function () {
         login: (topDom.length !== 3),
         topicID: (window.location.search.split('topicID=')[1])
     };
-    console.info(route);
+    
     var userData = getUserInfo(route);
     if (userData.theme == 'light') {
         document.body.className = 'k-light'
@@ -477,6 +492,7 @@ ready(function () {
             }
         }
     }
+    urlToImg();
 
     var vue = new Vue({
         el: "body",
