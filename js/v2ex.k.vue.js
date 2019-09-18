@@ -288,12 +288,14 @@ var k_forum = Vue.extend({
                     route.topicID = topicID;
                     var topicHref = window.location.href;
                     if (window.location.search.length == 0) {
-                        topicHref = topicHref + '?topicID=' + topicID;
+                        // 如果没有尾巴，直接拼接
+                        topicHref = topicHref + '?topicID=' + topicID + "&iframe="+url;
                     } else {
                         if (topicHref.indexOf('topicID=') == '-1') {
-                            topicHref = topicHref + '&topicID=' + topicID;
+                            // 如果有尾巴，加上
+                            topicHref = topicHref + '&topicID=' + topicID + "&iframe="+url;
                         } else {
-                            topicHref = topicHref.split('topicID=')[0] + 'topicID=' + topicID;
+                            topicHref = topicHref.split('topicID=')[0] + 'topicID=' + topicID + "&iframe="+ url;
                         }
                     }
                     history.pushState({
@@ -333,7 +335,7 @@ var k_forum = Vue.extend({
     <div class="k-forum">\
         <div class="k-page-list k-list-bg k-list-text"><k_page :route="route"></k_page>\
         <k_list :list="listItems" :route="route"></k_list><k_page :route="route"></k_page></div>\
-        <k_frame class="" :url="iframeUrl"></k_frame>\
+        <k_frame class="hold-iframe" :url="iframeUrl"></k_frame>\
     </div>'
 })
 Vue.component('k-forum', k_forum)
