@@ -251,7 +251,7 @@ var k_forum = Vue.extend({
     porps: ['nodebaritems', 'data', 'url'],
     data: function () {
         if (route.topicID != undefined) {
-            var iframeUrl = route.origin + '/t/' + route.topicID;
+            var iframeUrl = route.origin + '/t/' + route.topicID.split("&")[0];
         } else {
             var iframeUrl = ''
         }
@@ -285,6 +285,7 @@ var k_forum = Vue.extend({
                 open: function (url) {
                     this.$parent.iframeUrl = url;
                     var topicID = url.split('/t/')[1].split('#')[0];
+                    console.info(topicID)
                     route.topicID = topicID;
                     var topicHref = window.location.href;
                     if (window.location.search.length == 0) {
