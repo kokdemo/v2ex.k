@@ -1,70 +1,33 @@
-v2ex.k
-========
+# v2ex.k
 
-『用更好的UI开始新的一天。』
+基于 `WXT + Vue 3 + Manifest V3` 重建的 V2EX 界面增强插件。
 
+## 开发
 
----------
+```bash
+npm install
+npm run dev
+```
 
-v2ex.k 是一个有趣的v2ex网站界面增强插件，它有如下的特性：
+执行 `npm run dev` 时会自动打开 `https://v2ex.com/` 方便联调。
 
-##特性
+## 构建
 
-1. 全新的界面颜色。
-2. 左侧增强导航栏。
-3. 快速阅读模式。
+```bash
+npm run build
+npm run zip
+```
 
+## 当前迁移范围
 
-----------
+- 首页 / 节点页 / `recent` / `my/topics` 列表增强
+- 左侧导航与 tab 栏
+- 阅读面板 iframe
+- 主题切换与持久化
+- 图片链接转图片
 
-##更新
-2017.5.8:
-增加了url变化的情况，现在浏览帖子的时候，url会跟着变化，也可以分享出去。
+## 说明
 
-2017.3.15:
-之前的主题看腻了，增加了两个新主题，以及切换主题的功能，顺便修复了一些小bug。
-
-2016.9.6:
-用vue重写了整个插件，忘了原来有什么feature了……
-
-2015.4.23:
-
-+ 进入0.3版本。
-+ 使用react重构整个页面dom，更高效的显示列表。
-+ 抛弃了原有的快速阅读模式。
-+ 减少了界面层次。
-+ 已读未读记录。
-
-2015.3.15：
-
-+ 正式迈入0.2版本。
-+ 使用sass来管理css文件。
-+ 修改快速阅读模式的上限为400个字符。
-+ 重构了大部分的js代码。
-+ 使用localstorage缓存了用户的一些信息，解决了部分页面显示错误的问题。
-+ 增加了免刷新回复提醒模式。
-
-2015.2.11:
-
-+ 正式迈入0.1版本，修改原有的iframe模式为ajax模式，读取速度更快。
-+ 修改CSS，减少页面空隙，提升页面利用率。
-+ 增加全键盘操作，提升了笔记本的阅读效率。
-+ 优化了快速阅读区域中的中文阅读效果。
-+ 优化左侧导航栏的视觉效果，全部使用icon代替原有文字。
-
-----------
-
-##帮助
-
-1. 使用快速阅读只需要点击列表中除了链接之外的空白即可。
-2. 右侧的快速阅读区域可以点击进入具体的帖子。
-
-##For chrome
-
-https://chrome.google.com/webstore/detail/v2exk/dnbmbhefokngmkalbdcgjdlgoppfhndn
-
-##For Firefox
-
-感谢caoyue的作品：
-
-https://github.com/caoyue/userjs/blob/master/v2ex.k.user.js
+- 新实现以 `entrypoints/content.ts` 和 `wxt.config.ts` 为发布入口。
+- `legacy/` 目录保存旧 React/jQuery/Vue 1 运行时链路，仅作历史参考。
+- 根目录保留的旧 `js/v2ex.k.vue.js`、`css/v2ex.k.vue.css`、`sass/*` 主要用于业务和样式迁移参考，不再参与发布。

@@ -19,3 +19,8 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+node_modules/
+.wxt/
+.output/
+dist/
+web-ext-artifacts/

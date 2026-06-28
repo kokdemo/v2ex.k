@@ -1,0 +1,28 @@
+{
+  "name": "v2ex-k",
+  "description": "V2EX UI enhancement extension rebuilt with WXT, Vue 3, and Manifest V3",
+  "private": true,
+  "version": "0.5.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build && node scripts/sync-dist.mjs chrome-mv3",
+    "build:firefox": "wxt build -b firefox && node scripts/sync-dist.mjs firefox-mv2",
+    "sync:dist": "node scripts/sync-dist.mjs",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "vue-tsc --noEmit",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "@daisigu/vue-liquid-glass": "^1.0.4",
+    "vue": "^3.5.39"
+  },
+  "devDependencies": {
+    "@wxt-dev/module-vue": "^1.0.3",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.5",
+    "wxt": "^0.20.27"
+  }
+}
