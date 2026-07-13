@@ -1,4 +1,4 @@
-import type { RouteInfo, TopicListItem, UserInfo } from '@/lib/types';
+import type { HotTopicItem, RouteInfo, TopicListItem, UserInfo } from '@/lib/types';
 
 function normalizeUrl(url: string | null | undefined): string {
   if (!url) {
@@ -99,4 +99,46 @@ export function resolveInitialReaderUrl(route: RouteInfo, items: TopicListItem[]
     }
   }
   return items[0]?.url ?? '';
+}
+
+export function extractHotTopics(doc: Document = document): HotTopicItem[] {
+  const boxes = Array.from(doc.querySelectorAll<HTMLElement>('#Rightbar .box'));
+  const hotBox =
+    boxes.find((box) => box.textContent?.includes('今日热议主题')) ??
+    boxes.find((box) => box.querySelector('a[href*="/t/"]'));
+
+  if (!hotBox) {
+    return [];
+  }
+
+  const links = Array.from(hotBox.querySelectorAll<HTMLAnchorElement>('a[href*="/t/"]'));
+  const seen = new Set<string>();
+
+  return links
+    .map((link) => {
+      const url = normalizeUrl(link.getAttribute('href'));
+      const id = url.match(/\/t\/([^/?#]+)/)?.[1] ?? url;
+      const title = link.textContent?.trim() ?? '';
+      const row =
+        link.closest<HTMLElement>('.cell') ??
+        link.closest<HTMLElement>('tr') ??
+        link.closest<HTMLElement>('li') ??
+        link.parentElement;
+      const avatar = normalizeAvatar(row?.querySelector<HTMLImageElement>('img')?.getAttribute('src'));
+
+      if (!url || !title || seen.has(id)) {
+        return null;
+      }
+
+      seen.add(id);
+
+      return {
+        id,
+        url,
+        title,
+        avatar,
+      } satisfies HotTopicItem;
+    })
+    .filter((item): item is HotTopicItem => item !== null)
+    .slice(0, 10);
 }

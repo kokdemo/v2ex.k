@@ -1,12 +1,13 @@
 import { reactive } from 'vue';
 
-import type { ExtensionSettings, RouteInfo, ThemeSetting, TopicListItem, UserInfo } from '@/lib/types';
+import type { ExtensionSettings, HotTopicItem, RouteInfo, ThemeSetting, TopicListItem, UserInfo } from '@/lib/types';
 
 interface ExtensionState {
   route: RouteInfo;
   settings: ExtensionSettings;
   user: UserInfo;
   topics: TopicListItem[];
+  hotTopics: HotTopicItem[];
   readTopicIds: string[];
   readerUrl: string;
 }
@@ -39,6 +40,7 @@ export const extensionState = reactive<ExtensionState>({
     avatar: '',
   },
   topics: [],
+  hotTopics: [],
   readTopicIds: [],
   readerUrl: '',
 });

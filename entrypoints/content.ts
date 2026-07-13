@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 
 import App from '@/components/App.vue';
-import { extractTopicList, extractUserInfo, resolveInitialReaderUrl } from '@/lib/extractors';
+import { extractHotTopics, extractTopicList, extractUserInfo, resolveInitialReaderUrl } from '@/lib/extractors';
 import { enhanceImageLinks } from '@/lib/image-links';
 import { installNavigationObserver } from '@/lib/navigation';
 import { detectRoute, isManagedPath } from '@/lib/route';
@@ -45,14 +45,54 @@ function syncState(): void {
   const route = detectRoute();
   const user = extractUserInfo();
   const topics = route.supported ? extractTopicList(route) : [];
+  const hotTopics = route.supported ? extractHotTopics() : [];
   const initialReaderUrl = route.supported ? resolveInitialReaderUrl(route, topics) : '';
 
   extensionState.route = route;
   extensionState.user = user;
   extensionState.topics = topics;
+  extensionState.hotTopics = hotTopics;
   extensionState.readerUrl = initialReaderUrl;
   applyLayout(route);
   enhanceImageLinks();
+}
+
+function installFrameReplyBoxSticky(): void {
+  const applySticky = (): boolean => {
+    const replyBox = document.getElementById('reply-box');
+    if (!replyBox) {
+      return false;
+    }
+
+    replyBox.classList.add('reply-box-sticky');
+
+    const updateStuckState = (): void => {
+      const viewportBottom = window.innerHeight;
+      const rect = replyBox.getBoundingClientRect();
+      const isStuck = rect.bottom > viewportBottom + 2;
+      replyBox.toggleAttribute('stuck', isStuck);
+    };
+
+    updateStuckState();
+    window.addEventListener('scroll', updateStuckState, { passive: true });
+    window.addEventListener('resize', updateStuckState, { passive: true });
+
+    const observer = new MutationObserver(updateStuckState);
+    observer.observe(replyBox, { childList: true, subtree: true, attributes: true });
+    return true;
+  };
+
+  if (applySticky()) {
+    return;
+  }
+
+  const bodyObserver = new MutationObserver(() => {
+    if (applySticky()) {
+      bodyObserver.disconnect();
+    }
+  });
+
+  bodyObserver.observe(document.body, { childList: true, subtree: true });
 }
 
 export default defineContentScript({
@@ -74,6 +114,7 @@ export default defineContentScript({
     const initialRoute = detectRoute();
     if (initialRoute.frame && initialRoute.topic) {
       applyLayout(initialRoute);
+      installFrameReplyBoxSticky();
       return;
     }
 
@@ -86,6 +127,7 @@ export default defineContentScript({
     extensionState.settings = settings;
     extensionState.user = extractUserInfo();
     extensionState.topics = extractTopicList(initialRoute);
+    extensionState.hotTopics = extractHotTopics();
     extensionState.readTopicIds = readTopicIds;
     extensionState.readerUrl = resolveInitialReaderUrl(extensionState.route, extensionState.topics);
 

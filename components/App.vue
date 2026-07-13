@@ -6,7 +6,7 @@ import { tabItems } from '@/lib/tabs';
 import { buildPageLink, updateReaderQuery } from '@/lib/route';
 import { extensionState, requestThemeChange } from '@/lib/state';
 import { saveReadTopicId, saveReaderSplitRatio } from '@/lib/storage';
-import type { ThemeSetting, TopicListItem } from '@/lib/types';
+import type { HotTopicItem, ThemeSetting, TopicListItem } from '@/lib/types';
 
 const readerUrl = ref(extensionState.readerUrl);
 const configOpen = ref(false);
@@ -26,29 +26,42 @@ watch(
 );
 
 const navItems = computed(() => [
-  { label: '探索', href: '/' },
-  { label: '最近', href: '/recent' },
-  { label: '节点', href: '/?tab=nodes' },
-  { label: '提醒', href: '/notifications' },
-  { label: '我的', href: '/my/topics' },
+  { label: '我的主题', href: '/my/topics' },
 ]);
+
+const primaryTabs = computed(() => [
+  { label: '全部', href: '/' as const, key: 'all' as const },
+  { label: '最近', href: '/recent' as const, key: 'recent' as const },
+  { label: '热议', href: '/?tab=hot' as const, key: 'hot' as const },
+]);
+
+const quickActions = computed(() => {
+  if (!extensionState.user.loggedIn) {
+    return [];
+  }
+
+  return [
+    { label: '创建新主题', href: '/new', active: false },
+    { label: '领取登录奖励', href: '/mission/daily', active: false },
+  ];
+});
+
+const userLinks = computed(() => {
+  if (!extensionState.user.loggedIn) {
+    return [];
+  }
+
+  return [
+    { label: '提醒', href: '/notifications' },
+    { label: '记事本', href: '/notes' },
+    { label: 'Planet', href: '/planet' },
+    { label: '设置', href: '/settings' },
+  ];
+});
 
 const rootClasses = computed(() => ({
   origin: !extensionState.route.supported,
 }));
-
-const currentTitle = computed(() => {
-  if (extensionState.route.node && extensionState.route.nodeText) {
-    return extensionState.route.nodeText;
-  }
-  if (extensionState.route.recent) {
-    return '最近更新';
-  }
-  if (extensionState.route.myTopics) {
-    return '我的主题';
-  }
-  return '探索';
-});
 
 const selectedTopicId = computed(() => {
   if (extensionState.route.topicId) {
@@ -79,7 +92,23 @@ const feedItems = computed(() =>
   })),
 );
 
-const selectedTopic = computed(() => feedItems.value.find((item) => item.id === selectedTopicId.value) ?? feedItems.value[0] ?? null);
+const displayItems = computed(() => feedItems.value);
+const primaryTabKey = computed<'all' | 'recent' | 'hot'>(() => {
+  if (extensionState.route.recent) {
+    return 'recent';
+  }
+  if (extensionState.route.tab === 'hot') {
+    return 'hot';
+  }
+  return 'all';
+});
+const showNodeTabs = computed(() => primaryTabKey.value === 'all' && extensionState.route.index);
+
+const selectedTopic = computed(() => {
+  const matched = feedItems.value.find((item) => item.id === selectedTopicId.value || item.url === extensionState.readerUrl);
+  return matched ?? feedItems.value[0] ?? null;
+});
+
 const readerMeta = computed(() => {
   if (!selectedTopic.value) {
     return '';
@@ -112,7 +141,7 @@ const currentNavHref = computed(() => {
   return '/';
 });
 
-const openReader = async (item: TopicListItem) => {
+const openReader = async (item: Pick<TopicListItem, 'id' | 'url'> | Pick<HotTopicItem, 'id' | 'url'>) => {
   readerUrl.value = item.url;
   extensionState.readerUrl = item.url;
   updateReaderQuery(item.url);
@@ -223,13 +252,26 @@ onUnmounted(() => {
           </a>
         </nav>
 
-        <button class="k-theme-entry" type="button" @click="configOpen = !configOpen">
-          <span>主题</span>
-        </button>
+        <div v-if="quickActions.length" class="k-sidebar-actions">
+          <a v-for="item in quickActions" :key="item.href" class="k-sidebar-link" :href="item.href">
+            <span>{{ item.label }}</span>
+          </a>
+        </div>
+
+        <div v-if="userLinks.length || extensionState.user.loggedIn" class="k-sidebar-actions">
+          <a v-for="item in userLinks" :key="item.href" class="k-sidebar-link" :href="item.href">
+            <span>{{ item.label }}</span>
+          </a>
+          <button v-if="extensionState.user.loggedIn" class="k-sidebar-link k-sidebar-link-button" type="button" @click="configOpen = !configOpen">
+            <span>外观</span>
+          </button>
+        </div>
 
         <a v-if="extensionState.user.loggedIn" class="k-sidebar-user" :href="`/member/${extensionState.user.name}`">
           <img :src="extensionState.user.avatar" :alt="extensionState.user.name" />
-          <span class="k-sidebar-user-name">{{ extensionState.user.name }}</span>
+          <div class="k-sidebar-user-main">
+            <span class="k-sidebar-user-name">{{ extensionState.user.name }}</span>
+          </div>
         </a>
       </VGlass>
     </aside>
@@ -241,15 +283,25 @@ onUnmounted(() => {
             <div class="k-section-head">
               <div class="k-section-head-top">
                 <div class="k-section-heading">
-                  <h2>{{ currentTitle }}</h2>
+                  <div class="k-section-route">
+                    <template v-for="item in primaryTabs" :key="item.key">
+                      <a
+                        class="k-section-route-link"
+                        :class="{ active: item.key === primaryTabKey }"
+                        :href="item.href"
+                      >
+                        {{ item.label }}
+                      </a>
+                    </template>
+                  </div>
                 </div>
                 <div class="k-section-links">
                   <a v-if="previousPage" :href="previousPage">上一页</a>
                   <a :href="nextPage">下一页</a>
                 </div>
               </div>
-              <div class="k-section-toolbar">
-                <div ref="tabPillsRef" class="k-tab-pills" @wheel.prevent="scrollTabs" @pointerdown="startTabDrag">
+              <div v-if="showNodeTabs" class="k-section-toolbar">
+                <div ref="tabPillsRef" class="k-tab-pills k-tab-pills-secondary" @wheel.prevent="scrollTabs" @pointerdown="startTabDrag">
                   <a
                     v-for="item in tabItems"
                     :key="item.tab"
@@ -264,7 +316,7 @@ onUnmounted(() => {
             </div>
 
             <ul class="k-feed-list">
-              <li v-for="item in feedItems" :key="item.id">
+              <li v-for="item in displayItems" :key="item.id">
                 <button
                   class="k-feed-row"
                   :class="{
@@ -288,7 +340,7 @@ onUnmounted(() => {
                       <span v-if="item.lastReplyText">{{ item.lastReplyText }}</span>
                     </div>
                   </div>
-                  <span class="k-feed-row-reply">{{ item.reply }}</span>
+                  <span v-if="item.reply !== ''" class="k-feed-row-reply">{{ item.reply }}</span>
                 </button>
               </li>
             </ul>
@@ -308,7 +360,14 @@ onUnmounted(() => {
                   <h2>{{ selectedTopic.title }}</h2>
                   <p class="k-reader-meta">{{ readerMeta }}</p>
                 </div>
-                <a class="k-reader-link" :href="selectedTopic.url" target="_blank" rel="noreferrer">原帖</a>
+                <a class="k-reader-link" :href="selectedTopic.url" target="_blank" rel="noreferrer" aria-label="在新页面打开" title="在新页面打开">
+                  <svg viewBox="0 0 20 20" aria-hidden="true">
+                    <path
+                      d="M11 3h6v6h-2V6.41l-7.29 7.3-1.42-1.42L13.59 5H11V3Zm4 14H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4v2H5v10h10v-4h2v4a2 2 0 0 1-2 2Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </a>
               </div>
 
               <div v-if="readerUrl" class="k-reader-frame-shell">
@@ -326,7 +385,7 @@ onUnmounted(() => {
     <div v-if="configOpen" class="k-theme-modal">
       <VGlass class="k-theme-glass" :blur="10" :scale="16" :base-frequency="0.012">
         <div class="k-theme-head">
-          <div class="k-section-kicker">主题设置</div>
+          <div class="k-section-kicker">外观设置</div>
           <h2>切换展示风格</h2>
         </div>
         <div class="k-theme-grid">

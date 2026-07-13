@@ -45,6 +45,13 @@ export interface TopicListItem {
   lastReplyBy: string | null;
 }
 
+export interface HotTopicItem {
+  id: string;
+  url: string;
+  title: string;
+  avatar: string;
+}
+
 export interface TopicReaderState {
   selectedUrl: string;
   selectedTopicId: string | null;
