@@ -8,9 +8,9 @@ export default defineConfig({
     permissions: ['storage'],
     host_permissions: ['*://v2ex.com/*', '*://*.v2ex.com/*'],
     icons: {
-      '16': 'icon.png',
-      '48': 'icon.png',
-      '128': 'icon.png',
+      '16': 'icon-16.png',
+      '48': 'icon-48.png',
+      '128': 'icon-128.png',
     },
   },
 });

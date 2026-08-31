@@ -41,6 +41,10 @@ function onDomReady(): Promise<void> {
   });
 }
 
+function canEnhanceImages(route: RouteInfo): boolean {
+  return route.supported || (route.frame && route.topic);
+}
+
 function syncState(): void {
   const route = detectRoute();
   const user = extractUserInfo();
@@ -54,7 +58,9 @@ function syncState(): void {
   extensionState.hotTopics = hotTopics;
   extensionState.readerUrl = initialReaderUrl;
   applyLayout(route);
-  enhanceImageLinks();
+  if (canEnhanceImages(route)) {
+    enhanceImageLinks();
+  }
 }
 
 function installFrameReplyBoxSticky(): void {
@@ -109,10 +115,10 @@ export default defineContentScript({
     const settings = await loadSettings();
     const readTopicIds = await loadReadTopicIds();
     applyTheme(settings.theme);
-    enhanceImageLinks();
 
     const initialRoute = detectRoute();
     if (initialRoute.frame && initialRoute.topic) {
+      enhanceImageLinks();
       applyLayout(initialRoute);
       installFrameReplyBoxSticky();
       return;
@@ -122,6 +128,8 @@ export default defineContentScript({
       document.documentElement.classList.remove('v2exk-loading');
       return;
     }
+
+    enhanceImageLinks();
 
     extensionState.route = initialRoute;
     extensionState.settings = settings;

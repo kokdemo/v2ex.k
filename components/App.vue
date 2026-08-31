@@ -340,7 +340,7 @@ onUnmounted(() => {
                       <span v-if="item.lastReplyText">{{ item.lastReplyText }}</span>
                     </div>
                   </div>
-                  <span v-if="item.reply !== ''" class="k-feed-row-reply">{{ item.reply }}</span>
+                  <span class="k-feed-row-reply">{{ item.reply }}</span>
                 </button>
               </li>
             </ul>
